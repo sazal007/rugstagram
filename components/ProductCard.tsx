@@ -10,7 +10,7 @@ interface ProductCardProps {
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <Link
-      href={`/product/${product.id}`}
+      href={`/shop/${product.id}`}
       className="group cursor-pointer block"
     >
       <div className="relative aspect-3/4 overflow-hidden bg-gray-100 rounded-sm mb-4">
