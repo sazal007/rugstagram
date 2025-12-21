@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button";
 
 const HERO_IMAGES = [
   "https://images.unsplash.com/photo-1600166898405-da9535204843?auto=format&fit=crop&q=80&w=2000",
-  "https://images.unsplash.com/photo-1596238638367-9c606540c436?auto=format&fit=crop&q=80&w=2000",
-  "https://images.unsplash.com/photo-1574966739943-9e812b4c1a53?auto=format&fit=crop&q=80&w=2000",
+  "https://images.unsplash.com/photo-1603913996638-c01100417b4a?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8cnVnc3xlbnwwfHwwfHx8MA%3D%3D",
+  "https://images.unsplash.com/photo-1594040226829-7f251ab46d80?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cnVnc3xlbnwwfHwwfHx8MA%3D%3D",
 ];
 
 export const HeroSection: React.FC = () => {

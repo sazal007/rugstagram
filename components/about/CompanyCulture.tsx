@@ -68,7 +68,7 @@ export const CompanyCulture: React.FC = () => {
           viewport={{ once: true }}
         >
           <img
-            src="https://images.unsplash.com/photo-1596238638367-9c606540c436?auto=format&fit=crop&q=80&w=1200"
+            src="https://images.unsplash.com/photo-1715705717344-880404f93506?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2VhdmVycyUyMHdvcmtpZ3xlbnwwfHwwfHx8MA%3D%3D"
             alt="Weavers Working"
             className="w-full h-auto rounded-sm shadow-xl"
           />
@@ -85,7 +85,7 @@ export const CompanyCulture: React.FC = () => {
           </h3>
           <p>
             Everything we choose, from the raw material to weaving the carpets,
-            ensures our buyers' priority in meeting quality standards.
+            ensures our buyers&apos; priority in meeting quality standards.
             Production procedures and various inspections are carried out during
             the process, from the quality of the wool to the final finishing of
             the carpets.
@@ -112,16 +112,16 @@ export const CompanyCulture: React.FC = () => {
             Global Reach, Local Roots
           </h3>
           <p>
-            We take pride in the joy of manufacturing Nepalese hand-knotted
-            rugs for the past 28 years. We make sure that our creations are
+            We take pride in the joy of manufacturing Nepalese hand-knotted rugs
+            for the past 28 years. We make sure that our creations are
             recognized for their excellent craftsmanship & traditional weaving.
             Strict quality control is maintained from the choice of wool to the
             final touches of a carpet.
           </p>
           <p>
             We have been actively participating in various carpet export
-            associations like NCEA (Nepal Carpet Export Association) and CCIA
-            to help promote Nepalese Carpets globally and maintain quality
+            associations like NCEA (Nepal Carpet Export Association) and CCIA to
+            help promote Nepalese Carpets globally and maintain quality
             standards.
           </p>
         </motion.div>
@@ -133,7 +133,7 @@ export const CompanyCulture: React.FC = () => {
           className="order-1 lg:order-2"
         >
           <img
-            src="https://images.unsplash.com/photo-1605218427368-35b86ddf4171?auto=format&fit=crop&q=80&w=1200"
+            src="https://images.unsplash.com/photo-1716688046364-3288a11c80ba?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d29vbHN8ZW58MHx8MHx8fDA%3D"
             alt="Raw Materials"
             className="w-full h-auto rounded-sm shadow-xl"
           />
@@ -144,13 +144,12 @@ export const CompanyCulture: React.FC = () => {
         <h3 className="text-2xl font-serif mb-4">Innovation & Collaboration</h3>
         <p className="text-muted">
           Our offering includes hand-knotted rugs of superior quality, Flat
-          weave (Nepali Kilim), and Felt carpets. We collaborate with
-          designers to create carpets that comfort the end-user and allure
-          interior spaces. Every year we display our new creations in
-          international trade shows.
+          weave (Nepali Kilim), and Felt carpets. We collaborate with designers
+          to create carpets that comfort the end-user and allure interior
+          spaces. Every year we display our new creations in international trade
+          shows.
         </p>
       </div>
     </div>
   );
 };
-

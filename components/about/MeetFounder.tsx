@@ -101,11 +101,6 @@ export const MeetFounder: React.FC = () => {
             </div>
 
             <div className="pt-8 border-t border-gray-100">
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Signature_sample.svg"
-                alt="Signature"
-                className="h-12 opacity-60"
-              />
               <p className="text-sm font-bold mt-2">Shambhu Bikram Thapa</p>
               <p className="text-xs text-muted uppercase tracking-widest">
                 Managing Director

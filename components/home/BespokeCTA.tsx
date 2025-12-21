@@ -28,7 +28,7 @@ export const BespokeCTA: React.FC = () => {
         className="absolute inset-0"
       >
         <Image
-          src="https://images.unsplash.com/photo-1596238638367-9c606540c436?auto=format&fit=crop&q=80&w=2000"
+          src="https://www.logicalposition.com/img/case-studies/boutique-rugs_Banner.jpg"
           alt="Texture"
           fill
           className="object-cover grayscale"

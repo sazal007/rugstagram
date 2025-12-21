@@ -75,11 +75,11 @@ export const BentoGrid: React.FC = () => {
           className="relative rounded-xl overflow-hidden group min-h-[300px] md:min-h-0"
         >
           <img
-            src="https://images.unsplash.com/photo-1596238638367-9c606540c436?auto=format&fit=crop&q=80&w=800"
+            src="https://images.unsplash.com/photo-1608724553456-89e963624dbb?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cnVnc3xlbnwwfHwwfHx8MA%3D%3D"
             alt="Detail"
             width={800}
             height={800}
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            className="object-cover transition-transform duration-700 scale-125"
           />
           <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors" />
           <div className="absolute bottom-6 left-6 text-white">

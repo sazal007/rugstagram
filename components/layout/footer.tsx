@@ -111,7 +111,7 @@ export function Footer() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between text-xs text-gray-600 gap-4">
-        <p>© 2024 Himalayan Knots. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} Rugstagram. All rights reserved.</p>
         <div className="flex gap-6">
           <span>Privacy Policy</span>
           <span>Terms of Service</span>
