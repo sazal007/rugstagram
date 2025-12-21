@@ -35,18 +35,18 @@ export const SimilarProducts: React.FC<SimilarProductsProps> = ({
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
-      className="pt-16"
+      className="pt-8 sm:pt-12 md:pt-16"
     >
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-12">
-        <h2 className="text-3xl font-serif">You May Also Like</h2>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-3 sm:gap-4 mb-8 sm:mb-10 md:mb-12">
+        <h2 className="text-2xl sm:text-3xl font-serif">You May Also Like</h2>
         <Link
           href="/shop"
-          className="text-sm border-b border-primary pb-1 hover:text-accent hover:border-accent transition-colors"
+          className="text-xs sm:text-sm border-b border-primary pb-1 hover:text-accent hover:border-accent transition-colors"
         >
           View All
         </Link>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
         {similarProducts.map((similar) => (
           <ProductCard key={similar.id} product={similar} />
         ))}

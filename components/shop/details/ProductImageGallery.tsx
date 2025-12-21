@@ -36,11 +36,11 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="space-y-4 top-24 self-start sticky"
+      className="space-y-3 sm:space-y-4 lg:top-24 lg:self-start lg:sticky"
     >
       {/* Main Viewer */}
       <div
-        className="aspect-[3/4] bg-gray-100 rounded-sm overflow-hidden relative cursor-crosshair group"
+        className="aspect-3/4 bg-gray-100 rounded-sm overflow-hidden relative cursor-crosshair group w-full"
         onMouseEnter={() => setIsHoveringImage(true)}
         onMouseLeave={() => setIsHoveringImage(false)}
         onMouseMove={handleMouseMove}
@@ -55,14 +55,14 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
           }}
         />
         {product.isNew && (
-          <span className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 text-xs uppercase tracking-wider font-bold z-10">
+          <span className="absolute top-2 left-2 sm:top-4 sm:left-4 bg-white/90 backdrop-blur-md px-2 py-0.5 sm:px-3 sm:py-1 text-[10px] sm:text-xs uppercase tracking-wider font-bold z-10">
             New Arrival
           </span>
         )}
       </div>
 
       {/* Thumbnails */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-4 gap-2 sm:gap-3 md:gap-4">
         {productImages.map((img, idx) => (
           <button
             key={idx}
@@ -84,4 +84,3 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
     </motion.div>
   );
 };
-

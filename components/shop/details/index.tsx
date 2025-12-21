@@ -34,10 +34,10 @@ function ProductDetailContent({ product }: ProductDetailProps) {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12">
+    <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-6 sm:py-8 md:py-12">
       <Breadcrumb product={product} />
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 mb-24">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 lg:gap-24 mb-12 sm:mb-16 md:mb-24">
         <ProductImageGallery product={product} />
 
         <div>

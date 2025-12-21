@@ -44,23 +44,23 @@ export const ProductSelectors: React.FC<ProductSelectorsProps> = ({
   };
 
   return (
-    <div className="space-y-8 mb-10">
+    <div className="space-y-6 sm:space-y-8 mb-8 sm:mb-10">
       {/* Size Selector */}
       <div>
-        <div className="flex justify-between items-center mb-3">
-          <label className="text-xs font-bold uppercase tracking-widest">
+        <div className="flex justify-between items-center mb-2 sm:mb-3">
+          <label className="text-[10px] sm:text-xs font-bold uppercase tracking-widest">
             Select Size
           </label>
-          <button className="text-xs text-muted underline hover:text-primary">
+          <button className="text-[10px] sm:text-xs text-muted underline hover:text-primary">
             Size Guide
           </button>
         </div>
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-2 sm:gap-3">
           {product.sizes.map((size) => (
             <button
               key={size}
               onClick={() => handleSizeSelect(size)}
-              className={`px-6 py-3 text-sm border transition-all ${
+              className={`px-3 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border transition-all ${
                 selectedSize === size
                   ? "border-primary bg-primary text-white"
                   : "border-gray-200 hover:border-primary text-gray-600"
@@ -74,22 +74,22 @@ export const ProductSelectors: React.FC<ProductSelectorsProps> = ({
 
       {/* Quantity Selector */}
       <div>
-        <label className="block text-xs font-bold uppercase tracking-widest mb-3">
+        <label className="block text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-2 sm:mb-3">
           Quantity
         </label>
-        <div className="flex items-center w-36 border border-gray-200">
+        <div className="flex items-center w-28 sm:w-36 border border-gray-200">
           <button
             onClick={() => handleQuantity("dec")}
-            className="p-4 hover:bg-gray-50 text-muted transition-colors"
+            className="p-2 sm:p-4 hover:bg-gray-50 text-muted transition-colors"
           >
-            <Minus className="w-4 h-4" />
+            <Minus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
-          <span className="flex-1 text-center font-medium">{quantity}</span>
+          <span className="flex-1 text-center font-medium text-sm sm:text-base">{quantity}</span>
           <button
             onClick={() => handleQuantity("inc")}
-            className="p-4 hover:bg-gray-50 text-muted transition-colors"
+            className="p-2 sm:p-4 hover:bg-gray-50 text-muted transition-colors"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
         </div>
       </div>

@@ -15,7 +15,7 @@ export const FilterToggle: React.FC<FilterToggleProps> = ({
   productCount,
 }) => {
   return (
-    <div className="lg:hidden flex justify-between items-center mb-6 sticky top-20 bg-background z-30 py-4 border-b">
+    <div className="lg:hidden flex justify-between items-center mb-6  bg-background z-30 py-4 border-b">
       <button
         onClick={onToggle}
         className="flex items-center gap-2 text-sm uppercase tracking-wide font-medium hover:text-primary transition-colors"
@@ -26,4 +26,3 @@ export const FilterToggle: React.FC<FilterToggleProps> = ({
     </div>
   );
 };
-

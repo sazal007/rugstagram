@@ -30,7 +30,7 @@ export function Navbar() {
   return (
     <>
       {/* Announcement Bar */}
-      <div className="bg-accent text-white text-[11px] py-2 text-center tracking-widest uppercase font-medium">
+      <div className="bg-accent text-white text-[8px] sm:text-[11px] py-2 text-center tracking-widest uppercase font-medium">
         Global Shipping Included • Bespoke Orders Open
       </div>
 

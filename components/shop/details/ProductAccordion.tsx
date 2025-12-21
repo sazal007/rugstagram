@@ -20,13 +20,13 @@ const AccordionSection: React.FC<AccordionSectionProps> = ({
   <div className="border-b border-gray-100 last:border-0">
     <button
       onClick={toggle}
-      className="w-full py-4 flex justify-between items-center text-left hover:text-accent transition-colors"
+      className="w-full py-3 sm:py-4 flex justify-between items-center text-left hover:text-accent transition-colors"
     >
-      <span className="font-serif text-lg">{title}</span>
+      <span className="font-serif text-base sm:text-lg">{title}</span>
       {isOpen ? (
-        <ChevronUp className="w-4 h-4" />
+        <ChevronUp className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 ml-2" />
       ) : (
-        <ChevronDown className="w-4 h-4" />
+        <ChevronDown className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 ml-2" />
       )}
     </button>
     <AnimatePresence>
@@ -38,7 +38,7 @@ const AccordionSection: React.FC<AccordionSectionProps> = ({
           transition={{ duration: 0.3 }}
           className="overflow-hidden"
         >
-          <div className="pb-6 text-sm text-muted leading-relaxed">
+          <div className="pb-4 sm:pb-6 text-xs sm:text-sm text-muted leading-relaxed">
             {children}
           </div>
         </motion.div>
