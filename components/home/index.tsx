@@ -8,13 +8,13 @@ import { BespokeCTA } from "./BespokeCTA";
 
 export const Home: React.FC = () => {
   return (
-    <div className="pb-24">
+    <>
       <HeroSection />
       <FeaturedCollections />
       <BentoGrid />
       <BrandStory />
       <FeaturedProducts />
       <BespokeCTA />
-    </div>
+    </>
   );
 };

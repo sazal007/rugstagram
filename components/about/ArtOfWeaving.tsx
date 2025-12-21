@@ -29,57 +29,57 @@ const steps: WeavingStep[] = [
   {
     title: "Wool Sorting & Washing",
     desc: "We import finest Wool from New Zealand and Tibet in a raw, natural state (4-6 inches mean fiber length). Wool is thoroughly washed to remove fat and wax, then sun-dried.",
-    img: "https://images.unsplash.com/photo-1484101403633-562f891dc89a?auto=format&fit=crop&q=80&w=600",
+    img: "/images/weaving/wool-sorting.avif",
   },
   {
     title: "Carding",
     desc: "Previously done by hand, now machine carding is used due to high demand, separating fibers as per various thickness requirements.",
-    img: "https://images.unsplash.com/photo-1605218427368-35b86ddf4171?auto=format&fit=crop&q=80&w=600",
+    img: "/images/weaving/carding.avif",
   },
   {
     title: "Spinning",
     desc: "The carded wool is hand-spun into yarn by using a traditional spinning tool referred to as 'Chakra'. This creates the unique texture of handmade rugs.",
-    img: "https://images.unsplash.com/photo-1599692482352-78aa0e7d5b12?auto=format&fit=crop&q=80&w=600",
+    img: "/images/weaving/spinning.avif",
   },
   {
     title: "Pot Dyeing",
     desc: "Small-batch machine dyeing allows for consistent color from various shades. The dyed yarn is sun-dried for 1-3 days.",
-    img: "https://images.unsplash.com/photo-1596238638367-9c606540c436?auto=format&fit=crop&q=80&w=600",
+    img: "/images/weaving/dyeing.avif",
   },
   {
     title: "Graph Creation",
     desc: "In-house designers translate artistic visions into a pixel-perfect traceable graph for weavers to follow knot-by-knot.",
-    img: "https://images.unsplash.com/photo-1544259695-1f9e29a96328?auto=format&fit=crop&q=80&w=600",
+    img: "/images/weaving/graph.avif",
   },
   {
     title: "Hand Knotting",
     desc: "A double knotting system ensures firmness. Weavers work in teams, tying individual knots row by row (60 to 100 knots per inch).",
-    img: "https://images.unsplash.com/photo-1606820063228-44d5c4b12285?auto=format&fit=crop&q=80&w=600",
+    img: "/images/weaving/weaving.avif",
   },
   {
     title: "Trimming",
     desc: "Initial inspection and pre-trimming are done evenly to make the pattern and design visible immediately after leaving the loom.",
-    img: "https://images.unsplash.com/photo-1620613904351-5062c3f87b89?auto=format&fit=crop&q=80&w=600",
+    img: "/images/weaving/trimming.avif",
   },
   {
     title: "Washing",
     desc: "Carpets are washed in filtered water using eco-friendly detergents and rinsed back and forth to bring out the sheen.",
-    img: "https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&q=80&w=600",
+    img: "/images/weaving/wash-drying.avif",
   },
   {
     title: "Stretching",
     desc: "Stretching is done on metal frames to ensure exact dimensions. Eco-friendly latex is applied to the back for stability.",
-    img: "https://images.unsplash.com/photo-1615529182904-14819c35db37?auto=format&fit=crop&q=80&w=600",
+    img: "/images/weaving/stretching.avif",
   },
   {
     title: "Finishing",
     desc: "Final re-trimming (shearing) to make the pile height even, followed by careful polishing and removal of loose threads.",
-    img: "https://images.unsplash.com/photo-1600166898405-da9535204843?auto=format&fit=crop&q=80&w=600",
+    img: "/images/weaving/Trimming-and-Finishing.avif",
   },
   {
     title: "Packing & Shipping",
     desc: "Environment-friendly packing materials are used before the rug is shipped directly to the buyer's destination.",
-    img: "https://images.unsplash.com/photo-1574966739943-9e812b4c1a53?auto=format&fit=crop&q=80&w=600",
+    img: "/images/weaving/pakaging.avif",
   },
 ];
 
@@ -138,4 +138,3 @@ export const ArtOfWeaving: React.FC = () => {
     </div>
   );
 };
-

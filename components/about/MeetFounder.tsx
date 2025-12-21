@@ -24,14 +24,14 @@ export const MeetFounder: React.FC = () => {
         >
           {/* Founder Image */}
           <div className="lg:col-span-5 relative">
-            <div className="aspect-[4/5] bg-gray-200 rounded-sm overflow-hidden relative shadow-2xl">
+            <div className="aspect-4/5 bg-gray-200 rounded-sm overflow-hidden relative shadow-2xl">
               {/* Using a placeholder that looks like a business portrait */}
               <img
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800"
+                src="/images/DAD-1.avif"
                 alt="Shambhu Bikram Thapa"
                 className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
               />
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 text-white">
+              <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/80 to-transparent p-6 text-white">
                 <h2 className="text-2xl font-serif">Shambhu Bikram Thapa</h2>
                 <span className="text-xs uppercase tracking-widest opacity-80">
                   Managing Director
@@ -71,7 +71,7 @@ export const MeetFounder: React.FC = () => {
             </h1>
 
             <div className="space-y-6 text-lg text-gray-600 font-light leading-relaxed font-serif">
-              <p>"Namaste and Welcome to Rugstagram."</p>
+              <p>&quot;Namaste and Welcome to Rugstagram.&quot;</p>
               <p>
                 Rugstagram is an online initiative of Rolpa Carpet Industry. It
                 was 1989 when Rolpa Carpet Industry started in Bouddha,
@@ -117,4 +117,3 @@ export const MeetFounder: React.FC = () => {
     </div>
   );
 };
-

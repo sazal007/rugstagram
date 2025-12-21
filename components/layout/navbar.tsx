@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X, Search, User, ShoppingBag } from "lucide-react";
 import {
@@ -54,9 +55,16 @@ export function Navbar() {
           {/* Logo */}
           <Link
             href="/"
-            className="text-lg sm:text-xl md:text-2xl font-serif font-medium tracking-tight"
+            className="relative h-10 sm:h-12 md:h-14 w-auto flex items-center"
           >
-            HIMALAYAN KNOTS
+            <Image
+              src="/logo/Rugstagram-logo.avif"
+              alt="Rugstagram Logo"
+              width={190}
+              height={50}
+              className="h-full w-auto object-contain"
+              priority
+            />
           </Link>
 
           {/* Desktop Nav */}

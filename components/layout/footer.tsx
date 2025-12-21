@@ -1,12 +1,25 @@
 import Link from "next/link";
 import { Instagram, Facebook, Mail } from "lucide-react";
+import Image from "next/image";
 
 export function Footer() {
   return (
     <footer className="bg-[#1a1a1a] text-white pt-20 pb-10">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
         <div className="space-y-6">
-          <h3 className="text-2xl font-serif">HIMALAYAN KNOTS</h3>
+          <Link
+            href="/"
+            className="relative h-16 sm:h-20 md:h-24 w-auto flex items-center"
+          >
+            <Image
+              src="/logo/Rugstagram-logo.avif"
+              alt="Rugstagram Logo"
+              width={250}
+              height={70}
+              className="h-full w-auto object-contain brightness-0 invert"
+              priority
+            />
+          </Link>
           <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
             Preserving the ancient art of Tibetan weaving through modern,
             ethical craftsmanship. Hand-knotted in Nepal, shipped globally.
@@ -34,7 +47,7 @@ export function Footer() {
               </Link>
             </li>
             <li>
-                <Link href="/bespoke" className="hover:text-white">
+              <Link href="/bespoke" className="hover:text-white">
                 Bespoke Services
               </Link>
             </li>
