@@ -37,7 +37,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
   );
 
   return (
-    <div className="flex-grow">
+    <div className="grow">
       {/* Desktop Sort/Count */}
       <div className="hidden lg:flex justify-between items-center mb-8 pb-4 border-b border-gray-100">
         <span className="text-sm text-muted">{products.length} results</span>
@@ -64,4 +64,3 @@ export const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
     </div>
   );
 };
-

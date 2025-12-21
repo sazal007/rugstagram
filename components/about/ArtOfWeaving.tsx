@@ -118,7 +118,7 @@ export const ArtOfWeaving: React.FC = () => {
             variants={fadeInUp}
             className="group cursor-default"
           >
-            <div className="aspect-[4/3] bg-gray-100 rounded-sm overflow-hidden mb-6 relative">
+            <div className="aspect-4/3 bg-gray-100 rounded-sm overflow-hidden mb-6 relative">
               <img
                 src={step.img}
                 alt={step.title}
