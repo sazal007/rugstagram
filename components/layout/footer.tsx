@@ -34,7 +34,7 @@ export function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/custom-rugs" className="hover:text-white">
+                <Link href="/bespoke" className="hover:text-white">
                 Bespoke Services
               </Link>
             </li>

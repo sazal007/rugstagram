@@ -2,20 +2,23 @@
 
 import React from "react";
 import Link from "next/link";
-import { motion } from "motion/react";
+import { motion, Variants } from "motion/react";
 import { ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const fadeInUp = {
+const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 60 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+    transition: {
+      duration: 0.8,
+      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+    },
   },
 };
 
-const staggerContainer = {
+const staggerContainer: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -38,9 +41,7 @@ export const BentoGrid: React.FC = () => {
         <span className="text-accent text-xs font-bold uppercase tracking-widest">
           Trending
         </span>
-        <h2 className="text-3xl md:text-4xl font-serif mt-2">
-          Curated Spaces
-        </h2>
+        <h2 className="text-3xl md:text-4xl font-serif mt-2">Curated Spaces</h2>
       </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-6 h-auto md:h-[600px]">
@@ -52,9 +53,11 @@ export const BentoGrid: React.FC = () => {
           <img
             src="https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?auto=format&fit=crop&q=80&w=1200"
             alt="Living Room"
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            width={1200}
+            height={1200}
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
           <div className="absolute bottom-6 left-6 text-white">
             <h3 className="text-2xl font-serif">The Modern Living Room</h3>
             <Link
@@ -74,7 +77,9 @@ export const BentoGrid: React.FC = () => {
           <img
             src="https://images.unsplash.com/photo-1596238638367-9c606540c436?auto=format&fit=crop&q=80&w=800"
             alt="Detail"
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            width={800}
+            height={800}
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors" />
           <div className="absolute bottom-6 left-6 text-white">
@@ -94,7 +99,7 @@ export const BentoGrid: React.FC = () => {
             <p className="text-muted text-sm mb-4">
               Create something uniquely yours.
             </p>
-            <Button href="/custom-rugs" variant="outline-primary" size="compact">
+            <Button href="/bespoke" variant="outline-primary" size="compact">
               Start Now
             </Button>
           </div>
@@ -103,4 +108,3 @@ export const BentoGrid: React.FC = () => {
     </motion.section>
   );
 };
-

@@ -99,11 +99,11 @@ export const NAV_ITEMS: NavItem[] = [
   },
   {
     label: "Bespoke",
-    href: "/custom-rugs",
+    href: "/bespoke",
     children: [
-      { label: "Overview", href: "/custom-rugs" },
-      { label: "Customize Existing", href: "/custom-rugs/customize" },
-      { label: "Design Your Own", href: "/custom-rugs/bespoke" },
+      { label: "Overview", href: "/bespoke" },
+      { label: "Customize Existing", href: "/bespoke/customize" },
+      { label: "Design Your Own", href: "/bespoke/design" },
     ],
   },
   {

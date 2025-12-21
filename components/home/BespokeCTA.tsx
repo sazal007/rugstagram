@@ -49,7 +49,7 @@ export const BespokeCTA: React.FC = () => {
           Create a truly unique masterpiece. Customize existing designs or
           commission a completely new work of art tailored to your space.
         </p>
-        <Button href="/custom-rugs" variant="sand" size="hero-lg">
+        <Button href="/bespoke" variant="sand" size="hero-lg">
           Start Custom Project
         </Button>
       </motion.div>

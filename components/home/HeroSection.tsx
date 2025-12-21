@@ -72,7 +72,7 @@ export const HeroSection: React.FC = () => {
           <Button href="/shop" variant="hero-primary" size="hero">
             Shop Collection
           </Button>
-          <Button href="/custom-rugs" variant="hero-outline" size="hero">
+          <Button href="/bespoke" variant="hero-outline" size="hero">
             Bespoke Rugs
           </Button>
         </motion.div>
