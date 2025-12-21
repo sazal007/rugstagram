@@ -1,0 +1,192 @@
+"use client";
+
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from "react";
+import { Product } from "@/types";
+
+export interface CartItem {
+  id: string;
+  productId: string;
+  name: string;
+  variant: string; // e.g., "170x240 • Wool"
+  price: number;
+  originalPrice?: number;
+  quantity: number;
+  image: string;
+  size: string;
+}
+
+interface CartContextType {
+  cartItems: CartItem[];
+  addToCart: (product: Product, size: string, quantity: number) => void;
+  removeFromCart: (id: string) => void;
+  updateQuantity: (id: string, quantity: number) => void;
+  clearCart: () => void;
+  totalItems: number;
+  subtotal: number;
+}
+
+const CartContext = createContext<CartContextType | undefined>(undefined);
+
+export function CartProvider({ children }: { children: React.ReactNode }) {
+  // Initialize state from localStorage using lazy initialization
+  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+    if (typeof window === "undefined") {
+      return [];
+    }
+    const savedCart = localStorage.getItem("cart");
+    if (savedCart) {
+      try {
+        return JSON.parse(savedCart);
+      } catch (error) {
+        console.error("Failed to load cart from localStorage", error);
+        return [];
+      }
+    }
+    return [];
+  });
+
+  // Debounce localStorage writes to avoid blocking
+  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Save cart to localStorage with debouncing
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    // Clear existing timeout
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+
+    // Set new timeout to save after 300ms of no changes
+    saveTimeoutRef.current = setTimeout(() => {
+      try {
+        localStorage.setItem("cart", JSON.stringify(cartItems));
+      } catch (error) {
+        console.error("Failed to save cart to localStorage", error);
+      }
+    }, 300);
+
+    // Cleanup timeout on unmount
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+    };
+  }, [cartItems]);
+
+  // Memoize computed values to avoid recalculation
+  const totalItems = useMemo(() => {
+    return cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  }, [cartItems]);
+
+  const subtotal = useMemo(() => {
+    return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  }, [cartItems]);
+
+  const addToCart = useCallback(
+    (product: Product, size: string, quantity: number) => {
+      setCartItems((prevItems) => {
+        // Create a unique ID for this cart item (productId + size)
+        const cartItemId = `${product.id}-${size}`;
+
+        // Check if this exact product+size combination already exists
+        const existingItemIndex = prevItems.findIndex(
+          (item) => item.id === cartItemId
+        );
+
+        if (existingItemIndex >= 0) {
+          // Update quantity if item already exists - use more efficient approach
+          const newItems = [...prevItems];
+          newItems[existingItemIndex] = {
+            ...newItems[existingItemIndex],
+            quantity: newItems[existingItemIndex].quantity + quantity,
+          };
+          return newItems;
+        } else {
+          // Add new item
+          const materials = product.materials.join(", ");
+          const variant = `${size} • ${materials}`;
+
+          const newItem: CartItem = {
+            id: cartItemId,
+            productId: product.id,
+            name: product.name,
+            variant,
+            price: product.salePrice || product.price,
+            originalPrice: product.salePrice ? product.price : undefined,
+            quantity,
+            image: product.image,
+            size,
+          };
+
+          return [...prevItems, newItem];
+        }
+      });
+    },
+    []
+  );
+
+  const removeFromCart = useCallback((id: string) => {
+    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  }, []);
+
+  const updateQuantity = useCallback(
+    (id: string, quantity: number) => {
+      if (quantity <= 0) {
+        removeFromCart(id);
+        return;
+      }
+
+      setCartItems((prevItems) =>
+        prevItems.map((item) => (item.id === id ? { ...item, quantity } : item))
+      );
+    },
+    [removeFromCart]
+  );
+
+  const clearCart = useCallback(() => {
+    setCartItems([]);
+  }, []);
+
+  // Memoize context value to prevent unnecessary re-renders
+  const contextValue = useMemo(
+    () => ({
+      cartItems,
+      addToCart,
+      removeFromCart,
+      updateQuantity,
+      clearCart,
+      totalItems,
+      subtotal,
+    }),
+    [
+      cartItems,
+      addToCart,
+      removeFromCart,
+      updateQuantity,
+      clearCart,
+      totalItems,
+      subtotal,
+    ]
+  );
+
+  return (
+    <CartContext.Provider value={contextValue}>{children}</CartContext.Provider>
+  );
+}
+
+export function useCart() {
+  const context = useContext(CartContext);
+  if (context === undefined) {
+    throw new Error("useCart must be used within a CartProvider");
+  }
+  return context;
+}

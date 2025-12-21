@@ -29,10 +29,6 @@ function ProductDetailContent({ product }: ProductDetailProps) {
     window.scrollTo(0, 0);
   }, [product.id]);
 
-  const handleAddToBag = () => {
-    alert(`Added ${quantity} ${product.name} (${selectedSize}) to cart!`);
-  };
-
   return (
     <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-6 sm:py-8 md:py-12">
       <Breadcrumb product={product} />
@@ -47,7 +43,7 @@ function ProductDetailContent({ product }: ProductDetailProps) {
             onSizeChange={setSelectedSize}
             onQuantityChange={setQuantity}
           />
-          <ProductCTAs onAddToBag={handleAddToBag} />
+          <ProductCTAs product={product} selectedSize={selectedSize} quantity={quantity} />
           <ProductAccordion />
         </div>
       </div>

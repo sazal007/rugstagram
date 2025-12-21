@@ -3,16 +3,30 @@
 import React from "react";
 import { ShoppingBag, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/context/CartContext";
+import { Product } from "@/types";
 
 interface ProductCTAsProps {
-  onAddToBag: () => void;
+  product: Product;
+  selectedSize: string;
+  quantity: number;
 }
 
-export const ProductCTAs: React.FC<ProductCTAsProps> = ({ onAddToBag }) => {
+export const ProductCTAs: React.FC<ProductCTAsProps> = ({ product, selectedSize, quantity }) => {
+  const { addToCart } = useCart();
+
+  const handleAddToBag = () => {
+    if (!selectedSize) {
+      alert("Please select a size");
+      return;
+    }
+    addToCart(product, selectedSize, quantity);
+  };
+
   return (
     <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8 sm:mb-12">
       <Button
-        onClick={onAddToBag}
+        onClick={handleAddToBag}
         variant="default"
         size="hero"
         className="flex-1 uppercase tracking-widest text-[10px] sm:text-xs font-bold shadow-lg shadow-accent/20 bg-accent hover:bg-primary py-3 sm:py-4"

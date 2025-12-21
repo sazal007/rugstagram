@@ -14,11 +14,13 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { NAV_ITEMS } from "@/constants";
+import { useCart } from "@/context/CartContext";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const isHome = pathname === "/";
+  const { totalItems: cartItemCount } = useCart();
 
   const isActive = (href: string) => {
     if (href === "/") {
@@ -149,13 +151,18 @@ export function Navbar() {
             >
               <User className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]" />
             </button>
-            <button
+            <Link
+              href="/cart"
               className="p-2 hover:text-accent transition-colors duration-200 relative"
               aria-label="Shopping bag"
             >
               <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]" />
-              <span className="absolute top-1 right-0 w-2 h-2 bg-accent rounded-full"></span>
-            </button>
+              {cartItemCount > 0 && (
+                <span className="absolute top-0 right-0 w-4 h-4 sm:w-5 sm:h-5 bg-accent text-white rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold">
+                  {cartItemCount > 99 ? "99+" : cartItemCount}
+                </span>
+              )}
+            </Link>
           </div>
         </div>
       </header>
