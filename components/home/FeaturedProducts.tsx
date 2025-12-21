@@ -10,7 +10,7 @@ const fadeInUp = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as const },
   },
 };
 
@@ -34,9 +34,7 @@ export const FeaturedProducts: React.FC = () => {
       className="max-w-7xl mx-auto px-6 py-24"
     >
       <motion.div variants={fadeInUp} className="text-center mb-16">
-        <h2 className="text-3xl md:text-4xl font-serif mb-4">
-          New Arrivals
-        </h2>
+        <h2 className="text-3xl md:text-4xl font-serif mb-4">New Arrivals</h2>
         <p className="text-muted">Fresh from the loom, ready for your home.</p>
       </motion.div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -49,4 +47,3 @@ export const FeaturedProducts: React.FC = () => {
     </motion.section>
   );
 };
-

@@ -10,7 +10,7 @@ const fadeInUp = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as const },
   },
 };
 
@@ -43,9 +43,7 @@ export const FeaturedCollections: React.FC = () => {
         variants={fadeInUp}
         className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-12 gap-4"
       >
-        <h2 className="text-3xl md:text-4xl font-serif">
-          Curated Collections
-        </h2>
+        <h2 className="text-3xl md:text-4xl font-serif">Curated Collections</h2>
         <Link
           href="/shop"
           className="text-sm uppercase tracking-widest border-b border-primary pb-1 hover:text-accent hover:border-accent transition-colors"
@@ -55,11 +53,11 @@ export const FeaturedCollections: React.FC = () => {
       </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {collections.map((collection, idx) => (
+        {collections.map((collection) => (
           <motion.div key={collection.name} variants={fadeInUp}>
             <Link
               href={`/collections/${collection.name}`}
-              className="group relative aspect-[4/5] block overflow-hidden rounded-sm"
+              className="group relative aspect-4/5 block overflow-hidden rounded-sm"
             >
               <img
                 src={`https://picsum.photos/600/800?random=${collection.imageIndex}`}
@@ -82,4 +80,3 @@ export const FeaturedCollections: React.FC = () => {
     </motion.section>
   );
 };
-

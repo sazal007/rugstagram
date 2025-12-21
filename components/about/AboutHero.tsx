@@ -9,7 +9,7 @@ export const AboutHero: React.FC = () => {
         initial={{ scale: 1.1, opacity: 0 }}
         animate={{ scale: 1, opacity: 0.4 }}
         transition={{ duration: 1.5 }}
-        src="https://images.unsplash.com/photo-1620613904351-5062c3f87b89?auto=format&fit=crop&q=80&w=2000"
+        src="/images/about-banner.jpeg"
         alt="Loom Background"
         className="absolute inset-0 w-full h-full object-cover grayscale"
       />
@@ -26,4 +26,3 @@ export const AboutHero: React.FC = () => {
     </div>
   );
 };
-

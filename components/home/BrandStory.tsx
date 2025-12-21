@@ -16,7 +16,7 @@ const fadeInUp = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as const },
   },
 };
 
@@ -49,8 +49,8 @@ export const BrandStory: React.FC = () => {
           <div className="space-y-4 text-muted leading-relaxed">
             <p>
               Rugstagram (rugstagram.com) is the online initiative of Rolpa
-              Carpet Industries located in Bouddha, Nepal. We are able to take
-              a pride in the joy of manufacturing and exporting Nepalese hand
+              Carpet Industries located in Bouddha, Nepal. We are able to take a
+              pride in the joy of manufacturing and exporting Nepalese hand
               knotted rugs from the past 30 years.
             </p>
             <p>
@@ -61,7 +61,12 @@ export const BrandStory: React.FC = () => {
               knotted rugs in the world.
             </p>
           </div>
-          <Button href="/assistance" variant="default" size="hero-sm" className="mt-6">
+          <Button
+            href="/assistance"
+            variant="default"
+            size="hero-sm"
+            className="mt-6"
+          >
             Get in Touch
           </Button>
         </div>
@@ -80,10 +85,9 @@ export const BrandStory: React.FC = () => {
               alt="Weaving Process"
             />
           </AnimatePresence>
-          <div className="absolute inset-0 border-[12px] border-white/10 pointer-events-none" />
+          <div className="absolute inset-0 border-12px border-white/10 pointer-events-none" />
         </div>
       </div>
     </motion.section>
   );
 };
-
