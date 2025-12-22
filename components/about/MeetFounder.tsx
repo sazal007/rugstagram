@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, Variants } from "motion/react";
-import { Twitter, Linkedin, Mail } from "lucide-react";
+// import { Twitter, Linkedin, Mail } from "lucide-react";
 
 const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -39,7 +39,7 @@ export const MeetFounder: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex gap-4 mt-6 justify-center lg:justify-start">
+            {/* <div className="flex gap-4 mt-6 justify-center lg:justify-start">
               <a
                 href="#"
                 className="p-3 bg-gray-100 rounded-full hover:bg-primary hover:text-white transition-colors"
@@ -58,7 +58,7 @@ export const MeetFounder: React.FC = () => {
               >
                 <Mail className="w-5 h-5" />
               </a>
-            </div>
+            </div> */}
           </div>
 
           {/* Letter */}
