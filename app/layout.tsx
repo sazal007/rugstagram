@@ -3,7 +3,7 @@ import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { Providers } from "@/components/providers";
+import { CartProvider } from "@/context/CartContext";
 
 const cormorantGaramond = Cormorant_Garamond({
   variable: "--font-serif",
@@ -33,11 +33,11 @@ export default function RootLayout({
       <body
         className={`${cormorantGaramond.variable} ${inter.variable} antialiased`}
       >
-        <Providers>
+        <CartProvider>
           <Navbar />
           {children}
           <Footer />
-        </Providers>
+        </CartProvider>
       </body>
     </html>
   );
