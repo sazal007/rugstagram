@@ -127,6 +127,8 @@ export const NAV_ITEMS: NavItem[] = [
     children: [
       { label: "Contact Us", href: "/assistance" },
       { label: "Partnership", href: "/assistance/partnership" },
+      { label: "Shipping", href: "/assistance/shipping" },
+      { label: "Payment", href: "/assistance/payment" },
     ],
   },
 ];
