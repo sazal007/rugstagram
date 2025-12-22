@@ -1,9 +1,17 @@
 "use client";
 
+import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { CustomButton } from "@/components/ui/custom-button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Minus,
   Plus,
@@ -12,12 +20,13 @@ import {
   Shield,
   Truck,
   CreditCard,
-  ChevronDown,
 } from "lucide-react";
 import Image from "next/image";
 
 export function CartPageClient() {
   const { cartItems, updateQuantity, removeFromCart, subtotal } = useCart();
+  const [shippingMethod, setShippingMethod] = useState("standard");
+  const [promoCode, setPromoCode] = useState("");
 
   const handleUpdateQuantity = (id: string, delta: number) => {
     const item = cartItems.find((item) => item.id === id);
@@ -30,7 +39,15 @@ export function CartPageClient() {
     removeFromCart(id);
   };
 
-  const shipping = 5.99;
+  const shippingOptions = {
+    standard: { label: "Standard Shipping", days: "3-5 days", price: 5.99 },
+    express: { label: "Express Shipping", days: "1-2 days", price: 12.99 },
+    overnight: { label: "Overnight Shipping", days: "Next day", price: 24.99 },
+  };
+
+  const selectedShipping =
+    shippingOptions[shippingMethod as keyof typeof shippingOptions];
+  const shipping = selectedShipping.price;
   const total = subtotal + shipping;
 
   return (
@@ -163,18 +180,52 @@ export function CartPageClient() {
                 <h3 className="font-semibold text-sm uppercase tracking-wider mb-3 text-foreground">
                   Shipping Method
                 </h3>
-                <CustomButton variant="outline" className="flex w-full items-center justify-between rounded-sm border border-gray-200 bg-card p-4 text-left transition-colors hover:bg-accent/5 hover:border-accent">
-                  <div>
-                    <div className="font-semibold text-sm text-foreground">
-                      Standard Shipping
-                    </div>
-                    <div className="text-sm text-foreground/70">3-5 days</div>
-                    <div className="mt-1 font-semibold text-sm text-foreground">
-                      ${shipping.toFixed(2)}
-                    </div>
+                <div className="space-y-2">
+                  <div className="font-semibold text-sm text-foreground">
+                    {selectedShipping.label}
                   </div>
-                  <ChevronDown className="h-5 w-5 text-foreground/70" />
-                </CustomButton>
+                  <Select
+                    value={shippingMethod}
+                    onValueChange={setShippingMethod}
+                  >
+                    <SelectTrigger className="w-full h-auto py-3 px-4 rounded-sm border-gray-200 bg-white text-sm text-foreground/70">
+                      <SelectValue placeholder={selectedShipping.days}>
+                        {selectedShipping.days}
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="standard">
+                        <div className="flex flex-col items-start">
+                          <span className="font-medium">Standard Shipping</span>
+                          <span className="text-xs text-muted-foreground">
+                            3-5 days
+                          </span>
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="express">
+                        <div className="flex flex-col items-start">
+                          <span className="font-medium">Express Shipping</span>
+                          <span className="text-xs text-muted-foreground">
+                            1-2 days
+                          </span>
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="overnight">
+                        <div className="flex flex-col items-start">
+                          <span className="font-medium">
+                            Overnight Shipping
+                          </span>
+                          <span className="text-xs text-muted-foreground">
+                            Next day
+                          </span>
+                        </div>
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <div className="font-semibold text-sm text-foreground">
+                    ${shipping.toFixed(2)}
+                  </div>
+                </div>
               </div>
 
               {/* Promo Code */}
@@ -183,10 +234,15 @@ export function CartPageClient() {
                   Promo Code
                 </h3>
                 <div className="flex gap-2">
-                  <Input placeholder="Enter promo code" className="flex-1" />
+                  <Input
+                    placeholder="Enter promo code"
+                    className="flex-1 rounded-sm border-gray-200"
+                    value={promoCode}
+                    onChange={(e) => setPromoCode(e.target.value)}
+                  />
                   <CustomButton
                     variant="outline"
-                    className="px-6 bg-transparent"
+                    className="px-6 bg-transparent rounded-sm border-gray-200 hover:bg-accent/5"
                   >
                     Apply
                   </CustomButton>
@@ -253,4 +309,3 @@ export function CartPageClient() {
     </div>
   );
 }
-
