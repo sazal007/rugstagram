@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Button } from "@/components/ui/button";
+import { CustomButton } from "@/components/ui/custom-button";
 
 const STORY_IMAGES = [
   "https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&q=80&w=800",
@@ -61,14 +61,14 @@ export const BrandStory: React.FC = () => {
               knotted rugs in the world.
             </p>
           </div>
-          <Button
+          <CustomButton
             href="/assistance"
             variant="default"
             size="hero-sm"
             className="mt-6"
           >
             Get in Touch
-          </Button>
+          </CustomButton>
         </div>
 
         {/* Story Carousel */}

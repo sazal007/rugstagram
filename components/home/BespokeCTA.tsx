@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { motion, Variants } from "motion/react";
-import { Button } from "@/components/ui/button";
+import { CustomButton } from "@/components/ui/custom-button";
 
 const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 60 },
@@ -49,9 +49,9 @@ export const BespokeCTA: React.FC = () => {
           Create a truly unique masterpiece. Customize existing designs or
           commission a completely new work of art tailored to your space.
         </p>
-        <Button href="/bespoke" variant="sand" size="hero-lg">
+        <CustomButton href="/bespoke" variant="sand" size="hero-lg">
           Start Custom Project
-        </Button>
+        </CustomButton>
       </motion.div>
     </section>
   );

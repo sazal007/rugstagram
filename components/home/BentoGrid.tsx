@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { motion, Variants } from "motion/react";
 import { ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { CustomButton } from "@/components/ui/custom-button";
 
 const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 60 },
@@ -99,9 +99,9 @@ export const BentoGrid: React.FC = () => {
             <p className="text-muted text-sm mb-4">
               Create something uniquely yours.
             </p>
-            <Button href="/bespoke" variant="outline-primary" size="compact">
+            <CustomButton href="/bespoke" variant="outline-primary" size="compact">
               Start Now
-            </Button>
+            </CustomButton>
           </div>
         </motion.div>
       </div>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { CustomButton } from "../ui/custom-button";
 
 interface FAQItemProps {
   question: string;
@@ -19,7 +20,8 @@ export const FAQItem: React.FC<FAQItemProps> = ({
 }) => {
   return (
     <div className="border border-gray-100 rounded-lg overflow-hidden">
-      <button
+      <CustomButton
+        variant="ghost"
         className="w-full flex justify-between items-center p-6 text-left hover:bg-gray-50 transition-colors"
         onClick={onToggle}
       >
@@ -29,7 +31,7 @@ export const FAQItem: React.FC<FAQItemProps> = ({
         ) : (
           <ChevronDown className="w-4 h-4 text-muted" />
         )}
-      </button>
+      </CustomButton>
       <AnimatePresence>
         {isOpen && (
           <motion.div

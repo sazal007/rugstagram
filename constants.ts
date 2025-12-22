@@ -121,5 +121,12 @@ export const NAV_ITEMS: NavItem[] = [
       { label: "Art of Weaving", href: "/about/weaving" },
     ],
   },
-  { label: "Assistance", href: "/assistance" },
+  {
+    label: "Assistance",
+    href: "/assistance",
+    children: [
+      { label: "Contact Us", href: "/assistance" },
+      { label: "Partnership", href: "/assistance/partnership" },
+    ],
+  },
 ];

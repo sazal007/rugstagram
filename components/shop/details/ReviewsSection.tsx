@@ -4,7 +4,7 @@ import React from "react";
 import { motion } from "motion/react";
 import { Star, ThumbsUp, ThumbsDown, Edit3 } from "lucide-react";
 import { StarRating } from "./StarRating";
-import { Button } from "@/components/ui/button";
+import { CustomButton } from "@/components/ui/custom-button";
 
 const REVIEWS = [
   {
@@ -64,7 +64,9 @@ export const ReviewsSection: React.FC = () => {
             <div>
               <h2 className="text-2xl sm:text-3xl font-serif mb-2">Reviews</h2>
               <div className="flex items-center gap-3 sm:gap-4 mb-2">
-                <span className="text-4xl sm:text-5xl md:text-6xl font-serif text-primary">4.8</span>
+                <span className="text-4xl sm:text-5xl md:text-6xl font-serif text-primary">
+                  4.8
+                </span>
                 <div className="space-y-1">
                   <StarRating rating={5} size="md" />
                   <p className="text-xs sm:text-sm text-muted">24 reviews</p>
@@ -100,13 +102,13 @@ export const ReviewsSection: React.FC = () => {
               ))}
             </div>
 
-            <Button
+            <CustomButton
               variant="default"
               size="default"
               className="w-full flex items-center justify-center gap-2 py-2 sm:py-3 text-xs sm:text-sm"
             >
               <Edit3 className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> Write a review
-            </Button>
+            </CustomButton>
           </div>
 
           {/* Review List Column */}
@@ -139,7 +141,9 @@ export const ReviewsSection: React.FC = () => {
                   <StarRating rating={review.rating} />
                 </div>
 
-                <h5 className="font-bold text-sm sm:text-base mb-1.5 sm:mb-2">{review.title}</h5>
+                <h5 className="font-bold text-sm sm:text-base mb-1.5 sm:mb-2">
+                  {review.title}
+                </h5>
                 <p className="text-gray-600 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6">
                   {review.text}
                 </p>
@@ -148,33 +152,34 @@ export const ReviewsSection: React.FC = () => {
                   <span className="font-medium text-[10px] sm:text-xs uppercase tracking-wide">
                     Was this review helpful?
                   </span>
-                  <button className="flex items-center gap-1 hover:text-primary transition-colors">
-                    <ThumbsUp className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> Yes ({review.helpful})
-                  </button>
-                  <button className="flex items-center gap-1 hover:text-primary transition-colors">
+                  <CustomButton variant="ghost" size="sm" className="flex items-center gap-1 hover:text-primary transition-colors">
+                    <ThumbsUp className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> Yes (
+                    {review.helpful})
+                  </CustomButton>
+                  <CustomButton variant="ghost" size="sm" className="flex items-center gap-1 hover:text-primary transition-colors">
                     <ThumbsDown className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> No
-                  </button>
+                  </CustomButton>
                 </div>
               </div>
             ))}
 
             {/* Pagination Mock */}
             <div className="flex justify-center gap-1.5 sm:gap-2 pt-4">
-              <button className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-gray-200 flex items-center justify-center text-primary font-bold hover:bg-gray-50 text-xs sm:text-sm">
+              <CustomButton variant="outline" size="icon-sm" className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-gray-200 text-primary font-bold hover:bg-gray-50 text-xs sm:text-sm">
                 1
-              </button>
-              <button className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-transparent flex items-center justify-center text-muted hover:bg-gray-50 text-xs sm:text-sm">
+              </CustomButton>
+              <CustomButton variant="ghost" size="icon-sm" className="w-8 h-8 sm:w-10 sm:h-10 rounded-full text-muted hover:bg-gray-50 text-xs sm:text-sm">
                 2
-              </button>
-              <button className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-transparent flex items-center justify-center text-muted hover:bg-gray-50 text-xs sm:text-sm">
+              </CustomButton>
+              <CustomButton variant="ghost" size="icon-sm" className="w-8 h-8 sm:w-10 sm:h-10 rounded-full text-muted hover:bg-gray-50 text-xs sm:text-sm">
                 3
-              </button>
+              </CustomButton>
               <span className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-muted text-xs sm:text-sm">
                 ...
               </span>
-              <button className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-transparent flex items-center justify-center text-muted hover:bg-gray-50 text-xs sm:text-sm">
+              <CustomButton variant="ghost" size="icon-sm" className="w-8 h-8 sm:w-10 sm:h-10 rounded-full text-muted hover:bg-gray-50 text-xs sm:text-sm">
                 8
-              </button>
+              </CustomButton>
             </div>
           </div>
         </div>
@@ -182,4 +187,3 @@ export const ReviewsSection: React.FC = () => {
     </motion.section>
   );
 };
-

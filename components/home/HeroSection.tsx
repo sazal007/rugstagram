@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Button } from "@/components/ui/button";
+import { CustomButton } from "@/components/ui/custom-button";
 
 const HERO_IMAGES = [
   "https://images.unsplash.com/photo-1600166898405-da9535204843?auto=format&fit=crop&q=80&w=2000",
@@ -69,12 +69,12 @@ export const HeroSection: React.FC = () => {
           transition={{ delay: 1.1, duration: 0.8 }}
           className="flex flex-col sm:flex-row gap-4 justify-center pt-8"
         >
-          <Button href="/shop" variant="hero-primary" size="hero">
+          <CustomButton href="/shop" variant="hero-primary" size="hero">
             Shop Collection
-          </Button>
-          <Button href="/bespoke" variant="hero-outline" size="hero">
+          </CustomButton>
+          <CustomButton href="/bespoke" variant="hero-outline" size="hero">
             Bespoke Rugs
-          </Button>
+          </CustomButton>
         </motion.div>
       </div>
     </section>

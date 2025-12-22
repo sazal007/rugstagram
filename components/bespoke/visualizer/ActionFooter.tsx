@@ -1,9 +1,10 @@
 "use client";
 
 import { AlertCircle, RefreshCw, Wand2, Sofa } from "lucide-react";
+import { CustomButton } from "@/components/ui/custom-button";
 
 interface ActionFooterProps {
-  mode: 'design' | 'room';
+  mode: "design" | "room";
   isLoading: boolean;
   error: string | null;
   onGenerateRug: () => void;
@@ -26,48 +27,51 @@ export const ActionFooter: React.FC<ActionFooterProps> = ({
         </div>
       )}
 
-      {mode === 'design' ? (
-        <button
+      {mode === "design" ? (
+        <CustomButton
           onClick={onGenerateRug}
           disabled={isLoading}
+          variant="default"
+          size="hero"
           className={`w-full py-4 text-sm uppercase font-bold tracking-widest flex items-center justify-center gap-2 transition-all rounded-lg ${
-            isLoading 
-              ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
-              : 'bg-primary text-white hover:bg-accent shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'
+            isLoading
+              ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+              : "bg-primary text-white hover:bg-accent shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
           }`}
         >
           {isLoading ? (
             <>
-              <RefreshCw className="w-4 h-4 animate-spin"/> Weaving...
+              <RefreshCw className="w-4 h-4 animate-spin" /> Weaving...
             </>
           ) : (
             <>
-              <Wand2 className="w-4 h-4"/> Generate 3D Design
+              <Wand2 className="w-4 h-4" /> Generate 3D Design
             </>
           )}
-        </button>
+        </CustomButton>
       ) : (
-        <button
+        <CustomButton
           onClick={onGenerateRoom}
           disabled={isLoading}
+          variant="default"
+          size="hero"
           className={`w-full py-4 text-sm uppercase font-bold tracking-widest flex items-center justify-center gap-2 transition-all rounded-lg ${
-            isLoading 
-              ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
-              : 'bg-primary text-white hover:bg-accent shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'
+            isLoading
+              ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+              : "bg-primary text-white hover:bg-accent shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
           }`}
         >
           {isLoading ? (
             <>
-              <RefreshCw className="w-4 h-4 animate-spin"/> Rendering Room...
+              <RefreshCw className="w-4 h-4 animate-spin" /> Rendering Room...
             </>
           ) : (
             <>
-              <Sofa className="w-4 h-4"/> Visualize in Room
+              <Sofa className="w-4 h-4" /> Visualize in Room
             </>
           )}
-        </button>
+        </CustomButton>
       )}
     </div>
   );
 };
-

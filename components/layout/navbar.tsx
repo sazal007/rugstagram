@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { NAV_ITEMS } from "@/constants";
 import { useCart } from "@/context/CartContext";
+import { CustomButton } from "@/components/ui/custom-button";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -46,13 +47,15 @@ export function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 h-16 sm:h-20 flex items-center justify-between relative">
           {/* Mobile Menu Button */}
-          <button
+          <CustomButton
+            variant="ghost"
+            size="icon"
             className="lg:hidden p-2 -ml-2"
             onClick={() => setMobileMenuOpen(true)}
             aria-label="Open menu"
           >
             <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
-          </button>
+          </CustomButton>
 
           {/* Logo */}
           <Link
@@ -89,8 +92,8 @@ export function Navbar() {
                         >
                           {item.label}
                         </NavigationMenuTrigger>
-                        <NavigationMenuContent className="absolute! top-full! left-0! mt-0! z-50 w-56! p-0! bg-transparent! border-0! shadow-none! data-[motion^=from-]:animate-none! data-[motion^=to-]:animate-none!">
-                          <div className="w-full bg-white shadow-xl border border-gray-50 rounded-b-xl overflow-hidden">
+                        <NavigationMenuContent className="absolute! top-full! left-0! mt-0! z-50 w-56! p-0! bg-transparent! border-0! shadow-none! data-[motion^=from-]:animate-none! data-[motion^=to-]:animate-none! rounded-none!">
+                          <div className="w-full bg-white shadow-xl border border-gray-50 rounded-b-sm overflow-hidden ">
                             <div className="py-2">
                               {item.children.map((child) => (
                                 <NavigationMenuLink
@@ -139,18 +142,22 @@ export function Navbar() {
 
           {/* Icons */}
           <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
-            <button
+            <CustomButton
+              variant="ghost"
+              size="icon"
               className="p-2 hover:text-accent transition-colors duration-200"
               aria-label="Search"
             >
               <Search className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]" />
-            </button>
-            <button
+            </CustomButton>
+            <CustomButton
+              variant="ghost"
+              size="icon"
               className="p-2 hover:text-accent transition-colors duration-200"
               aria-label="Account"
             >
               <User className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]" />
-            </button>
+            </CustomButton>
             <Link
               href="/cart"
               className="p-2 hover:text-accent transition-colors duration-200 relative"
@@ -179,12 +186,14 @@ export function Navbar() {
           >
             <div className="flex justify-between items-center mb-6 sm:mb-8">
               <span className="text-lg sm:text-xl font-serif">Menu</span>
-              <button
+              <CustomButton
+                variant="ghost"
+                size="icon"
                 onClick={() => setMobileMenuOpen(false)}
                 aria-label="Close menu"
               >
                 <X className="w-5 h-5 sm:w-6 sm:h-6" />
-              </button>
+              </CustomButton>
             </div>
             <nav className="space-y-4 sm:space-y-6">
               {NAV_ITEMS.map((item) => (

@@ -1,8 +1,8 @@
 "use client";
 
 import { motion, Variants } from "motion/react";
-import Link from "next/link";
 import { ArrowRight, Palette, Wand2 } from "lucide-react";
+import { CustomButton } from "../ui/custom-button";
 
 const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 40 },
@@ -61,12 +61,14 @@ export const AIVisualizerOption: React.FC = () => {
             watch as our AI engine visualizes your custom rug in seconds. No
             waiting for renderings.
           </p>
-          <Link
+          <CustomButton
             href="/bespoke/visualizer"
-            className="inline-flex items-center gap-3 bg-white text-primary px-8 py-4 text-xs uppercase font-bold tracking-widest hover:bg-yellow-400 hover:text-black transition-colors mt-4 rounded-sm"
+            variant="default"
+            size="hero"
+            className="inline-flex items-center gap-3 bg-white text-primary hover:bg-yellow-400 hover:text-black transition-colors mt-4 rounded-sm"
           >
             Launch Visualizer <ArrowRight className="w-4 h-4" />
-          </Link>
+          </CustomButton>
         </div>
 
         <div className="relative">

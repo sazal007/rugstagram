@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, Variants } from "motion/react";
+import { CustomButton } from "../ui/custom-button";
 
 const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 40 },
@@ -63,9 +64,13 @@ export const FullyBespokeOption: React.FC = () => {
             </div>
           ))}
         </div>
-        <button className="bg-white text-primary px-8 py-3 text-xs uppercase font-bold tracking-widest hover:bg-sand hover:text-white transition-colors mt-4">
+        <CustomButton
+          variant="default"
+          size="hero-sm"
+          className="bg-white text-primary hover:bg-sand hover:text-white transition-colors mt-4"
+        >
           Contact For Quote
-        </button>
+        </CustomButton>
       </div>
     </motion.div>
   );

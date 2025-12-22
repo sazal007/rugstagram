@@ -1,7 +1,7 @@
 "use client";
 
 import { useCart } from "@/context/CartContext";
-import { Button } from "@/components/ui/button";
+import { CustomButton } from "@/components/ui/custom-button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import {
@@ -54,9 +54,13 @@ export default function CartPage() {
                 <p className="text-foreground/70 text-lg mb-4">
                   Your cart is empty
                 </p>
-                <Button href="/shop" variant="outline-primary" size="hero">
+                <CustomButton
+                  href="/shop"
+                  variant="outline-primary"
+                  size="hero"
+                >
                   Continue Shopping
-                </Button>
+                </CustomButton>
               </div>
             ) : (
               <div className="space-y-4">
@@ -87,38 +91,38 @@ export default function CartPage() {
                               {item.variant}
                             </p>
                           </div>
-                          <Button
+                          <CustomButton
                             variant="ghost"
                             size="icon"
                             onClick={() => handleRemoveItem(item.id)}
                             className="h-10 w-10 shrink-0"
                           >
                             <Trash2 className="h-5 w-5" />
-                          </Button>
+                          </CustomButton>
                         </div>
 
                         <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
                           {/* Quantity Controls */}
                           <div className="flex items-center gap-3">
-                            <Button
+                            <CustomButton
                               variant="outline"
                               size="icon"
                               onClick={() => handleUpdateQuantity(item.id, -1)}
                               className="h-10 w-10"
                             >
                               <Minus className="h-4 w-4" />
-                            </Button>
+                            </CustomButton>
                             <span className="w-8 text-center text-lg font-medium text-foreground">
                               {item.quantity}
                             </span>
-                            <Button
+                            <CustomButton
                               variant="outline"
                               size="icon"
                               onClick={() => handleUpdateQuantity(item.id, 1)}
                               className="h-10 w-10"
                             >
                               <Plus className="h-4 w-4" />
-                            </Button>
+                            </CustomButton>
                           </div>
 
                           {/* Price */}
@@ -159,7 +163,7 @@ export default function CartPage() {
                 <h3 className="font-semibold text-sm uppercase tracking-wider mb-3 text-foreground">
                   Shipping Method
                 </h3>
-                <button className="flex w-full items-center justify-between rounded-sm border border-gray-200 bg-card p-4 text-left transition-colors hover:bg-accent/5 hover:border-accent">
+                <CustomButton variant="outline" className="flex w-full items-center justify-between rounded-sm border border-gray-200 bg-card p-4 text-left transition-colors hover:bg-accent/5 hover:border-accent">
                   <div>
                     <div className="font-semibold text-sm text-foreground">
                       Standard Shipping
@@ -170,7 +174,7 @@ export default function CartPage() {
                     </div>
                   </div>
                   <ChevronDown className="h-5 w-5 text-foreground/70" />
-                </button>
+                </CustomButton>
               </div>
 
               {/* Promo Code */}
@@ -180,9 +184,12 @@ export default function CartPage() {
                 </h3>
                 <div className="flex gap-2">
                   <Input placeholder="Enter promo code" className="flex-1" />
-                  <Button variant="outline" className="px-6 bg-transparent">
+                  <CustomButton
+                    variant="outline"
+                    className="px-6 bg-transparent"
+                  >
                     Apply
-                  </Button>
+                  </CustomButton>
                 </div>
               </div>
 
@@ -231,14 +238,14 @@ export default function CartPage() {
               </div>
 
               {/* Checkout Button */}
-              <Button
+              <CustomButton
                 className="w-full bg-accent text-white hover:bg-accent/90 uppercase tracking-widest text-xs font-bold"
                 size="hero"
                 disabled={cartItems.length === 0}
               >
                 <CreditCard className="mr-2 h-5 w-5" />
                 Proceed to Checkout
-              </Button>
+              </CustomButton>
             </Card>
           </div>
         </div>

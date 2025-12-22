@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, Variants } from "motion/react";
+import { CustomButton } from "../ui/custom-button";
 
 const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 40 },
@@ -39,13 +40,11 @@ export const CustomizeExistingOption: React.FC = () => {
           <li className="flex items-center gap-2">
             ✓ Adjust colors to match your swatches
           </li>
-          <li className="flex items-center gap-2">
-            ✓ Lead time: 10-14 weeks
-          </li>
+          <li className="flex items-center gap-2">✓ Lead time: 10-14 weeks</li>
         </ul>
-        <button className="bg-primary text-white px-8 py-3 text-xs uppercase font-bold tracking-widest hover:bg-accent transition-colors mt-4">
+        <CustomButton variant="hero-primary" size="hero" className="mt-4">
           Start Customization
-        </button>
+        </CustomButton>
       </div>
       <div className="order-1 lg:order-2 aspect-square bg-gray-100 rounded-lg overflow-hidden">
         <img
@@ -57,4 +56,3 @@ export const CustomizeExistingOption: React.FC = () => {
     </motion.div>
   );
 };
-

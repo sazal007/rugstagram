@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Minus, Plus } from "lucide-react";
 import { Product } from "@/types";
+import { CustomButton } from "@/components/ui/custom-button";
 
 interface ProductSelectorsProps {
   product: Product;
@@ -51,23 +52,29 @@ export const ProductSelectors: React.FC<ProductSelectorsProps> = ({
           <label className="text-[10px] sm:text-xs font-bold uppercase tracking-widest">
             Select Size
           </label>
-          <button className="text-[10px] sm:text-xs text-muted underline hover:text-primary">
+          <CustomButton
+            variant="link"
+            size="sm"
+            className="text-[10px] sm:text-xs text-muted underline hover:text-primary p-0 h-auto"
+          >
             Size Guide
-          </button>
+          </CustomButton>
         </div>
         <div className="flex flex-wrap gap-2 sm:gap-3">
           {product.sizes.map((size) => (
-            <button
+            <CustomButton
               key={size}
               onClick={() => handleSizeSelect(size)}
-              className={`px-3 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border transition-all ${
+              variant={selectedSize === size ? "default" : "outline"}
+              size="sm"
+              className={`px-3 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm transition-all ${
                 selectedSize === size
                   ? "border-primary bg-primary text-white"
                   : "border-gray-200 hover:border-primary text-gray-600"
               }`}
             >
               {size} cm
-            </button>
+            </CustomButton>
           ))}
         </div>
       </div>
@@ -78,19 +85,24 @@ export const ProductSelectors: React.FC<ProductSelectorsProps> = ({
           Quantity
         </label>
         <div className="flex items-center w-28 sm:w-36 border border-gray-200">
-          <button
+          <CustomButton
+            variant="ghost"
+            size="icon-sm"
             onClick={() => handleQuantity("dec")}
             className="p-2 sm:p-4 hover:bg-gray-50 text-muted transition-colors"
+            disabled={quantity <= 1}
           >
             <Minus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-          </button>
+          </CustomButton>
           <span className="flex-1 text-center font-medium text-sm sm:text-base">{quantity}</span>
-          <button
+          <CustomButton
+            variant="ghost"
+            size="icon-sm"
             onClick={() => handleQuantity("inc")}
             className="p-2 sm:p-4 hover:bg-gray-50 text-muted transition-colors"
           >
             <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-          </button>
+          </CustomButton>
         </div>
       </div>
     </div>
