@@ -1,15 +1,12 @@
-"use client";
+import { FounderPageClient } from "./FounderPageClient";
+import type { Metadata } from "next";
 
-import { AboutHero, AboutNav, MeetFounder } from "@/components/about";
+export const metadata: Metadata = {
+  title: "Meet the Founder",
+  description: "Meet the founder of Rugstagram and learn about the passion, vision, and dedication behind our handcrafted Himalayan rug collections.",
+  keywords: ["rug founder", "Himalayan rug artisan", "rug business founder", "rug entrepreneur"],
+};
 
 export default function FounderPage() {
-  return (
-    <div>
-      <AboutHero />
-      <AboutNav />
-      <div className="min-h-[60vh]">
-        <MeetFounder />
-      </div>
-    </div>
-  );
+  return <FounderPageClient />;
 }

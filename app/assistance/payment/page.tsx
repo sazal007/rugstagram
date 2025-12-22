@@ -1,6 +1,18 @@
-"use client";
+import { PaymentContent, PaymentHeader } from "@/components/assistance/payment";
+import type { Metadata } from "next";
 
-import { PaymentHeader, PaymentContent } from "@/components/assistance/payment";
+export const metadata: Metadata = {
+  title: "Payment Options",
+  description:
+    "Secure payment options at Rugstagram. We accept credit cards, PayPal, bank transfers, and other payment methods for your convenience.",
+  keywords: [
+    "rug payment",
+    "secure payment",
+    "payment options",
+    "rug checkout",
+    "payment methods",
+  ],
+};
 
 export default function PaymentPage() {
   return (
