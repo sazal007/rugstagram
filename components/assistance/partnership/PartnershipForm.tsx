@@ -124,7 +124,7 @@ export const PartnershipForm: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6">
+    <div className="min-h-[80vh] bg-background flex flex-col items-center justify-center p-6">
       <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-3xl space-y-6">
         {isSuccess && (
           <div className="p-4 bg-green-100 text-green-700 rounded-base border border-green-200 text-center">
