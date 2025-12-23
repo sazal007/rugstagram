@@ -1,8 +1,6 @@
-"use client";
-
 import React from "react";
 import { motion } from "motion/react";
-import { Product } from "@/types";
+import { Product } from "@/types/product";
 import { StarRating } from "./StarRating";
 
 interface ProductInfoProps {
@@ -10,6 +8,10 @@ interface ProductInfoProps {
 }
 
 export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
+  // Mock missing data
+  const materials = ["Wool", "Silk"];
+  const knotDensity = 100;
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -23,23 +25,23 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
           </h1>
           <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
             <p className="text-xs sm:text-sm text-muted uppercase tracking-wider">
-              {product.category} Collection
+              {product.category?.name || "Collection"}
             </p>
             <div className="flex items-center gap-1">
-              <StarRating rating={5} />
+              <StarRating rating={product.average_rating || 5} />
               <span className="text-[10px] sm:text-xs text-muted ml-1 underline decoration-gray-300 underline-offset-4 cursor-pointer">
-                4 Reviews
+                {product.reviews_count} Reviews
               </span>
             </div>
           </div>
         </div>
         <div className="text-left sm:text-right">
           <p className="text-xl sm:text-2xl font-serif">
-            ${product.price.toLocaleString()}
+            ${product.price ? parseFloat(product.price).toLocaleString() : "N/A"}
           </p>
-          {product.salePrice && (
+          {product.market_price && (
             <p className="text-xs sm:text-sm text-muted line-through">
-              ${product.salePrice.toLocaleString()}
+              ${parseFloat(product.market_price).toLocaleString()}
             </p>
           )}
         </div>
@@ -48,7 +50,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
       <p className="text-gray-600 leading-relaxed mb-6 sm:mb-8 text-sm sm:text-base md:text-lg font-light">
         Hand-knotted in the Kathmandu Valley, this piece exemplifies the
         masterful artistry of Tibetan weaving. Characterized by a density of{" "}
-        {product.knotDensity} knots per square inch, it offers both exceptional
+        {knotDensity} knots per square inch, it offers both exceptional
         durability and a luxurious feel underfoot.
       </p>
 
@@ -59,7 +61,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
             Material
           </span>
           <div className="flex flex-wrap gap-1.5 sm:gap-2">
-            {product.materials.map((m) => (
+            {materials.map((m) => (
               <span
                 key={m}
                 className="inline-block bg-gray-100 px-2 py-0.5 sm:px-3 sm:py-1 text-[10px] sm:text-xs rounded-full text-primary font-medium"
@@ -74,7 +76,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
             Quality
           </span>
           <span className="text-xs sm:text-sm font-medium">
-            {product.knotDensity} Knots / sq. inch
+            {knotDensity} Knots / sq. inch
           </span>
         </div>
       </div>

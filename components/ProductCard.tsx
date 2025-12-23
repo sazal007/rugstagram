@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Product } from "../types";
+import { Product } from "@/types/product";
 import { Heart } from "lucide-react";
 
 interface ProductCardProps {
@@ -10,21 +10,26 @@ interface ProductCardProps {
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <Link
-      href={`/shop/${product.id}`}
+      href={`/shop/${product.slug}`}
       className="group cursor-pointer block"
     >
       <div className="relative aspect-3/4 overflow-hidden bg-gray-100 rounded-sm mb-4">
         <img
-          src={product.image}
-          alt={product.name}
+          src={product.thumbnail_image}
+          alt={product.thumbnail_image_alt_description || product.name}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
 
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-2">
-          {product.isNew && (
+          {product.is_featured && (
+            <span className="bg-white/90 backdrop-blur-sm px-2 py-1 text-[10px] uppercase tracking-wider font-bold shadow-sm text-accent">
+              Featured
+            </span>
+          )}
+          {product.is_popular && (
             <span className="bg-white/90 backdrop-blur-sm px-2 py-1 text-[10px] uppercase tracking-wider font-bold shadow-sm">
-              New Arrival
+              Popular
             </span>
           )}
         </div>
@@ -53,11 +58,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             {product.name}
           </h3>
           <span className="text-sm font-medium text-gray-500">
-            ${product.price.toLocaleString()}
+            ${parseFloat(product.price).toLocaleString()}
           </span>
         </div>
         <p className="text-xs text-muted uppercase tracking-wide">
-          {product.category} • {product.knotDensity} Knots
+          {product.category?.name} {product.brand_name && `• ${product.brand_name}`}
         </p>
       </div>
     </Link>

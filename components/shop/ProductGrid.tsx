@@ -3,7 +3,7 @@
 import React, { useMemo } from "react";
 import { motion, Variants } from "motion/react";
 import { ChevronDown } from "lucide-react";
-import { Product } from "@/types";
+import { Product } from "@/types/product";
 import { ProductCard } from "../ProductCard";
 
 const containerVariants: Variants = {

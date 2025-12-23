@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React from "react";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { PRODUCTS } from "@/constants";
-import { Product } from "@/types";
+import { Product } from "@/types/product";
 import { ProductCard } from "@/components/ProductCard";
+import { useProducts } from "@/hooks/use-product";
 
 interface SimilarProductsProps {
   currentProduct: Product;
@@ -14,21 +14,30 @@ interface SimilarProductsProps {
 export const SimilarProducts: React.FC<SimilarProductsProps> = ({
   currentProduct,
 }) => {
-  const similarProducts = useMemo(() => {
-    let similar = PRODUCTS.filter(
-      (p) => p.category === currentProduct.category && p.id !== currentProduct.id
-    );
+  // Fetch products from the same category
+  const { data, isLoading } = useProducts({
+    category: currentProduct.category?.slug,
+    page_size: 4, // Fetch a few more to filter out current
+  });
 
-    // If not enough similar products, fill with others
-    if (similar.length < 3) {
-      const remaining = PRODUCTS.filter(
-        (p) => p.id !== currentProduct.id && !similar.includes(p)
-      );
-      similar = [...similar, ...remaining].slice(0, 3);
-    }
+  const similarProducts = (data?.results || [])
+    .filter((p) => p.id !== currentProduct.id)
+    .slice(0, 3);
 
-    return similar;
-  }, [currentProduct]);
+  if (isLoading) {
+     return (
+       <div className="pt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+         {[1, 2, 3].map((i) => (
+           <div key={i} className="space-y-4">
+              <div className="aspect-3/4 bg-gray-100 animate-pulse rounded-sm" />
+              <div className="h-4 bg-gray-100 animate-pulse w-3/4" />
+           </div>
+         ))}
+       </div>
+     );
+  }
+
+  if (similarProducts.length === 0) return null;
 
   return (
     <motion.section

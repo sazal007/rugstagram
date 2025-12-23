@@ -2,28 +2,26 @@
 
 import React from "react";
 import { CategoryFilter } from "./CategoryFilter";
-import { MaterialFilter } from "./MaterialFilter";
-
-import { Category } from "@/types";
+import { SubCategoryFilter } from "./SubCategoryFilter";
 
 interface FilterSidebarProps {
   isOpen: boolean;
-  selectedCategories: Category[];
-  selectedMaterials: string[];
-  onToggleCategory: (category: string) => void;
-  onToggleMaterial: (material: string) => void;
+  selectedCategories: string[];
+  selectedSubCategories: string[];
+  onToggleCategory: (categorySlug: string) => void;
+  onToggleSubCategory: (subCategorySlug: string) => void;
 }
 
 export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   isOpen,
   selectedCategories,
-  selectedMaterials,
+  selectedSubCategories,
   onToggleCategory,
-  onToggleMaterial,
+  onToggleSubCategory,
 }) => {
   return (
     <aside
-      className={`lg:w-64 flex-shrink-0 ${
+      className={`lg:w-64 shrink-0 ${
         isOpen ? "block" : "hidden"
       } lg:block`}
     >
@@ -32,9 +30,10 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
           selectedCategories={selectedCategories}
           onToggleCategory={onToggleCategory}
         />
-        <MaterialFilter
-          selectedMaterials={selectedMaterials}
-          onToggleMaterial={onToggleMaterial}
+        <SubCategoryFilter
+          categorySlug={selectedCategories[0]}
+          selectedSubCategories={selectedSubCategories}
+          onToggleSubCategory={onToggleSubCategory}
         />
       </div>
     </aside>

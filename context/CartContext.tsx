@@ -9,7 +9,7 @@ import React, {
   useMemo,
   useRef,
 } from "react";
-import { Product } from "@/types";
+import { Product } from "@/types/product";
 
 export interface CartItem {
   id: string;
@@ -112,18 +112,22 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           return newItems;
         } else {
           // Add new item
-          const materials = product.materials.join(", ");
+          // Mock materials or use logic if derived from somewhere else
+          const materials = "Wool"; // Mock for now
           const variant = `${size} • ${materials}`;
+
+          const price = parseFloat(product.price);
+          const originalPrice = product.market_price ? parseFloat(product.market_price) : undefined;
 
           const newItem: CartItem = {
             id: cartItemId,
-            productId: product.id,
+            productId: product.id.toString(),
             name: product.name,
             variant,
-            price: product.salePrice || product.price,
-            originalPrice: product.salePrice ? product.price : undefined,
+            price,
+            originalPrice,
             quantity,
-            image: product.image,
+            image: product.thumbnail_image,
             size,
           };
 

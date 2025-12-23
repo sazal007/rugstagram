@@ -1,5 +1,8 @@
 'use client';
 import { useState, useEffect } from "react";
+import { useForm, Controller, useWatch } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { CustomButton } from "@/components/ui/custom-button";
 import {
   Select,
@@ -13,80 +16,91 @@ import type * as RPNInput from "react-phone-number-input";
 import { parsePhoneNumber } from "react-phone-number-input";
 import { usePartnership } from "@/hooks/use-partnership";
 
+// Define Zod schema
+const partnershipSchema = z.object({
+  fullName: z.string().min(1, "Full name is required"),
+  streetAddress: z.string().min(1, "Street address is required"),
+  streetAddress2: z.string().optional(),
+  city: z.string().min(1, "City is required"),
+  stateRegion: z.string().min(1, "State/Region is required"),
+  postalCode: z.string().min(1, "Postal code is required"),
+  country: z.string().min(1, "Country is required"),
+  phone: z.string().min(1, "Phone number is required"),
+  email: z.string().email("Invalid email address"),
+  comments: z.string().optional(),
+});
+
+type PartnershipFormValues = z.infer<typeof partnershipSchema>;
+
 export const PartnershipForm: React.FC = () => {
-  const { createPartnership, isSubmitting, error, isSuccess, resetSuccess } =
+  const { createPartnership, isSubmitting, error: apiError, isSuccess, resetSuccess } =
     usePartnership();
 
-  const [formData, setFormData] = useState({
-    fullName: "",
-    streetAddress: "",
-    streetAddress2: "",
-    city: "",
-    stateRegion: "",
-    postalCode: "",
-    country: "United States",
-    phone: "" as RPNInput.Value,
-    email: "",
-    comments: "",
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm<PartnershipFormValues>({
+    resolver: zodResolver(partnershipSchema),
+    defaultValues: {
+      fullName: "",
+      streetAddress: "",
+      streetAddress2: "",
+      city: "",
+      stateRegion: "",
+      postalCode: "",
+      country: "United States",
+      phone: "",
+      email: "",
+      comments: "",
+    },
   });
 
   const [focusedFields, setFocusedFields] = useState<Set<string>>(new Set());
+
+  // Watch fields for floating label logic
+  const watchedValues = useWatch({ control });
 
   useEffect(() => {
     if (isSuccess) {
       const timer = setTimeout(() => {
         resetSuccess();
+        reset(); 
       }, 5000);
       return () => clearTimeout(timer);
     }
-  }, [isSuccess, resetSuccess]);
+  }, [isSuccess, resetSuccess, reset]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const onSubmit = async (data: PartnershipFormValues) => {
     try {
       // Format phone number: +9779813671117 -> +977-9813671117
-      let formattedPhone = formData.phone as string;
-      if (formData.phone) {
-        const parsedNode = parsePhoneNumber(formData.phone);
+      let formattedPhone = data.phone;
+      if (data.phone) {
+        const parsedNode = parsePhoneNumber(data.phone);
         if (parsedNode) {
           formattedPhone = `+${parsedNode.countryCallingCode}-${parsedNode.nationalNumber}`;
         }
       }
 
       await createPartnership({
-        full_name: formData.fullName,
-        street_address: formData.streetAddress,
-        street_address2: formData.streetAddress2,
-        city: formData.city,
-        state: formData.stateRegion,
-        code: formData.postalCode,
-        country: formData.country,
+        full_name: data.fullName,
+        street_address: data.streetAddress,
+        street_address2: data.streetAddress2,
+        city: data.city,
+        state: data.stateRegion,
+        code: data.postalCode,
+        country: data.country,
         phone_number: formattedPhone,
-        email: formData.email,
-        comments: formData.comments,
+        email: data.email,
+        comments: data.comments,
       });
-
-      // Clear form on success
-      setFormData({
-        fullName: "",
-        streetAddress: "",
-        streetAddress2: "",
-        city: "",
-        stateRegion: "",
-        postalCode: "",
-        country: "United States",
-        phone: "" as RPNInput.Value,
-        email: "",
-        comments: "",
-      });
+      
+      // Form reset is handled in the useEffect on success
     } catch (err) {
       console.error("Submission failed:", err);
     }
-  };
-
-  const handleInputChange = (field: string, value: string | RPNInput.Value) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleFocus = (field: string) => {
@@ -101,25 +115,26 @@ export const PartnershipForm: React.FC = () => {
     });
   };
 
-  const isLabelFloating = (field: string) => {
+  const isLabelFloating = (field: keyof PartnershipFormValues) => {
+    const value = watchedValues[field];
     return (
-      formData[field as keyof typeof formData] !== "" ||
+      (value !== "" && value !== undefined) ||
       focusedFields.has(field)
     );
   };
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6">
-      <form onSubmit={handleSubmit} className="w-full max-w-3xl space-y-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-3xl space-y-6">
         {isSuccess && (
           <div className="p-4 bg-green-100 text-green-700 rounded-base border border-green-200 text-center">
             Thank you! Your partnership request has been submitted successfully.
           </div>
         )}
 
-        {error && (
+        {apiError && (
           <div className="p-4 bg-red-100 text-red-700 rounded-base border border-red-200 text-center">
-            {error}
+            {apiError}
           </div>
         )}
 
@@ -129,13 +144,14 @@ export const PartnershipForm: React.FC = () => {
             <input
               type="text"
               id="fullName"
-              value={formData.fullName}
-              onChange={(e) => handleInputChange("fullName", e.target.value)}
+              {...register("fullName")}
               onFocus={() => handleFocus("fullName")}
-              onBlur={() => handleBlur("fullName")}
-              className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border border-border appearance-none focus:outline-none focus:ring-0 focus:border-primary"
+              onBlur={(e) => {
+                register("fullName").onBlur(e);
+                handleBlur("fullName");
+              }}
+              className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border ${errors.fullName ? "border-red-500" : "border-border"} appearance-none focus:outline-none focus:ring-0 focus:border-primary`}
               placeholder=" "
-              required
             />
             <label
               htmlFor="fullName"
@@ -148,6 +164,7 @@ export const PartnershipForm: React.FC = () => {
               Full Name
             </label>
           </div>
+          {errors.fullName && <p className="text-xs text-red-500 mt-1 ml-1">{errors.fullName.message}</p>}
         </div>
 
         {/* Address */}
@@ -157,15 +174,14 @@ export const PartnershipForm: React.FC = () => {
               <input
                 type="text"
                 id="streetAddress"
-                value={formData.streetAddress}
-                onChange={(e) =>
-                  handleInputChange("streetAddress", e.target.value)
-                }
+                {...register("streetAddress")}
                 onFocus={() => handleFocus("streetAddress")}
-                onBlur={() => handleBlur("streetAddress")}
-                className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border border-border appearance-none focus:outline-none focus:ring-0 focus:border-primary"
+                onBlur={(e) => {
+                  register("streetAddress").onBlur(e);
+                  handleBlur("streetAddress");
+                }}
+                className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border ${errors.streetAddress ? "border-red-500" : "border-border"} appearance-none focus:outline-none focus:ring-0 focus:border-primary`}
                 placeholder=" "
-                required
               />
               <label
                 htmlFor="streetAddress"
@@ -177,18 +193,19 @@ export const PartnershipForm: React.FC = () => {
               >
                 Street Address
               </label>
+              {errors.streetAddress && <p className="text-xs text-red-500 mt-1 ml-1">{errors.streetAddress.message}</p>}
             </div>
 
             <div className="relative">
               <input
                 type="text"
                 id="streetAddress2"
-                value={formData.streetAddress2}
-                onChange={(e) =>
-                  handleInputChange("streetAddress2", e.target.value)
-                }
+                {...register("streetAddress2")}
                 onFocus={() => handleFocus("streetAddress2")}
-                onBlur={() => handleBlur("streetAddress2")}
+                onBlur={(e) => {
+                  register("streetAddress2").onBlur(e);
+                  handleBlur("streetAddress2");
+                }}
                 className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border border-border appearance-none focus:outline-none focus:ring-0 focus:border-primary"
                 placeholder=" "
               />
@@ -209,13 +226,14 @@ export const PartnershipForm: React.FC = () => {
                 <input
                   type="text"
                   id="city"
-                  value={formData.city}
-                  onChange={(e) => handleInputChange("city", e.target.value)}
+                  {...register("city")}
                   onFocus={() => handleFocus("city")}
-                  onBlur={() => handleBlur("city")}
-                  className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border border-border appearance-none focus:outline-none focus:ring-0 focus:border-primary"
+                  onBlur={(e) => {
+                    register("city").onBlur(e);
+                    handleBlur("city");
+                  }}
+                  className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border ${errors.city ? "border-red-500" : "border-border"} appearance-none focus:outline-none focus:ring-0 focus:border-primary`}
                   placeholder=" "
-                  required
                 />
                 <label
                   htmlFor="city"
@@ -227,21 +245,21 @@ export const PartnershipForm: React.FC = () => {
                 >
                   City
                 </label>
+                {errors.city && <p className="text-xs text-red-500 mt-1 ml-1">{errors.city.message}</p>}
               </div>
 
               <div className="relative">
                 <input
                   type="text"
                   id="stateRegion"
-                  value={formData.stateRegion}
-                  onChange={(e) =>
-                    handleInputChange("stateRegion", e.target.value)
-                  }
+                  {...register("stateRegion")}
                   onFocus={() => handleFocus("stateRegion")}
-                  onBlur={() => handleBlur("stateRegion")}
-                  className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border border-border appearance-none focus:outline-none focus:ring-0 focus:border-primary"
+                  onBlur={(e) => {
+                    register("stateRegion").onBlur(e);
+                    handleBlur("stateRegion");
+                  }}
+                  className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border ${errors.stateRegion ? "border-red-500" : "border-border"} appearance-none focus:outline-none focus:ring-0 focus:border-primary`}
                   placeholder=" "
-                  required
                 />
                 <label
                   htmlFor="stateRegion"
@@ -253,6 +271,7 @@ export const PartnershipForm: React.FC = () => {
                 >
                   State / Region
                 </label>
+                {errors.stateRegion && <p className="text-xs text-red-500 mt-1 ml-1">{errors.stateRegion.message}</p>}
               </div>
             </div>
 
@@ -261,15 +280,14 @@ export const PartnershipForm: React.FC = () => {
                 <input
                   type="text"
                   id="postalCode"
-                  value={formData.postalCode}
-                  onChange={(e) =>
-                    handleInputChange("postalCode", e.target.value)
-                  }
+                  {...register("postalCode")}
                   onFocus={() => handleFocus("postalCode")}
-                  onBlur={() => handleBlur("postalCode")}
-                  className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border border-border appearance-none focus:outline-none focus:ring-0 focus:border-primary"
+                  onBlur={(e) => {
+                    register("postalCode").onBlur(e);
+                    handleBlur("postalCode");
+                  }}
+                  className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border ${errors.postalCode ? "border-red-500" : "border-border"} appearance-none focus:outline-none focus:ring-0 focus:border-primary`}
                   placeholder=" "
-                  required
                 />
                 <label
                   htmlFor="postalCode"
@@ -281,43 +299,51 @@ export const PartnershipForm: React.FC = () => {
                 >
                   Postal / Zip Code
                 </label>
+                {errors.postalCode && <p className="text-xs text-red-500 mt-1 ml-1">{errors.postalCode.message}</p>}
               </div>
 
               <div className="relative">
-                <Select
-                  value={formData.country}
-                  onValueChange={(value) => handleInputChange("country", value)}
-                  onOpenChange={(open) => {
-                    if (open) {
-                      handleFocus("country");
-                    } else {
-                      handleBlur("country");
-                    }
-                  }}
-                >
-                  <SelectTrigger className="block! w-full! px-2.5! pb-2.5! pt-4! h-[52px]! text-sm! text-foreground! bg-transparent! border! border-border! rounded-base! appearance-none! outline-none! focus-visible:ring-0! focus-visible:border-primary! shadow-none! data-[size=default]:h-[52px]!">
-                    <SelectValue placeholder="Select country" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="United States">United States</SelectItem>
-                    <SelectItem value="Canada">Canada</SelectItem>
-                    <SelectItem value="United Kingdom">
-                      United Kingdom
-                    </SelectItem>
-                    <SelectItem value="Australia">Australia</SelectItem>
-                    <SelectItem value="Nepal">Nepal</SelectItem>
-                    <SelectItem value="India">India</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Controller
+                  name="country"
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      onOpenChange={(open) => {
+                        if (open) {
+                          handleFocus("country");
+                        } else {
+                          handleBlur("country");
+                        }
+                      }}
+                    >
+                      <SelectTrigger className={`block! w-full! px-2.5! pb-2.5! pt-4! h-[52px]! text-sm! text-foreground! bg-transparent! border! ${errors.country ? "border-red-500!" : "border-border!"} rounded-base! appearance-none! outline-none! focus-visible:ring-0! focus-visible:border-primary! shadow-none! data-[size=default]:h-[52px]!`}>
+                        <SelectValue placeholder="Select country" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="United States">United States</SelectItem>
+                        <SelectItem value="Canada">Canada</SelectItem>
+                        <SelectItem value="United Kingdom">
+                          United Kingdom
+                        </SelectItem>
+                        <SelectItem value="Australia">Australia</SelectItem>
+                        <SelectItem value="Nepal">Nepal</SelectItem>
+                        <SelectItem value="India">India</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
                 <label
                   className={`absolute text-sm duration-300 transform origin-left bg-background px-2 start-1 z-10 ${
-                    formData.country !== "" || focusedFields.has("country")
+                    (watchedValues.country !== "" && watchedValues.country !== undefined) || focusedFields.has("country")
                       ? "-translate-y-4 scale-75 top-2 text-primary"
                       : "scale-100 -translate-y-1/2 top-1/2 text-gray-500"
                   }`}
                 >
                   Country
                 </label>
+                {errors.country && <p className="text-xs text-red-500 mt-1 ml-1">{errors.country.message}</p>}
               </div>
             </div>
           </div>
@@ -337,13 +363,19 @@ export const PartnershipForm: React.FC = () => {
                 }
               }}
             >
-              <PhoneInput
-                id="phone"
-                value={formData.phone}
-                onChange={(value) => handleInputChange("phone", value || "")}
-                defaultCountry="NP"
-                className="w-full"
-                placeholder=" "
+              <Controller
+                name="phone"
+                control={control}
+                render={({ field }) => (
+                  <PhoneInput
+                    id="phone"
+                    value={field.value as RPNInput.Value}
+                    onChange={(value) => field.onChange(value || "")}
+                    defaultCountry="NP"
+                    className={`w-full ${errors.phone ? "border-red-500" : ""}`}
+                    placeholder=" "
+                  />
+                )}
               />
               <label
                 htmlFor="phone"
@@ -355,6 +387,7 @@ export const PartnershipForm: React.FC = () => {
               >
                 Phone
               </label>
+              {errors.phone && <p className="text-xs text-red-500 mt-1 ml-1">{errors.phone.message}</p>}
             </div>
           </div>
 
@@ -364,11 +397,13 @@ export const PartnershipForm: React.FC = () => {
               <input
                 type="email"
                 id="email"
-                value={formData.email}
-                onChange={(e) => handleInputChange("email", e.target.value)}
+                {...register("email")}
                 onFocus={() => handleFocus("email")}
-                onBlur={() => handleBlur("email")}
-                className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border border-border appearance-none focus:outline-none focus:ring-0 focus:border-primary"
+                onBlur={(e) => {
+                  register("email").onBlur(e);
+                  handleBlur("email");
+                }}
+                className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border ${errors.email ? "border-red-500" : "border-border"} appearance-none focus:outline-none focus:ring-0 focus:border-primary`}
                 placeholder=" "
               />
               <label
@@ -381,6 +416,7 @@ export const PartnershipForm: React.FC = () => {
               >
                 Email
               </label>
+              {errors.email && <p className="text-xs text-red-500 mt-1 ml-1">{errors.email.message}</p>}
             </div>
           </div>
         </div>
@@ -390,14 +426,15 @@ export const PartnershipForm: React.FC = () => {
           <div className="relative">
             <textarea
               id="comments"
-              value={formData.comments}
-              onChange={(e) => handleInputChange("comments", e.target.value)}
+              {...register("comments")}
               onFocus={() => handleFocus("comments")}
-              onBlur={() => handleBlur("comments")}
+              onBlur={(e) => {
+                register("comments").onBlur(e);
+                handleBlur("comments");
+              }}
               rows={4}
-              className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border border-border appearance-none focus:outline-none focus:ring-0 focus:border-primary resize-none"
+              className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border ${errors.comments ? "border-red-500" : "border-border"} appearance-none focus:outline-none focus:ring-0 focus:border-primary resize-none`}
               placeholder=" "
-              required
             />
             <label
               htmlFor="comments"
@@ -409,6 +446,7 @@ export const PartnershipForm: React.FC = () => {
             >
               Your Comments
             </label>
+            {errors.comments && <p className="text-xs text-red-500 mt-1 ml-1">{errors.comments.message}</p>}
           </div>
         </div>
 

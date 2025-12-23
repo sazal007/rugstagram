@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { PRODUCTS } from "@/constants";
+import { getProductBySlug } from "@/services/product";
 import { ProductDetail } from "@/components/shop/details";
 import type { Metadata } from "next";
 
@@ -9,26 +9,33 @@ interface ProductPageProps {
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const product = PRODUCTS.find((p) => p.id === slug);
+  
+  try {
+    const product = await getProductBySlug(slug);
+    
+    // Mock keywords or use available data
+    const keywords = [product.name, "handcrafted rug", "Himalayan rug"];
+    if (product.category?.name) keywords.push(product.category.name);
 
-  if (!product) {
+    return {
+      title: product.name,
+      description: `Discover ${product.name}${product.category?.name ? ` - A handcrafted ${product.category.name} rug` : ''}.`,
+      keywords,
+    };
+  } catch {
     return {
       title: "Product Not Found",
     };
   }
-
-  return {
-    title: product.name,
-    description: `Discover ${product.name} - A handcrafted ${product.category.toLowerCase()} rug made from ${product.materials.join(" and ")}. Available in ${product.colors.join(" and ")} colors and multiple sizes.`,
-    keywords: [product.name, product.category, ...product.materials, ...product.colors, "handcrafted rug", "Himalayan rug"],
-  };
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
-  const product = PRODUCTS.find((p) => p.id === slug);
-
-  if (!product) {
+  
+  let product;
+  try {
+    product = await getProductBySlug(slug);
+  } catch {
     notFound();
   }
 

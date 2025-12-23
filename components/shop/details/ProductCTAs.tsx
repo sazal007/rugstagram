@@ -4,7 +4,7 @@ import React from "react";
 import { ShoppingBag, Share2 } from "lucide-react";
 import { CustomButton } from "@/components/ui/custom-button";
 import { useCart } from "@/context/CartContext";
-import { Product } from "@/types";
+import { Product } from "@/types/product";
 
 interface ProductCTAsProps {
   product: Product;

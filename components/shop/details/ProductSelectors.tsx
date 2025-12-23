@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Minus, Plus } from "lucide-react";
-import { Product } from "@/types";
+import { Product } from "@/types/product";
 import { CustomButton } from "@/components/ui/custom-button";
 
 interface ProductSelectorsProps {
@@ -12,19 +12,22 @@ interface ProductSelectorsProps {
 }
 
 export const ProductSelectors: React.FC<ProductSelectorsProps> = ({
-  product,
   onSizeChange,
   onQuantityChange,
 }) => {
-  const [selectedSize, setSelectedSize] = useState<string>("");
+  // Mock sizes since backend doesn't provide them yet
+  const sizes = ["5x7", "8x10", "9x12", "10x14"];
+
+  const [selectedSize, setSelectedSize] = useState<string>(sizes[0] || "");
   const [quantity, setQuantity] = useState(1);
 
+  // Notify parent of initial selection
   useEffect(() => {
-    if (product.sizes.length > 0) {
-      setSelectedSize(product.sizes[0]);
-      onSizeChange?.(product.sizes[0]);
+    if (sizes.length > 0) {
+      onSizeChange?.(sizes[0]);
     }
-  }, [product.sizes, onSizeChange]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Run once on mount
 
   useEffect(() => {
     onQuantityChange?.(quantity);
@@ -61,7 +64,7 @@ export const ProductSelectors: React.FC<ProductSelectorsProps> = ({
           </CustomButton>
         </div>
         <div className="flex flex-wrap gap-2 sm:gap-3">
-          {product.sizes.map((size) => (
+          {sizes.map((size) => (
             <CustomButton
               key={size}
               onClick={() => handleSizeSelect(size)}

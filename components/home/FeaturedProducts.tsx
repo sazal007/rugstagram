@@ -2,8 +2,8 @@
 
 import React from "react";
 import { motion } from "motion/react";
-import { PRODUCTS } from "@/constants";
 import { ProductCard } from "../ProductCard";
+import { useProducts } from "@/hooks/use-product";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 60 },
@@ -25,6 +25,32 @@ const staggerContainer = {
 };
 
 export const FeaturedProducts: React.FC = () => {
+  const { data, isLoading } = useProducts({ is_featured: true });
+  const products = data?.results.slice(0, 4) || [];
+
+  if (isLoading) {
+    return (
+      <section className="max-w-7xl mx-auto px-6 py-24">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-serif mb-4">New Arrivals</h2>
+          <p className="text-muted">Fresh from the loom, ready for your home.</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="space-y-4">
+              <div className="aspect-3/4 bg-gray-100 animate-pulse rounded-sm" />
+              <div className="h-4 bg-gray-100 animate-pulse w-3/4" />
+              <div className="h-4 bg-gray-100 animate-pulse w-1/2" />
+            </div>
+          ))}
+        </div>
+      </section>
+    );
+  }
+
+  // Hide section if no products found
+  if (products.length === 0) return null;
+
   return (
     <motion.section
       initial="hidden"
@@ -38,7 +64,7 @@ export const FeaturedProducts: React.FC = () => {
         <p className="text-muted">Fresh from the loom, ready for your home.</p>
       </motion.div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        {PRODUCTS.slice(0, 4).map((product) => (
+        {products.map((product) => (
           <motion.div key={product.id} variants={fadeInUp}>
             <ProductCard product={product} />
           </motion.div>

@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "www.logicalposition.com",
       },
+      {
+        protocol: "https",
+        hostname: "rugkala.nepdora.com",
+      }
     ],
   },
 };

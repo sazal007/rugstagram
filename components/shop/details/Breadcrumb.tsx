@@ -1,10 +1,9 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
-import { Product } from "@/types";
+import { Product } from "@/types/product";
 
 interface BreadcrumbProps {
   product: Product;
@@ -22,7 +21,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({ product }) => {
         <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> Back
       </button>
       <div className="text-[10px] sm:text-xs text-muted uppercase tracking-widest hidden sm:block">
-        Home / Shop / {product.category} /{" "}
+        Home / Shop / {product.category?.name || "Collection"} /{" "}
         <span className="text-primary">{product.name}</span>
       </div>
     </div>

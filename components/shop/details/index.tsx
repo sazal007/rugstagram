@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
-import { Product } from "@/types";
+import React, { useState, useEffect } from "react";
+import { Product } from "@/types/product";
 import { Breadcrumb } from "./Breadcrumb";
 import { ProductImageGallery } from "./ProductImageGallery";
 import { ProductInfo } from "./ProductInfo";
@@ -16,11 +16,8 @@ interface ProductDetailProps {
 }
 
 function ProductDetailContent({ product }: ProductDetailProps) {
-  // Derive default size from product
-  const defaultSize = useMemo(
-    () => (product.sizes.length > 0 ? product.sizes[0] : ""),
-    [product.sizes]
-  );
+  // Derive default size from product or mock
+  const defaultSize = "5x7"; // Mock default size
 
   const [selectedSize, setSelectedSize] = useState<string>(defaultSize);
   const [quantity, setQuantity] = useState(1);
