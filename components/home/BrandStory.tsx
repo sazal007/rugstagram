@@ -5,10 +5,10 @@ import { motion, AnimatePresence } from "motion/react";
 import { CustomButton } from "@/components/ui/custom-button";
 
 const STORY_IMAGES = [
-  "https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&q=80&w=800",
-  "https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?auto=format&fit=crop&q=80&w=800",
-  "https://images.unsplash.com/photo-1615529182904-14819c35db37?auto=format&fit=crop&q=80&w=800",
-  "https://images.unsplash.com/photo-1594164186835-23ba09e4d6d9?auto=format&fit=crop&q=80&w=800",
+  "/images/weaving/weaving.avif",
+  "/images/weaving/dyeing.avif",
+  "/images/weaving/trimming.avif",
+  "/images/weaving/spinning.avif",
 ];
 
 const fadeInUp = {

@@ -1,8 +1,36 @@
+"use client";
+
 import Link from "next/link";
 import { Instagram, Facebook, Mail } from "lucide-react";
 import Image from "next/image";
+import { useState, FormEvent } from "react";
+import { useNewsletter } from "@/hooks/use-newsletter";
 
 export function Footer() {
+  const [email, setEmail] = useState("");
+  const { subscribe, isSubmitting, isSuccess, error, resetSuccess } =
+    useNewsletter();
+
+  const handleSubscribe = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    try {
+      await subscribe(email);
+      setEmail(""); // Clear input on success
+    } catch (err) {
+      // Error is handled by the hook
+      console.error("Newsletter subscription failed:", err);
+    }
+  };
+
+  // Auto-reset success message after 3 seconds
+  if (isSuccess) {
+    setTimeout(() => {
+      resetSuccess();
+    }, 3000);
+  }
+
   return (
     <footer className="bg-[#1a1a1a] text-white pt-20 pb-10">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
@@ -97,16 +125,36 @@ export function Footer() {
           <p className="text-gray-400 text-sm mb-4">
             Join our list for exclusive releases and design stories.
           </p>
-          <div className="flex border-b border-gray-700 pb-2">
-            <input
-              type="email"
-              placeholder="Your email address"
-              className="bg-transparent w-full outline-none text-white text-sm placeholder-gray-600"
-            />
-            <button className="text-xs uppercase font-bold text-sand hover:text-white">
-              Subscribe
-            </button>
-          </div>
+          <form onSubmit={handleSubscribe}>
+            <div className="flex border-b border-gray-700 pb-2">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Your email address"
+                className="bg-transparent w-full outline-none text-white text-sm placeholder-gray-600"
+                disabled={isSubmitting}
+                required
+              />
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="text-xs uppercase font-bold text-sand hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSubmitting ? "..." : "Subscribe"}
+              </button>
+            </div>
+            {isSuccess && (
+              <p className="text-green-400 text-xs mt-2">
+                ✓ Successfully subscribed!
+              </p>
+            )}
+            {error && (
+              <p className="text-red-400 text-xs mt-2">
+                ✗ {error}
+              </p>
+            )}
+          </form>
         </div>
       </div>
 

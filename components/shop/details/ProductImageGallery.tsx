@@ -5,12 +5,6 @@ import { motion } from "motion/react";
 import { Product } from "@/types/product";
 import Image from "next/image";
 
-const DUMMY_GALLERY = [
-  "https://images.unsplash.com/photo-1596238638367-9c606540c436?auto=format&fit=crop&q=80&w=1000",
-  "https://images.unsplash.com/photo-1600166898405-da9535204843?auto=format&fit=crop&q=80&w=1000",
-  "https://images.unsplash.com/photo-1574966739943-9e812b4c1a53?auto=format&fit=crop&q=80&w=1000",
-];
-
 interface ProductImageGalleryProps {
   product: Product;
 }
@@ -22,8 +16,11 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
   const [isHoveringImage, setIsHoveringImage] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-  // Use thumbnail_image and dummy gallery
-  const productImages = [product.thumbnail_image, ...DUMMY_GALLERY];
+  // Use thumbnail_image and product images from backend
+  const productImages = [
+    product.thumbnail_image,
+    ...(product.images?.map((img) => img.image) || []),
+  ];
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { left, top, width, height } =

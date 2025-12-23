@@ -1,5 +1,4 @@
 import { MetadataRoute } from "next";
-import { PRODUCTS } from "@/constants";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl =
@@ -87,14 +86,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // Dynamic product routes
-  const productRoutes: MetadataRoute.Sitemap = PRODUCTS.map((product) => ({
-    url: `${baseUrl}/shop/${product.id}`,
-    lastModified: new Date(),
-    changeFrequency: "weekly" as const,
-    priority: 0.8,
-  }));
-
   // Dynamic collection routes
   const collectionRoutes: MetadataRoute.Sitemap = [
     "Contemporary",
@@ -110,5 +101,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...staticRoutes, ...productRoutes, ...collectionRoutes];
+  return [...staticRoutes, ...collectionRoutes];
 }

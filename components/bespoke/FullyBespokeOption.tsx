@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, Variants } from "motion/react";
+import Image from "next/image";
 import { CustomButton } from "../ui/custom-button";
 
 const fadeInUp: Variants = {
@@ -36,11 +37,12 @@ export const FullyBespokeOption: React.FC = () => {
       variants={fadeInUp}
       className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center bg-[#1c1c1c] text-white p-8 md:p-12 rounded-xl"
     >
-      <div className="aspect-square bg-gray-800 rounded-lg overflow-hidden">
-        <img
-          src="https://images.unsplash.com/photo-1544259695-1f9e29a96328?auto=format&fit=crop&q=80&w=800"
+      <div className="aspect-square bg-gray-800 rounded-lg overflow-hidden relative">
+        <Image
+          src="/images/about-banner.jpeg"
           alt="Designer Sketching"
-          className="w-full h-full object-cover opacity-80"
+          fill
+          className="object-cover opacity-80"
         />
       </div>
       <div className="space-y-6">

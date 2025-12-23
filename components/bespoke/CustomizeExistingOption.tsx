@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, Variants } from "motion/react";
+import Image from "next/image";
 import { CustomButton } from "../ui/custom-button";
 
 const fadeInUp: Variants = {
@@ -46,11 +47,12 @@ export const CustomizeExistingOption: React.FC = () => {
           Start Customization
         </CustomButton>
       </div>
-      <div className="order-1 lg:order-2 aspect-square bg-gray-100 rounded-lg overflow-hidden">
-        <img
-          src="https://images.unsplash.com/photo-1596238638367-9c606540c436?auto=format&fit=crop&q=80&w=800"
+      <div className="order-1 lg:order-2 aspect-square bg-gray-100 rounded-lg overflow-hidden relative">
+        <Image
+          src="/images/DAD-1.avif"
           alt="Rug Sample"
-          className="w-full h-full object-cover"
+          fill
+          className="object-cover"
         />
       </div>
     </motion.div>
