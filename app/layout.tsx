@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
-import { CartProvider } from "@/context/CartContext";
 
 const cormorantGaramond = Cormorant_Garamond({
   variable: "--font-serif",
@@ -50,6 +49,10 @@ export const metadata: Metadata = {
   },
 };
 
+import Providers from "@/components/Providers";
+
+// ... existing code ...
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -60,9 +63,9 @@ export default function RootLayout({
       <body
         className={`${cormorantGaramond.variable} ${inter.variable} antialiased`}
       >
-        <CartProvider>
+        <Providers>
           {children}
-        </CartProvider>
+        </Providers>
       </body>
     </html>
   );

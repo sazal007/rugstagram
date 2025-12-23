@@ -150,6 +150,7 @@ export function Navbar() {
             >
               <Search className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]" />
             </CustomButton>
+            <Link href="/login">
             <CustomButton
               variant="ghost"
               size="icon"
@@ -158,6 +159,7 @@ export function Navbar() {
             >
               <User className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]" />
             </CustomButton>
+            </Link>
             <Link
               href="/cart"
               className="p-2 hover:text-accent transition-colors duration-200 relative"

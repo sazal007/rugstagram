@@ -1,8 +1,5 @@
-"use client";
-
-import type React from "react";
-
-import { useState } from "react";
+'use client';
+import { useState, useEffect } from "react";
 import { CustomButton } from "@/components/ui/custom-button";
 import {
   Select,
@@ -13,8 +10,13 @@ import {
 } from "@/components/ui/select";
 import { PhoneInput } from "@/components/ui/phone-input";
 import type * as RPNInput from "react-phone-number-input";
+import { parsePhoneNumber } from "react-phone-number-input";
+import { usePartnership } from "@/hooks/use-partnership";
 
 export const PartnershipForm: React.FC = () => {
+  const { createPartnership, isSubmitting, error, isSuccess, resetSuccess } =
+    usePartnership();
+
   const [formData, setFormData] = useState({
     fullName: "",
     streetAddress: "",
@@ -30,9 +32,57 @@ export const PartnershipForm: React.FC = () => {
 
   const [focusedFields, setFocusedFields] = useState<Set<string>>(new Set());
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (isSuccess) {
+      const timer = setTimeout(() => {
+        resetSuccess();
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [isSuccess, resetSuccess]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+
+    try {
+      // Format phone number: +9779813671117 -> +977-9813671117
+      let formattedPhone = formData.phone as string;
+      if (formData.phone) {
+        const parsedNode = parsePhoneNumber(formData.phone);
+        if (parsedNode) {
+          formattedPhone = `+${parsedNode.countryCallingCode}-${parsedNode.nationalNumber}`;
+        }
+      }
+
+      await createPartnership({
+        full_name: formData.fullName,
+        street_address: formData.streetAddress,
+        street_address2: formData.streetAddress2,
+        city: formData.city,
+        state: formData.stateRegion,
+        code: formData.postalCode,
+        country: formData.country,
+        phone_number: formattedPhone,
+        email: formData.email,
+        comments: formData.comments,
+      });
+
+      // Clear form on success
+      setFormData({
+        fullName: "",
+        streetAddress: "",
+        streetAddress2: "",
+        city: "",
+        stateRegion: "",
+        postalCode: "",
+        country: "United States",
+        phone: "" as RPNInput.Value,
+        email: "",
+        comments: "",
+      });
+    } catch (err) {
+      console.error("Submission failed:", err);
+    }
   };
 
   const handleInputChange = (field: string, value: string | RPNInput.Value) => {
@@ -59,8 +109,20 @@ export const PartnershipForm: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-6">
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6">
       <form onSubmit={handleSubmit} className="w-full max-w-3xl space-y-6">
+        {isSuccess && (
+          <div className="p-4 bg-green-100 text-green-700 rounded-base border border-green-200 text-center">
+            Thank you! Your partnership request has been submitted successfully.
+          </div>
+        )}
+
+        {error && (
+          <div className="p-4 bg-red-100 text-red-700 rounded-base border border-red-200 text-center">
+            {error}
+          </div>
+        )}
+
         {/* Full Name */}
         <div>
           <div className="relative">
@@ -356,8 +418,9 @@ export const PartnershipForm: React.FC = () => {
           variant="sand"
           size="hero"
           className="w-full"
+          disabled={isSubmitting}
         >
-          Submit
+          {isSubmitting ? "Submitting..." : "Submit"}
         </CustomButton>
       </form>
     </div>
