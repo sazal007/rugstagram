@@ -5,11 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   Package,
-  Users,
   ShoppingCart,
-  Settings,
-  BarChart3,
-  FileText,
   ArrowLeft,
 } from "lucide-react";
 import {
