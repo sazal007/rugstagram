@@ -294,8 +294,10 @@ export function CartPageClient() {
               </div>
 
               {/* Checkout Button */}
+              
               <CustomButton
-                className="w-full bg-accent text-white hover:bg-accent/90 uppercase tracking-widest text-xs font-bold"
+                href="/checkout"
+                className="w-full bg-accent text-white hover:bg-accent/90 uppercase tracking-widest text-xs font-bold cursor-pointer"
                 size="hero"
                 disabled={cartItems.length === 0}
               >
