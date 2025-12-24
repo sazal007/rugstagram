@@ -25,7 +25,7 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen p-6 bg-gray-50">
+    <div className="min-h-screen p-6">
       <div className="mx-auto max-w-7xl">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-3xl font-bold text-gray-800">Dashboard</h1>

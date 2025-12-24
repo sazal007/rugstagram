@@ -1,49 +1,103 @@
-import type { Category } from "./category";
-import type { SubCategory } from "./sub-category";
+export interface ProductSize {
+  id: number;
+  name: string;
+  slug: string | null;
+  description: string;
+  image: string;
+}
 
-export type ProductListResponse = {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: Product[];
-};
+export interface ProductColor {
+  id: number;
+  name: string;
+  slug: string | null;
+  description: string | undefined;
+  image: string;
+}
 
-export type Product = {
+export interface ProductTexture {
   id: number;
   name: string;
   slug: string;
-  price: string;
-  market_price: string;
+  description: string;
+  image: string;
+}
 
-  thumbnail_image: string;
-  thumbnail_image_alt_description: string;
-
-  hover_thumbnail_image: string;
-  hover_thumbnail_image_alt_description: string;
-
-  stock: number;
-  reviews_count: number;
-  average_rating: number;
-
-  is_featured: boolean;
-  is_popular: boolean;
-  is_active: boolean;
-  is_clearance: boolean;
-
-  images: ProductImage[];
-
-  designer: string;
-  brand_name: string;
-
-  category?: Category;
-  sub_category?: SubCategory;
-};
-
-export type ProductImage = {
+export interface ProductImage {
   id: number;
   image: string;
   image_alt_description: string;
-  color: number | null;
+  color: ProductColor;
+  size: ProductSize[];
   stock: number;
   product: number;
-};
+  is_in_stock: boolean;
+}
+
+export interface ProductStyle {
+  id: number;
+  name: string;
+  slug: string;
+  description: string;
+}
+
+export interface ProductCollaboration {
+  id: number;
+  name: string;
+  slug: string;
+  description: string;
+}
+
+export interface ProductCategory {
+  id: number;
+  name: string;
+  slug: string;
+}
+
+export interface Product {
+  id: number;
+  size: ProductSize[];
+  designer: string;
+  images: ProductImage[];
+  thumbnail_image: string;
+  hover_thumbnail_image: string;
+  hover_thumbnail_image_alt_description: string;
+  brand_name: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  reviews: any[];
+  reviews_count: number;
+  average_rating: number;
+  color: ProductColor[];
+  texture: ProductTexture[];
+  style: ProductStyle[];
+  collaboration: ProductCollaboration[];
+  name: string;
+  slug: string;
+  description: string;
+  highlight_description: string;
+  extra_description: string;
+  about_this_design_description: string;
+  specifications: string;
+  market_price: string;
+  price: string;
+  stock: number;
+  thumbnail_image_alt_description: string;
+  is_popular: boolean;
+  is_featured: boolean;
+  is_clearance: boolean;
+  discount: string;
+  is_active: boolean;
+  meta_title: string;
+  meta_description: string;
+  created_at: string;
+  updated_at: string;
+  is_wishlisted: boolean;
+  category?: ProductCategory;
+  room_type: string | null;
+}
+
+export interface ProductListResponse {
+  results: Product[];
+  count: number;
+  next?: string | null;
+  previous?: string | null;
+}
