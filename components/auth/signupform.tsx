@@ -6,12 +6,22 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { FieldSeparator } from "@/components/ui/field";
+import { useAuth } from "@/context/AuthContext";
+import { useToast } from "@/hooks/use-toast";
+import Image from "next/image";
 
 export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const { signup, isLoading } = useAuth();
+  const { toast } = useToast();
+  
   const [formData, setFormData] = useState({
+    first_name: "",
+    last_name: "",
+    username: "",
+    phone: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -19,9 +29,23 @@ export function SignupForm({
 
   const [focusedFields, setFocusedFields] = useState<Set<string>>(new Set());
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    
+    if (formData.password !== formData.confirmPassword) {
+      toast({
+        title: "Passwords do not match",
+        description: "Please make sure your passwords match.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      await signup(formData);
+    } catch (error) {
+      console.error("Signup submission error:", error);
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -47,103 +71,67 @@ export function SignupForm({
     );
   };
 
+  // Helper to render an input field with floating label
+  const renderField = (id: string, label: string, type = "text", required = true) => (
+    <div className="relative">
+      <input
+        type={type}
+        id={id}
+        value={formData[id as keyof typeof formData]}
+        onChange={(e) => handleInputChange(id, e.target.value)}
+        onFocus={() => handleFocus(id)}
+        onBlur={() => handleBlur(id)}
+        className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border border-border appearance-none focus:outline-none focus:ring-0 focus:border-accent focus-visible:ring-accent/20"
+        placeholder=" "
+        required={required}
+      />
+      <label
+        htmlFor={id}
+        className={`absolute text-sm duration-300 transform origin-left bg-card px-2 start-1 z-10 ${
+          isLabelFloating(id)
+            ? "-translate-y-4 scale-75 top-2 text-accent"
+            : "scale-100 -translate-y-1/2 top-1/2 text-foreground/60"
+        }`}
+      >
+        {label}
+      </label>
+    </div>
+  );
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden border-border shadow-sm">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-6">
-            <div className="flex flex-col items-center gap-2 text-center">
+          <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-4">
+            <div className="flex flex-col items-center gap-2 text-center mb-2">
               <h1 className="text-2xl font-bold text-foreground">
                 Create your account
               </h1>
               <p className="text-foreground/70 text-sm text-balance">
-                Enter your email below to create your account
+                Enter your details below to create your account
               </p>
             </div>
 
-            {/* Email Field */}
-            <div>
-              <div className="relative">
-                <input
-                  type="email"
-                  id="email"
-                  value={formData.email}
-                  onChange={(e) => handleInputChange("email", e.target.value)}
-                  onFocus={() => handleFocus("email")}
-                  onBlur={() => handleBlur("email")}
-                  className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border border-border appearance-none focus:outline-none focus:ring-0 focus:border-accent focus-visible:ring-accent/20"
-                  placeholder=" "
-                  required
-                />
-                <label
-                  htmlFor="email"
-                  className={`absolute text-sm duration-300 transform origin-left bg-card px-2 start-1 z-10 ${
-                    isLabelFloating("email")
-                      ? "-translate-y-4 scale-75 top-2 text-accent"
-                      : "scale-100 -translate-y-1/2 top-1/2 text-foreground/60"
-                  }`}
-                >
-                  Email
-                </label>
-              </div>
+            {/* Name Fields */}
+            <div className="grid grid-cols-2 gap-4">
+              {renderField("first_name", "First Name")}
+              {renderField("last_name", "Last Name")}
             </div>
 
-            {/* Password Fields */}
-            <div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="relative">
-                  <input
-                    type="password"
-                    id="password"
-                    value={formData.password}
-                    onChange={(e) =>
-                      handleInputChange("password", e.target.value)
-                    }
-                    onFocus={() => handleFocus("password")}
-                    onBlur={() => handleBlur("password")}
-                    className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border border-border appearance-none focus:outline-none focus:ring-0 focus:border-accent focus-visible:ring-accent/20"
-                    placeholder=" "
-                    required
-                  />
-                  <label
-                    htmlFor="password"
-                    className={`absolute text-sm duration-300 transform origin-left bg-card px-2 start-1 z-10 ${
-                      isLabelFloating("password")
-                        ? "-translate-y-4 scale-75 top-2 text-accent"
-                        : "scale-100 -translate-y-1/2 top-1/2 text-foreground/60"
-                    }`}
-                  >
-                    Password
-                  </label>
-                </div>
+            {/* Username & Phone */}
+            <div className="grid grid-cols-2 gap-4">
+               {renderField("username", "Username")}
+               {renderField("phone", "Phone", "tel")}
+            </div>
 
-                <div className="relative">
-                  <input
-                    type="password"
-                    id="confirm-password"
-                    value={formData.confirmPassword}
-                    onChange={(e) =>
-                      handleInputChange("confirmPassword", e.target.value)
-                    }
-                    onFocus={() => handleFocus("confirmPassword")}
-                    onBlur={() => handleBlur("confirmPassword")}
-                    className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border border-border appearance-none focus:outline-none focus:ring-0 focus:border-accent focus-visible:ring-accent/20"
-                    placeholder=" "
-                    required
-                  />
-                  <label
-                    htmlFor="confirm-password"
-                    className={`absolute text-sm duration-300 transform origin-left bg-card px-2 start-1 z-10 ${
-                      isLabelFloating("confirmPassword")
-                        ? "-translate-y-4 scale-75 top-2 text-accent"
-                        : "scale-100 -translate-y-1/2 top-1/2 text-foreground/60"
-                    }`}
-                  >
-                    Confirm Password
-                  </label>
-                </div>
-              </div>
-              <p className="mt-2 text-sm text-foreground/70">
+            {/* Email Field */}
+            {renderField("email", "Email", "email")}
+
+            {/* Password Fields */}
+            <div className="grid grid-cols-1 gap-4">
+              {renderField("password", "Password", "password")}
+              {renderField("confirmPassword", "Confirm Password", "password")}
+              <p className="text-xs text-foreground/70">
                 Must be at least 8 characters long.
               </p>
             </div>
@@ -152,12 +140,13 @@ export function SignupForm({
               <Button
                 type="submit"
                 className="bg-accent text-accent-foreground hover:bg-accent/90 w-full"
+                disabled={isLoading}
               >
-                Create Account
+                {isLoading ? "Creating Account..." : "Create Account"}
               </Button>
             </div>
 
-            <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card *:data-[slot=field-separator-content]:text-foreground/70 mb-4">
+            <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card *:data-[slot=field-separator-content]:text-foreground/70 my-4">
               Or continue with
             </FieldSeparator>
 
@@ -184,31 +173,16 @@ export function SignupForm({
             </p>
           </form>
           <div className="bg-sand/10 relative hidden md:block border-l border-border">
-            <img
+            <Image
               src="https://images.unsplash.com/photo-1534889156217-d643df14f14a?q=80&w=1064&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="Image"
+              width={100}
+              height={100}
               className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
             />
           </div>
         </CardContent>
       </Card>
-      {/* <p className="px-6 text-center text-foreground/70 text-sm">
-        By clicking continue, you agree to our{" "}
-        <a
-          href="#"
-          className="text-accent hover:text-accent/80 underline underline-offset-4 transition-colors font-medium"
-        >
-          Terms of Service
-        </a>{" "}
-        and{" "}
-        <a
-          href="#"
-          className="text-accent hover:text-accent/80 underline underline-offset-4 transition-colors font-medium"
-        >
-          Privacy Policy
-        </a>
-        .
-      </p> */}
     </div>
   );
 }

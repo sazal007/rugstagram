@@ -2,15 +2,19 @@
 
 import type React from "react";
 import { useState } from "react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { FieldSeparator } from "@/components/ui/field";
 
+import { useAuth } from "@/context/AuthContext";
+
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const { login, isLoading } = useAuth();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -18,9 +22,14 @@ export function LoginForm({
 
   const [focusedFields, setFocusedFields] = useState<Set<string>>(new Set());
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    try {
+      await login(formData);
+    } catch (error) {
+      // Error handled by AuthContext (toast)
+      console.error("Login submission error:", error);
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -120,8 +129,9 @@ export function LoginForm({
               <Button
                 type="submit"
                 className="bg-accent text-accent-foreground hover:bg-accent/90 w-full"
+                disabled={isLoading}
               >
-                Sign in
+                {isLoading ? "Signing in..." : "Sign in"}
               </Button>
             </div>
 
@@ -152,10 +162,11 @@ export function LoginForm({
             </p>
           </form>
           <div className="bg-sand/10 relative hidden md:block border-l border-border">
-            <img
+            <Image
               src="https://images.unsplash.com/photo-1534889156217-d643df14f14a?q=80&w=1064&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="Image"
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+              fill
+              className="object-cover dark:brightness-[0.2] dark:grayscale"
             />
           </div>
         </CardContent>

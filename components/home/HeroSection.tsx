@@ -5,9 +5,9 @@ import { motion, AnimatePresence } from "motion/react";
 import { CustomButton } from "@/components/ui/custom-button";
 
 const HERO_IMAGES = [
-  "/images/weaving/stretching.avif",
-  "/images/weaving/weaving.avif",
-  "/images/weaving/wash-drying.avif",
+  "https://images.unsplash.com/photo-1600166898405-da9535204843?auto=format&fit=crop&q=80&w=2000",
+  "https://images.unsplash.com/photo-1603913996638-c01100417b4a?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8cnVnc3xlbnwwfHwwfHx8MA%3D%3D",
+  "https://images.unsplash.com/photo-1594040226829-7f251ab46d80?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cnVnc3xlbnwwfHwwfHx8MA%3D%3D",
 ];
 
 export const HeroSection: React.FC = () => {
