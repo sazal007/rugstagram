@@ -249,7 +249,7 @@ export function Navbar() {
                         >
                           {item.label}
                         </NavigationMenuTrigger>
-                        <NavigationMenuContent className="fixed! left-0! right-0! top-[80px]! mt-0! z-50 w-screen! p-0! bg-transparent! border-0! shadow-none! data-[motion^=from-]:animate-none! data-[motion^=to-]:animate-none! rounded-none!">
+                        <NavigationMenuContent className="fixed! left-0! right-0! top-[110px]! mt-0! z-50 w-screen! p-0! bg-transparent! border-0! shadow-none! data-[motion^=from-]:animate-none! data-[motion^=to-]:animate-none! rounded-none!">
                           <NavDropdownContent
                             items={item.children || []}
                             isActive={isActive}
