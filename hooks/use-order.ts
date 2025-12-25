@@ -8,13 +8,16 @@ import {
   getOrders,
   updateOrder,
 } from '@/services/order';
-import { CreateOrderPayload, Order } from '@/types/order';
+import { CreateOrderPayload, Order, OrderFilters, UpdateOrderData, OrdersResponse } from '@/types/order';
 
-export const useOrders = (token?: string) => {
+export const useOrders = (
+  filters?: OrderFilters,
+  options?: { placeholderData?: (previousData: OrdersResponse | undefined) => OrdersResponse | undefined }
+) => {
   return useQuery({
-    queryKey: ['orders', token],
-    queryFn: () => getOrders(token),
-    enabled: !!token, // Only fetch when token is available
+    queryKey: ['orders', filters], // Include filters in queryKey
+    queryFn: () => getOrders(filters),
+    ...options,
   });
 };
 
@@ -43,15 +46,15 @@ export const useUpdateOrder = () => {
 
   return useMutation({
     mutationFn: ({
-      id,
+      orderNumber,
       data,
     }: {
-      id: string;
-      data: Partial<CreateOrderPayload>;
-    }) => updateOrder(id, data),
+      orderNumber: string;
+      data: UpdateOrderData;
+    }) => updateOrder(orderNumber, data),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['orders'] });
-      queryClient.invalidateQueries({ queryKey: ['orders', variables.id] });
+      queryClient.invalidateQueries({ queryKey: ['orders', variables.orderNumber] });
     },
   });
 };

@@ -1,3 +1,5 @@
-export default function OrdersPage() {
-  return <div>OrdersPage</div>;
+import AdminOrdersPage from "./admin-order-page";
+
+export default function Page() {
+  return <AdminOrdersPage />;
 }

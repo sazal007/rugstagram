@@ -1,17 +1,59 @@
-// Order list API response
-export type OrdersResponse = {
+export interface OrderItemPayload {
+  product_id: number;
+  quantity: number;
+  price: string;
+  size?: number | null;
+  color?: number | null;
+  cover?: string | null;
+  pad?: string | null;
+}
+
+export interface StatusCounts {
+  all: number;
+  pending: number;
+  processing: number;
+  shipped: number;
+  delivered: number;
+  cancelled: number;
+}
+export type OrderStatus =
+  | "pending"
+  | "processing"
+  | "shipped"
+  | "delivered"
+  | "cancelled";
+export interface OrderFilters {
+  status?: string;
+  search?: string;
+  page?: number;
+  page_size?: number;
+  ordering?: string;
+}
+export interface OrdersResponse {
   count: number;
   next: string | null;
   previous: string | null;
   results: Order[];
-};
+}
+export interface CreateOrderPayload {
+  full_name: string;
+  shipping_address: string;
+  city: string;
+  state?: string;
+  zip_code: string;
+  phone_number: string;
+  email: string;
+  delivery_fee: string;
+  shipping_method?: string;
+  items: OrderItemPayload[];
+  total_amount: string;
+}
 
-// Single order
-export type Order = {
+export interface Order {
   id: number;
   full_name: string;
   order_number: string;
-  status: "pending" | "cancelled" | "completed" | "processing"; 
+  status: OrderStatus;
   shipping_address: string;
   city: string;
   state: string;
@@ -20,42 +62,16 @@ export type Order = {
   email: string;
   total_amount: string;
   delivery_fee: string;
-  items: OrderItem[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  items: any[];
   created_at: string;
   updated_at: string;
-};
-
-// Order item
-export type OrderItem = {
-  product_id: string;
-  product_name: string;
-  product_slug: string;
-  product_thumbnail_image: string;
-  product_price: string;
-  quantity: number;
-  price: string;
-  total_price: number;
-  color: string | null;
-  size: string;
-  cover: string;
-  pad: string;
-};
-
-export type CreateOrderItemPayload = {
-  product_id: string;
-  quantity: number;
-  price: number;
-  size?: number;
-};
-
-export type CreateOrderPayload = {
-  full_name: string;
-  email: string;
-  phone_number: string;
-  shipping_address: string;
-  city: string;
-  zip_code: string;
-  shipping_method?: "standard" | "express";
-  total_amount: number;
-  items: CreateOrderItemPayload[];
-};
+}
+export interface UpdateOrderData {
+  status?: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
+  shipping_address?: string;
+  city?: string;
+  state?: string;
+  zip_code?: string;
+  phone_number?: string;
+}

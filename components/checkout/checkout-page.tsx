@@ -92,13 +92,14 @@ export function CheckoutPage() {
           city: formData.city,
           zip_code: formData.zipCode,
           shipping_method: formData.shippingMethod,
-          total_amount: total,
+          delivery_fee: shipping.toFixed(2),
+          total_amount: total.toFixed(2),
           items: cartItems.map((item) => {
             console.log("Mapping item to payload:", item);
             return {
-            product_id: item.productId,
+            product_id: Number(item.productId),
             quantity: item.quantity,
-            price: item.price,
+            price: String(item.price),
             size: item.sizeId || undefined,
           }}),
         };

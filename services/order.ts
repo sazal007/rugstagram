@@ -1,5 +1,5 @@
 import { siteConfig } from "@/config/siteConfig";
-import { Order, OrdersResponse, CreateOrderPayload } from "@/types/order";
+import { Order, OrdersResponse, CreateOrderPayload, OrderFilters, UpdateOrderData } from "@/types/order";
 
 const getHeaders = (token?: string) => {
   const headers: HeadersInit = {
@@ -20,8 +20,20 @@ const getHeaders = (token?: string) => {
   return headers;
 };
 
-export const getOrders = async (token?: string): Promise<OrdersResponse> => {
-  const response = await fetch(`${siteConfig.backendUrl}/api/orders/`, {
+export const getOrders = async (
+  filters?: OrderFilters,
+  token?: string
+): Promise<OrdersResponse> => {
+  const queryParams = new URLSearchParams();
+  if (filters) {
+    if (filters.page) queryParams.append("page", filters.page.toString());
+    if (filters.page_size) queryParams.append("page_size", filters.page_size.toString());
+    if (filters.search) queryParams.append("search", filters.search);
+    if (filters.status && filters.status !== "all") queryParams.append("status", filters.status);
+    if (filters.ordering) queryParams.append("ordering", filters.ordering);
+  }
+
+  const response = await fetch(`${siteConfig.backendUrl}/api/orders/?${queryParams.toString()}`, {
     headers: getHeaders(token),
   });
 
@@ -70,7 +82,7 @@ export const getOrder = async (
 
 export const updateOrder = async (
   orderNumber: string,
-  data: Partial<CreateOrderPayload>, // or Partial<Order> depending on API
+  data: UpdateOrderData,
   token?: string
 ): Promise<Order> => {
   const response = await fetch(
