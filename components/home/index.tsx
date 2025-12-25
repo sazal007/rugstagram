@@ -4,6 +4,7 @@ import { FeaturedCollections } from "./FeaturedCollections";
 import { BentoGrid } from "./BentoGrid";
 import { BrandStory } from "./BrandStory";
 import { FeaturedProducts } from "./FeaturedProducts";
+import { ColorShowcase } from "./ColorShowcase";
 import { BespokeCTA } from "./BespokeCTA";
 
 export const Home: React.FC = () => {
@@ -13,6 +14,7 @@ export const Home: React.FC = () => {
       <FeaturedCollections />
       <BentoGrid />
       <BrandStory />
+      <ColorShowcase />
       <FeaturedProducts />
       <BespokeCTA />
     </>
