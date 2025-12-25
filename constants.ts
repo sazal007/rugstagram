@@ -76,17 +76,17 @@ export const NAV_ITEMS: NavItem[] = [
       {
         label: "Overview",
         href: "/bespoke",
-        image: "/images/nav/bespoke-overview.jpg",
+        image: "/images/overview.avif",
       },
       {
         label: "Customize Existing",
         href: "/bespoke/customize",
-        image: "/images/nav/customize-existing.jpg",
+        image: "/images/customize-existing.jpeg",
       },
       {
         label: "Design Your Own",
         href: "/bespoke/design",
-        image: "/images/nav/design-your-own.jpg",
+        image: "/images/design-your-own.jpeg",
       },
     ],
   },
@@ -97,7 +97,7 @@ export const NAV_ITEMS: NavItem[] = [
       {
         label: "Our Culture",
         href: "/about/culture",
-        image: "/images/nav/our-culture.jpg",
+        image: "/images/culture.jpg",
       },
       {
         label: "Meet the Founder",
@@ -118,7 +118,7 @@ export const NAV_ITEMS: NavItem[] = [
       {
         label: "Contact Us",
         href: "/assistance",
-        image: "/images/nav/contact.jpg",
+        image: "/images/contact-us.jpg",
       },
       {
         label: "Partnership",
@@ -128,12 +128,12 @@ export const NAV_ITEMS: NavItem[] = [
       {
         label: "Shipping",
         href: "/assistance/shipping",
-        image: "/images/nav/shipping.jpg",
+        image: "/images/shipping.avif",
       },
       {
         label: "Payment",
         href: "/assistance/payment",
-        image: "/images/nav/payment.jpg",
+        image: "/images/payments.png",
       },
     ],
   },
