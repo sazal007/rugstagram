@@ -31,5 +31,6 @@ export interface FilterState {
 export interface NavItem {
   label: string;
   href: string;
+  image?: string;
   children?: NavItem[];
 }
