@@ -21,6 +21,7 @@ export interface CartItem {
   quantity: number;
   image: string;
   size: string;
+  sizeId: number;
 }
 
 interface CartContextType {
@@ -93,6 +94,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const addToCart = useCallback(
     (product: Product, size: string, quantity: number) => {
+      console.log("Adding to cart:", { productName: product.name, size, quantity });
       setCartItems((prevItems) => {
         // Create a unique ID for this cart item (productId + size)
         const cartItemId = `${product.id}-${size}`;
@@ -118,6 +120,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
           const price = parseFloat(product.price);
           const originalPrice = product.market_price ? parseFloat(product.market_price) : undefined;
+          
+          
+          const selectedSize = product.size.find(s => s.name === size);
+          console.log("Selected size object:", selectedSize);
+          const sizeId = selectedSize ? selectedSize.id : 0; // Fallback or error handling?
+          console.log("Derived sizeId:", sizeId);
+
 
           const newItem: CartItem = {
             id: cartItemId,
@@ -129,6 +138,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             quantity,
             image: product.thumbnail_image,
             size,
+            sizeId,
           };
 
           return [...prevItems, newItem];

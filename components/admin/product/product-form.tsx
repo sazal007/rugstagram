@@ -54,7 +54,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
         hover_thumbnail_image: null,
         hover_thumbnail_image_alt_description:
           initialData.hover_thumbnail_image_alt_description,
-
         is_active: initialData.is_active ?? true,
         is_featured: initialData.is_featured ?? false,
         is_clearance: initialData.is_clearance ?? false,

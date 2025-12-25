@@ -25,6 +25,7 @@ import Image from "next/image";
 
 export function CartPageClient() {
   const { cartItems, updateQuantity, removeFromCart, subtotal } = useCart();
+  console.log("Cart items in CartPageClient:", cartItems);
   const [shippingMethod, setShippingMethod] = useState("standard");
   const [promoCode, setPromoCode] = useState("");
 

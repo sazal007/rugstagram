@@ -12,11 +12,12 @@ interface ProductSelectorsProps {
 }
 
 export const ProductSelectors: React.FC<ProductSelectorsProps> = ({
+  product,
   onSizeChange,
   onQuantityChange,
 }) => {
-  // Mock sizes since backend doesn't provide them yet
-  const sizes = ["5x7", "8x10", "9x12", "10x14"];
+  // Use real sizes from product
+  const sizes = product.size.map((s) => s.name);
 
   const [selectedSize, setSelectedSize] = useState<string>(sizes[0] || "");
   const [quantity, setQuantity] = useState(1);

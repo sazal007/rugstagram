@@ -1,11 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
+
 import { CheckoutSteps } from "./checkout-steps";
 import { ContactInformation } from "./contact-information";
 import { ShippingAddress } from "./shipping-address";
@@ -13,6 +16,8 @@ import { ShippingMethod } from "./shipping-method";
 import { PaymentMethod } from "./payment-method";
 import { OrderSummary } from "./order-summary";
 import { CheckoutFormData, CheckoutStep, CheckoutCartItem } from "./types";
+import { useCreateOrder } from "@/hooks/use-order";
+import { CreateOrderPayload } from "@/types/order";
 
 const CHECKOUT_STEPS: CheckoutStep[] = [
   { number: 1, label: "Information" },
@@ -20,9 +25,11 @@ const CHECKOUT_STEPS: CheckoutStep[] = [
 ];
 
 export function CheckoutPage() {
+  const { user, tokens, isLoading: isAuthLoading } = useAuth();
   const { cartItems, subtotal, clearCart } = useCart();
   const [step, setStep] = useState(1);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
+  const createOrderMutation = useCreateOrder();
 
   const [formData, setFormData] = useState<CheckoutFormData>({
     email: "",
@@ -39,6 +46,21 @@ export function CheckoutPage() {
     formData.shippingMethod === "express" ? 200 : subtotal >= 50 ? 0 : 5.99;
   const total = subtotal + shipping;
 
+  useEffect(() => {
+    if (!isAuthLoading && !user) {
+      sessionStorage.setItem("redirectAfterLogin", "/checkout");
+      router.push("/login");
+    }
+  }, [user, isAuthLoading, router]);
+
+  if (isAuthLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
   // Transform cart items for order summary
   const checkoutCartItems: CheckoutCartItem[] = cartItems.map((item) => ({
     id: item.id,
@@ -54,20 +76,47 @@ export function CheckoutPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("handleSubmit called. Step:", step);
+    
     if (step < 2) {
+      console.log("Moving to next step");
       setStep(step + 1);
     } else {
-      setIsSubmitting(true);
+      console.log("Attempting to submit order...");
       try {
-        // TODO: Integrate with order creation API
-        console.log("Order submitted:", { formData, cartItems, total });
+        const payload: CreateOrderPayload = {
+          full_name: `${formData.firstName} ${formData.lastName}`,
+          email: formData.email,
+          phone_number: formData.phone,
+          shipping_address: formData.address,
+          city: formData.city,
+          zip_code: formData.zipCode,
+          shipping_method: formData.shippingMethod,
+          total_amount: total,
+          items: cartItems.map((item) => {
+            console.log("Mapping item to payload:", item);
+            return {
+            product_id: item.productId,
+            quantity: item.quantity,
+            price: item.price,
+            size: item.sizeId || undefined,
+          }}),
+        };
+
+        console.log("Order Payload:", JSON.stringify(payload, null, 2));
+        console.log("Cart Items State:", JSON.stringify(cartItems, null, 2));
+
+        // Get the auth token from the tokens context
+        const token = tokens?.access_token;
+
+        await createOrderMutation.mutateAsync({ data: payload, token });
+        console.log("Mutation successful");
+        
         clearCart();
-        // Redirect to success page or home
-        window.location.href = "/";
+        router.push("/");
       } catch (error) {
         console.error("Order creation failed:", error);
-      } finally {
-        setIsSubmitting(false);
+        // Could add toast notification here
       }
     }
   };
@@ -94,7 +143,7 @@ export function CheckoutPage() {
     <div className="min-h-screen bg-background">
       <main className="pt-28 pb-16">
         <div className="container mx-auto px-4 max-w-6xl">
-          <CheckoutSteps currentStep={step}  steps={CHECKOUT_STEPS} />
+          <CheckoutSteps currentStep={step} steps={CHECKOUT_STEPS} />
 
           <div className="grid lg:grid-cols-5 gap-8">
             {/* Form Section */}
@@ -146,13 +195,17 @@ export function CheckoutPage() {
                     </Link>
                   )}
 
-                  <Button type="submit" className="gap-2" disabled={isSubmitting}>
+                  <Button 
+                    type="submit" 
+                    className="gap-2" 
+                    disabled={createOrderMutation.isPending}
+                  >
                     {step === 2
-                      ? isSubmitting
+                      ? createOrderMutation.isPending
                         ? "Processing..."
                         : "Place Order"
                       : "Continue"}
-                    {!isSubmitting && <ChevronRight className="w-4 h-4" />}
+                    {!createOrderMutation.isPending && <ChevronRight className="w-4 h-4" />}
                   </Button>
                 </div>
               </form>
