@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { NAV_ITEMS } from "@/constants";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
 import { CustomButton } from "@/components/ui/custom-button";
 
 interface NavDropdownContentProps {
@@ -177,6 +178,7 @@ export function Navbar() {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const { totalItems: cartItemCount } = useCart();
+  const { isAuthenticated } = useAuth();
 
   const isActive = (href: string) => {
     if (href === "/") {
@@ -287,7 +289,7 @@ export function Navbar() {
             >
               <Search className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]" />
             </CustomButton>
-            <Link href="/login">
+            <Link href={isAuthenticated ? "/profile" : "/login"}>
               <CustomButton
                 variant="ghost"
                 size="icon"
