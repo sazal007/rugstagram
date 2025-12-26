@@ -183,9 +183,6 @@ export function Navbar() {
   return (
     <>
       {/* Announcement Bar */}
-      <div className="bg-accent text-white text-[8px] sm:text-[11px] py-2 text-center tracking-widest uppercase font-medium">
-        Global Shipping Included • Bespoke Orders Open
-      </div>
 
       {/* Header */}
       <header
@@ -195,6 +192,9 @@ export function Navbar() {
             : "bg-background border-b border-gray-100"
         }`}
       >
+        <div className="bg-accent text-white text-[8px] sm:text-[11px] py-2 text-center tracking-widest uppercase font-medium">
+          Global Shipping Included • Bespoke Orders Open
+        </div>
         <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 h-16 sm:h-20 flex items-center justify-between relative">
           {/* Mobile Menu Button */}
           <CustomButton
@@ -242,7 +242,7 @@ export function Navbar() {
                         >
                           {item.label}
                         </NavigationMenuTrigger>
-                        <NavigationMenuContent className="fixed! left-0! right-0! top-[80px]! mt-0! z-50 w-screen! p-0! bg-transparent! border-0! shadow-none! data-[motion^=from-]:animate-none! data-[motion^=to-]:animate-none! rounded-none!">
+                        <NavigationMenuContent className="fixed! left-0! right-0! top-[110px]! mt-0! z-50 w-screen! p-0! bg-transparent! border-0! shadow-none! data-[motion^=from-]:animate-none! data-[motion^=to-]:animate-none! rounded-none!">
                           <NavDropdownContent
                             items={item.children || []}
                             isActive={isActive}
