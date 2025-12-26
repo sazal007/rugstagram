@@ -7,6 +7,8 @@ import {
   Package,
   ShoppingCart,
   ArrowLeft,
+  Mail,
+  ListTodo,
 } from "lucide-react";
 import {
   Sidebar,
@@ -29,6 +31,11 @@ const adminNavItems = [
     icon: LayoutDashboard,
   },
   {
+    title: "Collections",
+    href: "/admin/collections",
+    icon: ListTodo,
+  },
+  {
     title: "Products",
     href: "/admin/products",
     icon: Package,
@@ -38,6 +45,12 @@ const adminNavItems = [
     href: "/admin/orders",
     icon: ShoppingCart,
   },
+  {
+    title: "Newsletter",
+    href: "/admin/newsletter",
+    icon: Mail,
+  },
+  
 ];
 
 export function AdminSidebar() {

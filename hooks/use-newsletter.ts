@@ -33,3 +33,12 @@ export const useNewsletter = () => {
     resetSuccess: mutation.reset,
   };
 };
+
+export const useNewsletterSubscriptions = () => {
+  return useQuery({
+    queryKey: ["subscribers"],
+    queryFn: getSubscribers,
+    refetchInterval: 30000, 
+    staleTime: 60000, 
+  });
+};

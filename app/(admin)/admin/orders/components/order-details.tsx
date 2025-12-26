@@ -9,7 +9,7 @@ interface OrderDetailsProps {
 }
 
 const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => (
-  <td colSpan={6} className="px-2 py-4 bg-gradient-to-br from-blue-50 to-indigo-50 sm:px-3 sm:py-6 md:px-6">
+  <td colSpan={6} className="px-2 py-4 bg-linear-to-br from-blue-50 to-indigo-50 sm:px-3 sm:py-6 md:px-6">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-2 lg:gap-6">
           {/* Order Information Section */}
@@ -28,27 +28,27 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => (
               
               <div className="space-y-2 sm:space-y-3">
                 <div className="flex items-start gap-2 sm:gap-3">
-                  <div className="flex items-center justify-center flex-shrink-0 w-6 h-6  rounded-lg sm:w-8 sm:h-8 mt-0.5">
+                  <div className="flex items-center justify-center shrink-0 w-6 h-6  rounded-lg sm:w-8 sm:h-8 mt-0.5">
                     <svg className="w-3 h-3 text-gray-600 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="text-xs font-medium text-gray-900 break-words sm:text-sm">{order.full_name}</div>
+                    <div className="text-xs font-medium text-gray-900 wrap-break-words sm:text-sm">{order.full_name}</div>
                     <div className="text-xs text-gray-600 break-all sm:text-sm">{order.email}</div>
                     <div className="text-xs text-gray-600 sm:text-sm">{order.phone_number}</div>
                   </div>
                 </div>
                 
                 <div className="flex items-start gap-2 sm:gap-3">
-                  <div className="flex items-center justify-center flex-shrink-0 w-6 h-6  rounded-lg sm:w-8 sm:h-8 mt-0.5">
+                  <div className="flex items-center justify-center shrink-0 w-6 h-6  rounded-lg sm:w-8 sm:h-8 mt-0.5">
                     <svg className="w-3 h-3 text-gray-600 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="text-xs text-gray-900 break-words sm:text-sm">
+                    <div className="text-xs text-gray-900 wrap-break-words sm:text-sm">
                       {order.shipping_address}, {order.city}, {order.state} {order.zip_code}
                     </div>
                   </div>
@@ -69,7 +69,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => (
             <div className={`space-y-2 sm:space-y-3 ${(order.items?.length || 0) > 2 ? 'max-h-72 overflow-y-auto pr-1 sm:max-h-80 sm:pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100' : ''}`}>
               {order.items?.map((item, idx) => (
                 <div key={item.product_id || idx} className="flex items-start gap-2 p-2 transition-shadow duration-200 border border-gray-200 rounded-lg sm:gap-3 sm:p-3 lg:gap-4 lg:p-4 bg-gray-50 hover:shadow-md">
-                  <div className="flex-shrink-0">
+                  <div className="shrink-0">
                     <Image
                       src={getImageUrl(item.product_thumbnail_image)}
                       alt={item.product_name}
@@ -81,7 +81,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => (
                   </div>
                   
                   <div className="flex-1 min-w-0">
-                    <h5 className="text-xs font-semibold text-gray-900 break-words sm:text-sm lg:text-base">
+                    <h5 className="text-xs font-semibold text-gray-900 wrap-break-words sm:text-sm lg:text-base">
                       {item.product_name}
                     </h5>
                     
