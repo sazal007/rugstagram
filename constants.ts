@@ -76,12 +76,12 @@ export const NAV_ITEMS: NavItem[] = [
       {
         label: "Overview",
         href: "/bespoke",
-        image: "/images/overview.avif",
+        image: "/images/nav-images/overview.jpeg",
       },
       {
         label: "Design Your Own",
         href: "/bespoke/design",
-        image: "/images/design-your-own.jpeg",
+        image: "/images/nav-images/design-your-own.jpeg",
       },
     ],
   },
@@ -92,7 +92,7 @@ export const NAV_ITEMS: NavItem[] = [
       {
         label: "Our Culture",
         href: "/about/culture",
-        image: "/images/culture.jpg",
+        image: "/images/nav-images/culture.jpg",
       },
       {
         label: "Meet the Founder",
@@ -102,7 +102,7 @@ export const NAV_ITEMS: NavItem[] = [
       {
         label: "Art of Weaving",
         href: "/about/weaving",
-        image: "/images/art-of-weaving.jpg",
+        image: "/images/nav-images/art-of-weaving.jpg",
       },
     ],
   },
@@ -113,22 +113,22 @@ export const NAV_ITEMS: NavItem[] = [
       {
         label: "Contact Us",
         href: "/assistance",
-        image: "/images/contact-us.jpg",
+        image: "/images/nav-images/contact-us.jpeg",
       },
       {
         label: "Partnership",
         href: "/assistance/partnership",
-        image: "/images/partnership.jpg",
+        image: "/images/nav-images/partnership.jpeg",
       },
       {
         label: "Shipping",
         href: "/assistance/shipping",
-        image: "/images/shipping.avif",
+        image: "/images/nav-images/shipping.jpeg",
       },
       {
         label: "Payment",
         href: "/assistance/payment",
-        image: "/images/payments.png",
+        image: "/images/nav-images/payment.jpeg",
       },
     ],
   },
