@@ -70,6 +70,7 @@ export const FullyBespokeOption: React.FC = () => {
           variant="default"
           size="hero-sm"
           className="bg-white text-primary hover:bg-sand hover:text-white transition-colors mt-4"
+          href="/assistance"
         >
           Contact For Quote
         </CustomButton>

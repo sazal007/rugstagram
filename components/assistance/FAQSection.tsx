@@ -22,11 +22,26 @@ const FAQ_DATA: FAQCategory[] = [
         answer:
           "Yes, we ship worldwide. Shipping is included in the price for most major destinations. Duties and taxes are calculated at checkout.",
       },
+      {
+        question: "What is the shipping cost?",
+        answer:
+          "Shipping cost is calculated at checkout based on the destination and the size of the rug. Please refer to the shipping page for more information.",
+      },
+      {
+        question: "What is the shipping time?",
+        answer:
+          "Shipping time is calculated at checkout based on the destination and the size of the rug. Please refer to the shipping page for more information.",
+      },
     ],
   },
   {
     title: "Custom Orders",
     items: [
+      {
+        question: "What is the lead time for custom rugs?",
+        answer:
+          "Custom orders typically take 10-14 weeks, depending on the complexity of the design and the size of the rug. We will provide updates throughout the process.",
+      },
       {
         question: "What is the lead time for custom rugs?",
         answer:

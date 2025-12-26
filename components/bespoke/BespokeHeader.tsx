@@ -68,6 +68,7 @@ export const BespokeHeader: React.FC = () => {
                 variant="sand"
                 size="hero-lg"
                 className="px-12 py-5 rounded-full hover:shadow-2xl hover:-translate-y-1 transition-all"
+                href="/assistance"
               >
                 Customize Existing
               </CustomButton>
@@ -75,6 +76,7 @@ export const BespokeHeader: React.FC = () => {
                 variant="outline"
                 size="hero-lg"
                 className="px-12 py-5 rounded-full border-black/10 hover:bg-black hover:text-white hover:border-black transition-all"
+                href="/assistance"
               >
                 Design Your Own
               </CustomButton>

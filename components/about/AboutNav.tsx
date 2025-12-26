@@ -13,7 +13,7 @@ export const AboutNav: React.FC = () => {
   ];
 
   return (
-    <div className="border-b border-gray-100 sticky top-14 md:top-20 bg-background/95 backdrop-blur z-40">
+    <div className="border-b border-gray-100 sticky top-14 md:top-28 bg-background/95 backdrop-blur z-40">
       <div className="max-w-7xl mx-auto px-6 overflow-x-auto">
         <div className="flex justify-center min-w-max">
           {links.map((link) => {

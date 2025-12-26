@@ -223,7 +223,7 @@ const RevealCard: React.FC<RevealCardProps> = ({ collection, onNavigate }) => {
         next.push(first);
         return next;
       });
-    }, 2000);
+    }, 4000);
     return () => clearInterval(interval);
   }, []);
 
