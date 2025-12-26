@@ -45,25 +45,25 @@ const collections: Collection[] = [
   {
     name: "Modern Collection",
     slug: "modern",
-    image: "/collections/modern-collection.png",
+    image: "/collections/modern-collection.jpeg",
     images: [
       {
-        src: "/collections/modern-collection.png",
+        src: "/collections/modern-collection.jpeg",
         position: "topLeft",
         title: "Modern Perspective 1",
       },
       {
-        src: "/collections/modern-collection.png",
+        src: "/collections/modern-collection.jpeg",
         position: "topRight",
         title: "Modern Perspective 2",
       },
       {
-        src: "/collections/modern-collection.png",
+        src: "/collections/modern-collection.jpeg",
         position: "bottomLeft",
         title: "Modern Perspective 3",
       },
       {
-        src: "/collections/modern-collection.png",
+        src: "/collections/modern-collection.jpeg",
         position: "bottomRight",
         title: "Modern Perspective 4",
       },
@@ -72,25 +72,25 @@ const collections: Collection[] = [
   {
     name: "Artwork Collection",
     slug: "artwork",
-    image: "/collections/artwork-collection.png",
+    image: "/collections/artwork-collection.jpeg",
     images: [
       {
-        src: "/collections/artwork-collection.png",
+        src: "/collections/artwork-collection.jpeg",
         position: "topLeft",
         title: "Artwork Perspective 1",
       },
       {
-        src: "/collections/artwork-collection.png",
+        src: "/collections/artwork-collection.jpeg",
         position: "topRight",
         title: "Artwork Perspective 2",
       },
       {
-        src: "/collections/artwork-collection.png",
+        src: "/collections/artwork-collection.jpeg",
         position: "bottomLeft",
         title: "Artwork Perspective 3",
       },
       {
-        src: "/collections/artwork-collection.png",
+        src: "/collections/artwork-collection.jpeg",
         position: "bottomRight",
         title: "Artwork Perspective 4",
       },
@@ -99,25 +99,25 @@ const collections: Collection[] = [
   {
     name: "Ombre Collection",
     slug: "ombre",
-    image: "/collections/ombre-collection.png",
+    image: "/collections/ombre-collection.jpeg",
     images: [
       {
-        src: "/collections/ombre-collection.png",
+        src: "/collections/ombre-collection.jpeg",
         position: "topLeft",
         title: "Ombre Perspective 1",
       },
       {
-        src: "/collections/ombre-collection.png",
+        src: "/collections/ombre-collection.jpeg",
         position: "topRight",
         title: "Ombre Perspective 2",
       },
       {
-        src: "/collections/ombre-collection.png",
+        src: "/collections/ombre-collection.jpeg",
         position: "bottomLeft",
         title: "Ombre Perspective 3",
       },
       {
-        src: "/collections/ombre-collection.png",
+        src: "/collections/ombre-collection.jpeg",
         position: "bottomRight",
         title: "Ombre Perspective 4",
       },
@@ -126,25 +126,25 @@ const collections: Collection[] = [
   {
     name: "Traditional Collection",
     slug: "traditional",
-    image: "/collections/traditional-collection.png",
+    image: "/collections/traditional-collection.jpeg",
     images: [
       {
-        src: "/collections/traditional-collection.png",
+        src: "/collections/traditional-collection.jpeg",
         position: "topLeft",
         title: "Traditional Perspective 1",
       },
       {
-        src: "/collections/traditional-collection.png",
+        src: "/collections/traditional-collection.jpeg",
         position: "topRight",
         title: "Traditional Perspective 2",
       },
       {
-        src: "/collections/traditional-collection.png",
+        src: "/collections/traditional-collection.jpeg",
         position: "bottomLeft",
         title: "Traditional Perspective 3",
       },
       {
-        src: "/collections/traditional-collection.png",
+        src: "/collections/traditional-collection.jpeg",
         position: "bottomRight",
         title: "Traditional Perspective 4",
       },

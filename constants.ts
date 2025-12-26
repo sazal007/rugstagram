@@ -40,32 +40,32 @@ export const NAV_ITEMS: NavItem[] = [
       {
         label: "Modern Collection",
         href: "/collections/modern",
-        image: "/collections/modern-collection.png",
+        image: "/collections/modern-collection.jpeg",
       },
       {
         label: "Artwork Collection",
         href: "/collections/artwork",
-        image: "/collections/artwork-collection.png",
+        image: "/collections/artwork-collection.jpeg",
       },
       {
         label: "Ombre Collection",
         href: "/collections/ombre",
-        image: "/collections/ombre-collection.png",
+        image: "/collections/ombre-collection.jpeg",
       },
       {
         label: "Traditional Collection",
         href: "/collections/traditional",
-        image: "/collections/traditional-collection.png",
+        image: "/collections/traditional-collection.jpeg",
       },
       {
         label: "Ombre Classic Collection",
         href: "/collections/ombre-classic",
-        image: "/collections/ombre-classic-collection.png",
+        image: "/collections/ombre-classic-collection.jpeg",
       },
       {
         label: "Transitional Collection",
         href: "/collections/transitional",
-        image: "/collections/transitional-collection.png",
+        image: "/collections/transitional-collection.jpeg",
       },
     ],
   },
