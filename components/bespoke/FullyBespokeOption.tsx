@@ -47,7 +47,7 @@ export const FullyBespokeOption: React.FC = () => {
       </div>
       <div className="space-y-6">
         <span className="text-sand text-xs font-bold uppercase tracking-widest">
-          Option 03
+          Option 02
         </span>
         <h2 className="text-3xl md:text-4xl font-serif">Fully Bespoke</h2>
         <p className="text-gray-400 leading-relaxed">
@@ -77,4 +77,3 @@ export const FullyBespokeOption: React.FC = () => {
     </motion.div>
   );
 };
-

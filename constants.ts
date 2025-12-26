@@ -79,11 +79,6 @@ export const NAV_ITEMS: NavItem[] = [
         image: "/images/overview.avif",
       },
       {
-        label: "Customize Existing",
-        href: "/bespoke/customize",
-        image: "/images/customize-existing.jpeg",
-      },
-      {
         label: "Design Your Own",
         href: "/bespoke/design",
         image: "/images/design-your-own.jpeg",

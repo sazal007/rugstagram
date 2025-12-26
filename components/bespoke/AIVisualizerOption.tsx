@@ -20,7 +20,7 @@ export const AIVisualizerOption: React.FC = () => {
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
       variants={fadeInUp}
-      className="relative overflow-hidden rounded-xl bg-gradient-to-br from-indigo-900 to-black text-white"
+      className="relative overflow-hidden rounded-xl bg-gradient-to-br from-accent to-primary text-white"
     >
       <div className="absolute inset-0 opacity-20">
         <svg
@@ -50,13 +50,13 @@ export const AIVisualizerOption: React.FC = () => {
           <div className="flex items-center gap-2 text-yellow-400">
             <Wand2 className="w-5 h-5" />
             <span className="text-xs font-bold uppercase tracking-widest">
-              Option 02: AI Powered
+              Option 01: AI Powered
             </span>
           </div>
           <h2 className="text-3xl md:text-5xl font-serif">
             Interactive Rug Visualizer
           </h2>
-          <p className="text-indigo-100 leading-relaxed text-lg">
+          <p className="text-white/90 leading-relaxed text-lg">
             Instant gratification. Select a template, choose your palette, and
             watch as our AI engine visualizes your custom rug in seconds. No
             waiting for renderings.
@@ -76,7 +76,7 @@ export const AIVisualizerOption: React.FC = () => {
             <div className="text-center space-y-2 opacity-80">
               <Palette className="w-12 h-12 mx-auto mb-2 text-yellow-400" />
               <p className="font-serif text-xl">Select Template + Colors</p>
-              <p className="text-sm text-indigo-200">AI Generates Preview</p>
+              <p className="text-sm text-white/80">AI Generates Preview</p>
             </div>
           </div>
         </div>
@@ -84,4 +84,3 @@ export const AIVisualizerOption: React.FC = () => {
     </motion.div>
   );
 };
-

@@ -8,7 +8,7 @@ import { ArrowRight } from "lucide-react";
 
 const STORY_IMAGES = [
   {
-    src: "/images/weaving/weaving.avif",
+    src: "/images/home-weaving.png",
     title: "Weaving",
     description: "Traditional Tibetan weaving techniques",
   },
