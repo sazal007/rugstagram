@@ -79,30 +79,30 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ epoch, index }) => {
   const contentArea = (
     <motion.div
       variants={contentVariants}
-      className="w-full md:w-1/2 flex flex-col justify-center pt-16 pb-8 md:py-20 md:min-h-[80vh] px-6 md:px-12 space-y-6 z-10"
+      className="w-full md:w-1/2 flex flex-col justify-center pt-12 pb-6 min-[375px]:pt-16 min-[375px]:pb-8 md:py-20 md:min-h-[80vh] pl-10 min-[375px]:pl-12 sm:pl-16 md:pl-12 pr-3 min-[375px]:pr-4 sm:pr-6 space-y-4 min-[375px]:space-y-5 sm:space-y-6 z-10 order-1 md:order-0"
     >
-      <div className="space-y-3">
-        <h2 className="text-4xl md:text-6xl font-serif italic tracking-tighter leading-[0.9] text-foreground">
+      <div className="space-y-2 min-[375px]:space-y-3">
+        <h2 className="text-3xl min-[375px]:text-4xl sm:text-5xl md:text-6xl font-serif italic tracking-tighter leading-[0.9] text-foreground">
           {epoch.name}
         </h2>
       </div>
 
-      <div className="space-y-5 max-w-lg">
-        <div className="space-y-2">
-          <h3 className="text-[10px] uppercase tracking-widest text-accent/40 font-black">
+      <div className="space-y-3 min-[375px]:space-y-4 sm:space-y-5 max-w-lg">
+        <div className="space-y-1.5 min-[375px]:space-y-2">
+          <h3 className="text-[9px] min-[375px]:text-[10px] uppercase tracking-widest text-accent/40 font-black">
             The Narrative
           </h3>
-          <p className="text-base md:text-lg text-foreground/70 leading-relaxed font-light">
+          <p className="text-sm min-[375px]:text-base sm:text-base md:text-lg text-foreground/70 leading-relaxed font-light">
             {epoch.description}
           </p>
         </div>
-        <div className="pt-2">
+        <div className="pt-1 min-[375px]:pt-2">
           <Link
             href={epoch.href}
-            className="text-xs sm:text-sm uppercase tracking-widest border-b border-primary pb-1 hover:text-accent hover:border-accent transition-colors inline-block"
+            className="text-[10px] min-[375px]:text-xs sm:text-sm uppercase tracking-widest border-b border-primary pb-1 hover:text-accent hover:border-accent transition-colors inline-block"
           >
             View More{" "}
-            <ArrowRight className="inline-block w-3 h-3 sm:w-4 sm:h-4 ml-1 sm:ml-2" />
+            <ArrowRight className="inline-block w-2.5 h-2.5 min-[375px]:w-3 min-[375px]:h-3 sm:w-4 sm:h-4 ml-0.5 min-[375px]:ml-1 sm:ml-2" />
           </Link>
         </div>
       </div>
@@ -111,14 +111,14 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ epoch, index }) => {
 
   // Image JSX
   const imageArea = (
-    <div className="w-full md:w-1/2 h-auto md:h-screen md:sticky md:top-0 md:self-start max-[320px]:static">
+    <div className="w-full md:w-1/2 h-auto md:h-screen md:sticky md:top-0 md:self-start max-[320px]:static order-2 md:order-0">
       <motion.div
         variants={imageVariants}
-        className="flex items-center justify-center px-6 md:px-12 py-6 md:py-8 h-full"
+        className="flex items-center justify-center px-3 min-[375px]:px-4 sm:px-6 md:px-12 py-4 min-[375px]:py-5 sm:py-6 md:py-8 h-full"
       >
         <Link
           href={epoch.href}
-          className="relative w-full max-w-sm md:max-w-md aspect-3/4 md:aspect-4/5 rounded-lg overflow-hidden group border border-foreground/10 bg-background shadow-2xl"
+          className="relative w-full max-w-[240px] min-[375px]:max-w-[280px] sm:max-w-sm md:max-w-md aspect-3/4 md:aspect-4/5 rounded-lg overflow-hidden group border border-foreground/10 bg-background"
         >
           {/* Subtle Ambient Color Glow */}
           <div
@@ -138,12 +138,12 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ epoch, index }) => {
           {/* Minimalist Image Labels */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-700" />
 
-          <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-700">
+          <div className="absolute bottom-4 min-[375px]:bottom-6 left-4 min-[375px]:left-6 right-4 min-[375px]:right-6 flex items-end justify-between translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-700">
             <div>
-              <p className="text-[10px] uppercase tracking-[0.3em] text-white/50 mb-1">
+              <p className="text-[9px] min-[375px]:text-[10px] uppercase tracking-[0.3em] text-white/50 mb-0.5 min-[375px]:mb-1">
                 Visual Core
               </p>
-              <p className="text-xl font-serif italic text-white/90">
+              <p className="text-lg min-[375px]:text-xl font-serif italic text-white/90">
                 {epoch.name}
               </p>
             </div>
@@ -159,15 +159,15 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ epoch, index }) => {
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
       variants={timelineItemVariants}
-      className="relative flex flex-col md:flex-row items-start min-h-[50vh] md:min-h-[80vh] border-b border-foreground/5 last:border-0 bg-background overflow-visible"
+      className="relative flex flex-col md:flex-row items-start min-h-[40vh] min-[375px]:min-h-[50vh] md:min-h-[80vh] border-b border-foreground/5 last:border-0 bg-background overflow-visible"
     >
       {/* Timeline Visual Line - Center aligned on desktop, left aligned on mobile */}
-      <div className="absolute left-6 md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 z-20 pointer-events-none">
+      <div className="absolute left-4 min-[375px]:left-5 sm:left-6 md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 z-20 pointer-events-none">
         <div className="h-full w-px bg-gradient-to-b from-foreground/5 via-accent/30 to-foreground/5" />
-        <div className="absolute top-16 md:top-1/2 md:-translate-y-1/2 -left-1.5 w-3 h-3 rounded-full border-2 border-accent/30 bg-accent z-30 shadow-[0_0_15px_rgba(139,94,60,0.3)]" />
+        <div className="absolute top-12 min-[375px]:top-14 sm:top-16 md:top-1/2 md:-translate-y-1/2 -left-1.5 w-2.5 h-2.5 min-[375px]:w-3 min-[375px]:h-3 rounded-full border-2 border-accent/30 bg-accent z-30 shadow-[0_0_15px_rgba(139,94,60,0.3)]" />
       </div>
 
-      {/* Conditionally render based on even/odd index */}
+      {/* On mobile: always content first, image second. On desktop: alternate based on even/odd */}
       {isEven ? (
         <>
           {imageArea}
@@ -243,17 +243,20 @@ export const ColorShowcase: React.FC = () => {
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
         variants={staggerContainer}
-        className="py-20 md:py-24"
+        className="py-12 min-[375px]:py-16 sm:py-20 md:py-24"
       >
-        <div className="max-w-7xl mx-auto px-6">
-          <motion.div variants={fadeInUp} className="text-center mb-16">
-            <span className="text-accent text-xs font-bold uppercase tracking-widest">
+        <div className="max-w-7xl mx-auto px-3 min-[375px]:px-4 sm:px-6">
+          <motion.div
+            variants={fadeInUp}
+            className="text-center mb-10 min-[375px]:mb-12 sm:mb-16"
+          >
+            <span className="text-accent text-[10px] min-[375px]:text-xs font-bold uppercase tracking-widest">
               Color Palette
             </span>
-            <h2 className="text-2xl md:text-3xl font-serif mt-2 mb-3">
+            <h2 className="text-xl min-[375px]:text-2xl sm:text-2xl md:text-3xl font-serif mt-2 mb-2 min-[375px]:mb-3">
               Explore Our Colorways
             </h2>
-            <p className="text-muted max-w-2xl mx-auto text-sm md:text-base">
+            <p className="text-muted max-w-2xl mx-auto text-xs min-[375px]:text-sm sm:text-sm md:text-base px-2 min-[375px]:px-0">
               Discover the perfect shade for your space. Each palette tells a
               story of craftsmanship and timeless beauty.
             </p>
@@ -262,7 +265,7 @@ export const ColorShowcase: React.FC = () => {
       </motion.section>
 
       {/* Timeline Section */}
-      <div className="max-w-7xl mx-auto overflow-visible">
+      <div className="max-w-7xl mx-auto overflow-visible px-0 min-[375px]:px-0">
         <motion.div
           initial="hidden"
           whileInView="visible"

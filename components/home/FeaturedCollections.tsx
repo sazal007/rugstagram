@@ -150,6 +150,60 @@ const collections: Collection[] = [
       },
     ],
   },
+  {
+    name: "Transitional Collection",
+    slug: "transitional",
+    image: "/collections/transitional-collection.jpeg",
+    images: [
+      {
+        src: "/collections/transitional-collection.jpeg",
+        position: "topLeft",
+        title: "Transitional Perspective 1",
+      },
+      {
+        src: "/collections/transitional-collection.jpeg",
+        position: "topRight",
+        title: "Transitional Perspective 2",
+      },
+      {
+        src: "/collections/transitional-collection.jpeg",
+        position: "bottomLeft",
+        title: "Transitional Perspective 3",
+      },
+      {
+        src: "/collections/transitional-collection.jpeg",
+        position: "bottomRight",
+        title: "Transitional Perspective 4",
+      },
+    ],
+  },
+  {
+    name: "Ombre Classic Collection",
+    slug: "ombre-classic",
+    image: "/collections/ombre-classic-collection.jpeg",
+    images: [
+      {
+        src: "/collections/ombre-classic-collection.jpeg",
+        position: "topLeft",
+        title: "Ombre Classic Perspective 1",
+      },
+      {
+        src: "/collections/ombre-classic-collection.jpeg",
+        position: "topRight",
+        title: "Ombre Classic Perspective 2",
+      },
+      {
+        src: "/collections/ombre-classic-collection.jpeg",
+        position: "bottomLeft",
+        title: "Ombre Classic Perspective 3",
+      },
+      {
+        src: "/collections/ombre-classic-collection.jpeg",
+        position: "bottomRight",
+        title: "Ombre Classic Perspective 4",
+      },
+    ],
+  },
 ];
 
 interface RevealCardProps {
