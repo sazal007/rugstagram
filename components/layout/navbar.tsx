@@ -31,10 +31,6 @@ function NavDropdownContent({ items, isActive }: NavDropdownContentProps) {
   const topRowItems = items.slice(0, itemsPerRow);
   const bottomRowItems = items.slice(itemsPerRow, itemsPerRow * 2);
 
-  // Calculate actual visible item counts for flex calculation
-  const topRowCount = topRowItems.length;
-  const bottomRowCount = bottomRowItems.length;
-
   if (!hasImages) {
     // Fallback to text-only layout if no images
     return (
@@ -63,28 +59,28 @@ function NavDropdownContent({ items, isActive }: NavDropdownContentProps) {
 
   return (
     <div className="w-screen bg-gray-100 shadow-xl border-t border-gray-200 overflow-hidden">
-      <div className="w-full max-w-7xl mx-auto py-6 px-6 md:px-8 lg:px-12">
+      <div className="w-full max-w-7xl mx-auto">
         {/* Top Row - 6 items */}
-        <div className="flex gap-2 mb-2">
+        <div className="flex justify-center gap-0.5 mb-2">
           {topRowItems.map((child) => (
             <NavigationMenuLink
               key={child.label}
               asChild
-              className="bg-transparent! hover:bg-transparent! focus:bg-transparent! shrink-0 transition-all duration-300"
+              className="bg-transparent! hover:bg-transparent! focus:bg-transparent! transition-all duration-300 shrink-0"
               style={{
-                flex: `0 0 calc((100% - ${
-                  (topRowCount - 1) * 0.5
-                }rem) / ${topRowCount})`,
+                width: `calc((100% - ${
+                  (itemsPerRow - 1) * 0.225
+                }rem) / ${itemsPerRow})`,
                 maxWidth: `calc((100% - ${
-                  (topRowCount - 1) * 0.5
-                }rem) / ${topRowCount})`,
+                  (itemsPerRow - 1) * 0.225
+                }rem) / ${itemsPerRow})`,
               }}
             >
               <Link
                 href={child.href}
                 className="group block focus-visible:ring-0 w-full h-full"
               >
-                <div className="relative w-full h-48 sm:h-56 md:h-64 overflow-hidden rounded-sm bg-white">
+                <div className="relative w-full h-48 sm:h-56 md:h-64 overflow-hidden bg-white border border-gray-200">
                   {child.image ? (
                     <Image
                       src={child.image}
@@ -98,8 +94,8 @@ function NavDropdownContent({ items, isActive }: NavDropdownContentProps) {
                       <span className="text-gray-400 text-xs">No Image</span>
                     </div>
                   )}
-                  {/* Text overlay at bottom */}
-                  <div className="absolute bottom-0 left-0 right-0 bg-black/70 px-3 py-2">
+                  {/* Text overlay at bottom - lighter */}
+                  <div className="absolute bottom-0 left-0 right-0 bg-black/40 px-3 py-2">
                     <span
                       className={`text-white text-sm font-medium transition-colors duration-200 ${
                         isActive(child.href) ? "text-accent" : ""
@@ -116,26 +112,26 @@ function NavDropdownContent({ items, isActive }: NavDropdownContentProps) {
 
         {/* Bottom Row - 6 items (if more than 6 items exist) */}
         {bottomRowItems.length > 0 && (
-          <div className="flex gap-2">
+          <div className="flex justify-center gap-0.5">
             {bottomRowItems.map((child) => (
               <NavigationMenuLink
                 key={child.label}
                 asChild
-                className="bg-transparent! hover:bg-transparent! focus:bg-transparent! shrink-0 transition-all duration-300"
+                className="bg-transparent! hover:bg-transparent! focus:bg-transparent! transition-all duration-300 shrink-0"
                 style={{
-                  flex: `0 0 calc((100% - ${
-                    (bottomRowCount - 1) * 0.5
-                  }rem) / ${bottomRowCount})`,
+                  width: `calc((100% - ${
+                    (itemsPerRow - 1) * 0.125
+                  }rem) / ${itemsPerRow})`,
                   maxWidth: `calc((100% - ${
-                    (bottomRowCount - 1) * 0.5
-                  }rem) / ${bottomRowCount})`,
+                    (itemsPerRow - 1) * 0.125
+                  }rem) / ${itemsPerRow})`,
                 }}
               >
                 <Link
                   href={child.href}
                   className="group block focus-visible:ring-0 w-full h-full"
                 >
-                  <div className="relative w-full h-48 sm:h-56 md:h-64 overflow-hidden rounded-sm bg-white">
+                  <div className="relative w-full h-48 sm:h-56 md:h-64 overflow-hidden bg-white border border-gray-200">
                     {child.image ? (
                       <Image
                         src={child.image}
@@ -149,8 +145,8 @@ function NavDropdownContent({ items, isActive }: NavDropdownContentProps) {
                         <span className="text-gray-400 text-xs">No Image</span>
                       </div>
                     )}
-                    {/* Text overlay at bottom */}
-                    <div className="absolute bottom-0 left-0 right-0 bg-black/70 px-3 py-2">
+                    {/* Text overlay at bottom - lighter */}
+                    <div className="absolute bottom-0 left-0 right-0 bg-black/40 px-3 py-2">
                       <span
                         className={`text-white text-sm font-medium transition-colors duration-200 ${
                           isActive(child.href) ? "text-accent" : ""
