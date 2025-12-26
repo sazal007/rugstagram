@@ -1,6 +1,7 @@
 import { z } from "zod";
 
-export const ProductImageSchema = z.object({
+// Schema for individual images within a variant
+export const VariantImageSchema = z.object({
   id: z.number().optional(),
   image: z
     .any()
@@ -11,92 +12,80 @@ export const ProductImageSchema = z.object({
         message: "Image is required",
       }
     ),
-  image_alt_description: z.string().optional().nullable(),
+  created_at: z.string().optional(),
+  updated_at: z.string().optional(),
+});
+
+export type VariantImageType = z.infer<typeof VariantImageSchema>;
+
+// Schema for a Product Variant
+export const ProductVariantSchema = z.object({
+  id: z.number().optional(),
   color_id: z.string().optional().nullable(),
-  stock: z.string().optional().nullable(),
-  size_ids: z.array(z.string()).optional(),
+  stock: z.string().optional().nullable(), // Form input is usually string
+  images: z.array(VariantImageSchema).optional().default([]),
 });
 
-export type ProductImageType = z.infer<typeof ProductImageSchema>;
+export type ProductVariantType = z.infer<typeof ProductVariantSchema>;
 
+// Main Product Form Schema
 export const productFormSchema = z.object({
-  name: z.string().min(3, "Product name must be at least 3 characters long"),
-  slug: z.string().optional(),
-  designer: z.string().optional().nullable(),
-  brand_name: z.string().optional().nullable(),
+  name: z.string().min(1, "Name is required"),
+  code: z.string().optional().nullable(),
   description: z.string().optional().nullable(),
-  highlight_description: z.string().optional().nullable(),
-  extra_description: z.string().optional().nullable(),
-  about_this_design_description: z.string().optional().nullable(),
-  specifications: z.string().optional().nullable(),
-  market_price: z.string().min(1, "Market price is required"),
-  price: z.string().min(1, "Price is required"),
-  stock: z.string().min(1, "Stock is required"),
-  discount: z.string().optional().nullable(),
+  collection_id: z.string().optional().nullable(),
+  quality_id: z.string().optional().nullable(),
+  pile_height_id: z.string().optional().nullable(),
+  size_id: z.string().optional().nullable(),
+  luxury_edition_id: z.string().optional().nullable(),
+  affordable_edition_id: z.string().optional().nullable(),
+  material_id: z.string().optional().nullable(),
+  sale_price: z.string().optional().nullable(),
+  price: z.string().optional().nullable(),
   thumbnail_image: z.any().nullable(),
   thumbnail_image_alt_description: z.string().optional().nullable(),
-  hover_thumbnail_image: z.any().nullable(),
-  hover_thumbnail_image_alt_description: z.string().optional().nullable(),
-  is_popular: z.boolean(),
-  is_featured: z.boolean(),
-  is_clearance: z.boolean(),
-  is_active: z.boolean(),
-  meta_title: z.string().optional().nullable(),
-  meta_description: z.string().optional().nullable(),
-  size_ids: z.array(z.string()).optional(),
-  color_ids: z.array(z.string()).optional(),
-  texture_ids: z.array(z.string()).optional(),
-  style_ids: z.array(z.string()).optional(),
-  collaboration_ids: z.array(z.string()).optional(),
-  room_type: z.string().optional().nullable(),
-  images: z.array(ProductImageSchema).optional(),
-});
-
-export const productApiSchema = z.object({
-  name: z.string().min(3, "Product name must be at least 3 characters long"),
-  slug: z.string().optional(),
-  designer: z.string().optional().nullable(),
-  brand_name: z.string().optional().nullable(),
-  description: z.string().optional().nullable(),
-  highlight_description: z.string().optional().nullable(),
-  extra_description: z.string().optional().nullable(),
-  about_this_design_description: z.string().optional().nullable(),
-  specifications: z.string().optional().nullable(),
-  market_price: z.number(),
-  price: z.number(),
-  stock: z.number(),
-  discount: z.number().optional().nullable(),
-  thumbnail_image: z.any().nullable(),
-  thumbnail_image_alt_description: z.string().optional().nullable(),
-  hover_thumbnail_image: z.any().nullable(),
-  hover_thumbnail_image_alt_description: z.string().optional().nullable(),
-  is_popular: z.boolean().default(false),
+  is_new: z.boolean().default(false),
+  is_best_seller: z.boolean().default(false),
   is_featured: z.boolean().default(false),
-  is_clearance: z.boolean().default(false),
   is_active: z.boolean().default(true),
   meta_title: z.string().optional().nullable(),
   meta_description: z.string().optional().nullable(),
-  size_ids: z.array(z.number()).optional(),
-  color_ids: z.array(z.number()).optional(),
-  texture_ids: z.array(z.number()).optional(),
-  style_ids: z.array(z.number()).optional(),
-  collaboration_ids: z.array(z.number()).optional(),
-  room_type: z.string().optional().nullable(),
-  images: z
-    .array(
-      z.object({
-        id: z.number().optional(),
-        image: z.any(),
-        image_alt_description: z.string().optional().nullable(),
-        color_id: z.number().optional().nullable(),
-        stock: z.number().optional().nullable(),
-        size_ids: z.array(z.number()).optional(),
-      })
-    )
-    .optional(),
+  variants: z.array(ProductVariantSchema).optional().default([]),
 });
 
 export type ProductFormValues = z.infer<typeof productFormSchema>;
+
+export const productApiSchema = z.object({
+  name: z.string(),
+  code: z.string().optional().nullable(),
+  description: z.string().optional().nullable(),
+  collection_id: z.number().optional().nullable(),
+  quality_id: z.number().optional().nullable(),
+  pile_height_id: z.number().optional().nullable(),
+  size_id: z.number().optional().nullable(),
+  luxury_edition_id: z.number().optional().nullable(),
+  affordable_edition_id: z.number().optional().nullable(),
+  material_id: z.number().optional().nullable(),
+  sale_price: z.number().optional().nullable(),
+  price: z.number().optional().nullable(),
+  thumbnail_image: z.any().nullable(),
+  thumbnail_image_alt_description: z.string().optional().nullable(),
+  is_new: z.boolean(),
+  is_best_seller: z.boolean(),
+  is_featured: z.boolean(),
+  is_active: z.boolean(),
+  meta_title: z.string().optional().nullable(),
+  meta_description: z.string().optional().nullable(),
+  variants: z.array(
+    z.object({
+      id: z.number().optional(),
+      color_id: z.number().optional().nullable(),
+      stock: z.number().optional().nullable(),
+      images: z.array(z.any()).optional(),
+    })
+  ),
+});
+
 export type ProductApiValues = z.infer<typeof productApiSchema>;
 
 export const transformFormToApi = (
@@ -104,22 +93,34 @@ export const transformFormToApi = (
 ): ProductApiValues => {
   return {
     ...formData,
-    market_price: parseFloat(formData.market_price),
-    price: parseFloat(formData.price),
-    stock: parseInt(formData.stock, 10),
-    discount: formData.discount ? parseFloat(formData.discount) : null,
-    size_ids: formData.size_ids?.map((id) => parseInt(id, 10)) || [],
-    color_ids: formData.color_ids?.map((id) => parseInt(id, 10)) || [],
-    texture_ids: formData.texture_ids?.map((id) => parseInt(id, 10)) || [],
-    style_ids: formData.style_ids?.map((id) => parseInt(id, 10)) || [],
-    collaboration_ids:
-      formData.collaboration_ids?.map((id) => parseInt(id, 10)) || [],
-    images:
-      formData.images?.map((img) => ({
-        ...img,
-        color_id: img.color_id ? parseInt(img.color_id, 10) : null,
-        stock: img.stock ? parseInt(img.stock, 10) : null,
-        size_ids: img.size_ids?.map((id) => parseInt(id, 10)) || [],
+    // Add default values for new fields if they are somehow missing at runtime, though Zod ensures logic
+    collection_id: formData.collection_id
+      ? parseInt(formData.collection_id, 10)
+      : null,
+    quality_id: formData.quality_id
+      ? parseInt(formData.quality_id, 10)
+      : null,
+    pile_height_id: formData.pile_height_id
+      ? parseInt(formData.pile_height_id, 10)
+      : null,
+    size_id: formData.size_id ? parseInt(formData.size_id, 10) : null,
+    luxury_edition_id: formData.luxury_edition_id
+      ? parseInt(formData.luxury_edition_id, 10)
+      : null,
+    affordable_edition_id: formData.affordable_edition_id
+      ? parseInt(formData.affordable_edition_id, 10)
+      : null,
+    material_id: formData.material_id
+      ? parseInt(formData.material_id, 10)
+      : null,
+    sale_price: formData.sale_price ? parseFloat(formData.sale_price) : null,
+    price: formData.price ? parseFloat(formData.price) : null,
+    variants:
+      formData.variants?.map((v) => ({
+        id: v.id,
+        color_id: v.color_id ? parseInt(v.color_id, 10) : null,
+        stock: v.stock ? parseInt(v.stock, 10) : null,
+        images: v.images?.map((img) => img.image) || [],
       })) || [],
   };
 };

@@ -25,12 +25,12 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
           </h1>
           <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
             <p className="text-xs sm:text-sm text-muted uppercase tracking-wider">
-              {product.category?.name || "Collection"}
+              {product.collection?.name || "Collection"}
             </p>
             <div className="flex items-center gap-1">
-              <StarRating rating={product.average_rating || 5} />
+              <StarRating rating={5} />
               <span className="text-[10px] sm:text-xs text-muted ml-1 underline decoration-gray-300 underline-offset-4 cursor-pointer">
-                {product.reviews_count} Reviews
+                Reviews
               </span>
             </div>
           </div>
@@ -39,9 +39,9 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
           <p className="text-xl sm:text-2xl font-serif">
             ${product.price ? parseFloat(product.price).toLocaleString() : "N/A"}
           </p>
-          {product.market_price && (
+          {product.sale_price && (
             <p className="text-xs sm:text-sm text-muted line-through">
-              ${parseFloat(product.market_price).toLocaleString()}
+              ${parseFloat(product.sale_price).toLocaleString()}
             </p>
           )}
         </div>

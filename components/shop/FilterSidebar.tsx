@@ -2,22 +2,18 @@
 
 import React from "react";
 import { CategoryFilter } from "./CategoryFilter";
-import { SubCategoryFilter } from "./SubCategoryFilter";
 
 interface FilterSidebarProps {
   isOpen: boolean;
   selectedCategories: string[];
   selectedSubCategories: string[];
   onToggleCategory: (categorySlug: string) => void;
-  onToggleSubCategory: (subCategorySlug: string) => void;
 }
 
 export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   isOpen,
   selectedCategories,
-  selectedSubCategories,
   onToggleCategory,
-  onToggleSubCategory,
 }) => {
   return (
     <aside
@@ -29,11 +25,6 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
         <CategoryFilter
           selectedCategories={selectedCategories}
           onToggleCategory={onToggleCategory}
-        />
-        <SubCategoryFilter
-          categorySlug={selectedCategories[0]}
-          selectedSubCategories={selectedSubCategories}
-          onToggleSubCategory={onToggleSubCategory}
         />
       </div>
     </aside>

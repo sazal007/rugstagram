@@ -9,11 +9,19 @@ export interface BulkUploadResponse {
   errors?: string[];
 }
 
-export const uploadExcelFile = async (file: File): Promise<BulkUploadResponse> => {
-  const formData = new FormData();
-  formData.append('file', file);
+export interface UploadFiles {
+  excelFile: File;
+  zipFile?: File | null;
+}
 
-  const response = await fetch(`${API_BASE_URL}/api/product/bulk-upload/`, {
+export const uploadExcelFile = async ({ excelFile, zipFile }: UploadFiles): Promise<BulkUploadResponse> => {
+  const formData = new FormData();
+  formData.append('file', excelFile);
+  if (zipFile) {
+    formData.append('zip_file', zipFile);
+  }
+
+  const response = await fetch(`${API_BASE_URL}/api/products/bulk-upload/`, {
     method: 'POST',
     body: formData,
   });

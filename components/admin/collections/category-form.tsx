@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Category } from "@/types/category";
+import { Collection } from "@/types/product";
 import {
   Dialog,
   DialogContent,
@@ -35,7 +35,7 @@ const formSchema = z.object({
 type CategoryFormValues = z.infer<typeof formSchema>;
 
 interface CategoryFormProps {
-  initialData: Category | null;
+  initialData: Collection | null;
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: CategoryFormValues) => void;
@@ -63,7 +63,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
     if (initialData) {
       form.reset({
         name: initialData.name,
-        slug: initialData.slug,
+        slug: initialData.slug || "",
         image: initialData.image || "",
         description: initialData.description || "",
       });

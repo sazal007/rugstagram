@@ -118,13 +118,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           const materials = "Wool"; // Mock for now
           const variant = `${size} • ${materials}`;
 
-          const price = parseFloat(product.price);
-          const originalPrice = product.market_price ? parseFloat(product.market_price) : undefined;
+          const price = parseFloat(product.price || "0");
+          const originalPrice = product.sale_price ? parseFloat(product.sale_price) : undefined;
           
           
-          const selectedSize = product.size.find(s => s.name === size);
-          console.log("Selected size object:", selectedSize);
-          const sizeId = selectedSize ? selectedSize.id : 0; // Fallback or error handling?
+          // product.size is a single Size object, not an array
+          const sizeId = product.size?.id || 0;
           console.log("Derived sizeId:", sizeId);
 
 
@@ -136,7 +135,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             price,
             originalPrice,
             quantity,
-            image: product.thumbnail_image,
+            image: product.thumbnail_image || "",
             size,
             sizeId,
           };

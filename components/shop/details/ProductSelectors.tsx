@@ -16,8 +16,8 @@ export const ProductSelectors: React.FC<ProductSelectorsProps> = ({
   onSizeChange,
   onQuantityChange,
 }) => {
-  // Use real sizes from product
-  const sizes = product.size.map((s) => s.name);
+  // Use real size from product (it's a single size, not an array)
+  const sizes = product.size ? [product.size.name] : [];
 
   const [selectedSize, setSelectedSize] = useState<string>(sizes[0] || "");
   const [quantity, setQuantity] = useState(1);

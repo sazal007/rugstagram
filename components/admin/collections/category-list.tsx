@@ -1,6 +1,6 @@
 "use client";
 
-import { Category } from "@/types/category";
+import { Collection } from "@/types/product";
 import {
   Table,
   TableBody,
@@ -14,9 +14,9 @@ import { Edit, Trash2 } from "lucide-react";
 import Image from "next/image";
 
 interface CategoryListProps {
-  data: Category[];
-  onEdit: (category: Category) => void;
-  onDelete: (category: Category) => void;
+  data: Collection[];
+  onEdit: (category: Collection) => void;
+  onDelete: (category: Collection) => void;
 }
 
 export const CategoryList: React.FC<CategoryListProps> = ({

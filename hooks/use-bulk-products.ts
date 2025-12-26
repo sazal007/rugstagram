@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { uploadExcelFile, BulkUploadResponse } from '@/services/bulk-upload';
+import { uploadExcelFile, BulkUploadResponse, UploadFiles } from '@/services/bulk-upload';
 import { useToast } from '@/hooks/use-toast';
 
 interface UseBulkUploadOptions {
@@ -35,7 +35,7 @@ export const useBulkUpload = ({ onUploadSuccess }: UseBulkUploadOptions = {}) =>
   });
 
   return {
-    uploadFile: mutation.mutate,
+    uploadFile: (files: UploadFiles) => mutation.mutate(files),
     isUploading: mutation.isPending,
     isError: mutation.isError,
     error: mutation.error,

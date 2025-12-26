@@ -15,11 +15,11 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     
     // Mock keywords or use available data
     const keywords = [product.name, "handcrafted rug", "Himalayan rug"];
-    if (product.category?.name) keywords.push(product.category.name);
+    if (product.collection?.name) keywords.push(product.collection.name);
 
     return {
       title: product.name,
-      description: `Discover ${product.name}${product.category?.name ? ` - A handcrafted ${product.category.name} rug` : ''}.`,
+      description: `Discover ${product.name}${product.collection?.name ? ` - A handcrafted ${product.collection.name} rug` : ''}.`,
       keywords,
     };
   } catch {

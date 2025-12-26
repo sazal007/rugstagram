@@ -1,25 +1,25 @@
 "use client";
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import { useCategories, useCreateCategory, useUpdateCategory, useDeleteCategory } from "@/hooks/use-category";
+import { useCollections, useCreateCollection, useUpdateCollection, useDeleteCollection } from "@/hooks/use-collections";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { CategoryList } from "@/components/admin/collections/category-list";
 import { CategoryForm } from "@/components/admin/collections/category-form";
-import { Category } from "@/types/category";
+import { Collection } from "@/types/product";
 import { useToast } from "@/hooks/use-toast";
 
 export const CategoryClient = () => {
-  const { data: categories = [], isLoading } = useCategories();
-  const createCategory = useCreateCategory();
-  const updateCategory = useUpdateCategory();
-  const deleteCategory = useDeleteCategory();
+  const { data: categories = [], isLoading } = useCollections();
+  const createCategory = useCreateCollection();
+  const updateCategory = useUpdateCollection();
+  const deleteCategory = useDeleteCollection();
   const { toast } = useToast();
 
   const [open, setOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<Collection | null>(null);
 
-  const onOpen = (category: Category | null = null) => {
+  const onOpen = (category: Collection | null = null) => {
     setSelectedCategory(category);
     setOpen(true);
   };
@@ -112,7 +112,7 @@ export const CategoryClient = () => {
     }
   };
 
-  const onDelete = async (category: Category) => {
+  const onDelete = async (category: Collection) => {
     try {
       await deleteCategory.mutateAsync(category.id);
       toast({
@@ -149,7 +149,7 @@ export const CategoryClient = () => {
       <Separator className="my-4" />
       <CategoryList
         data={categories}
-        onEdit={(category: Category) => onOpen(category)}
+        onEdit={(category: Collection) => onOpen(category)}
         onDelete={onDelete}
       />
       <CategoryForm

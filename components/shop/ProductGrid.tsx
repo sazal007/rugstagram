@@ -3,7 +3,7 @@
 import React, { useMemo } from "react";
 import { motion, Variants } from "motion/react";
 import { ChevronDown } from "lucide-react";
-import { Product } from "@/types/product";
+import { Product, ProductListItem } from "@/types/product";
 import { ProductCard } from "../ProductCard";
 
 const containerVariants: Variants = {
@@ -26,7 +26,7 @@ const itemVariants: Variants = {
 };
 
 interface ProductGridProps {
-  products: Product[];
+  products: (Product | ProductListItem)[];
 }
 
 export const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {

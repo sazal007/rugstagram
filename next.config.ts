@@ -15,6 +15,10 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "rugkala.nepdora.com",
+      },
+      {
+        protocol: "https",
+        hostname: "testimonials-golden-joan-hotel.trycloudflare.com",
       }
     ],
   },

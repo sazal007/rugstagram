@@ -1,23 +1,40 @@
 import React from "react";
 import Link from "next/link";
-import { Product } from "@/types/product";
+import { Product, ProductListItem } from "@/types/product";
 import { Heart } from "lucide-react";
+import Image from "next/image";
+
+// Accept either Product or ProductListItem
+type ProductCardProduct = Product | ProductListItem;
 
 interface ProductCardProps {
-  product: Product;
+  product: ProductCardProduct;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  // Type guard to check if this is a full Product
+  const isFullProduct = (p: ProductCardProduct): p is Product => {
+    return "collection" in p;
+  };
+
+  const collectionName = isFullProduct(product)
+    ? product.collection?.name
+    : "collection_name" in product
+    ? product.collection_name
+    : "";
+
   return (
     <Link
       href={`/shop/${product.slug}`}
       className="group cursor-pointer block"
     >
       <div className="relative aspect-3/4 overflow-hidden bg-gray-100 rounded-sm mb-4">
-        <img
-          src={product.thumbnail_image}
+        <Image
+          src={product.thumbnail_image || "/placeholder.jpg"}
           alt={product.thumbnail_image_alt_description || product.name}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          width={500}
+          height={500}
         />
 
         {/* Badges */}
@@ -27,9 +44,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               Featured
             </span>
           )}
-          {product.is_popular && (
+          {product.is_new && (
             <span className="bg-white/90 backdrop-blur-sm px-2 py-1 text-[10px] uppercase tracking-wider font-bold shadow-sm">
-              Popular
+              New
+            </span>
+          )}
+          {product.is_best_seller && (
+            <span className="bg-white/90 backdrop-blur-sm px-2 py-1 text-[10px] uppercase tracking-wider font-bold shadow-sm text-amber-600">
+              Best Seller
             </span>
           )}
         </div>
@@ -58,11 +80,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             {product.name}
           </h3>
           <span className="text-sm font-medium text-gray-500">
-            ${parseFloat(product.price).toLocaleString()}
+            ${parseFloat(product.price || "0").toLocaleString()}
           </span>
         </div>
         <p className="text-xs text-muted uppercase tracking-wide">
-          {product.category?.name} {product.brand_name && `• ${product.brand_name}`}
+          {collectionName}
         </p>
       </div>
     </Link>

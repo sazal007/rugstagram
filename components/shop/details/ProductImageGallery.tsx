@@ -16,11 +16,14 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
   const [isHoveringImage, setIsHoveringImage] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-  // Use thumbnail_image and product images from backend
+  // Use thumbnail_image and product variant images from backend
+  const variantImages = product.variants?.flatMap((v) =>
+    v.product_images?.map((img) => img.image) || []
+  ) || [];
   const productImages = [
     product.thumbnail_image,
-    ...(product.images?.map((img) => img.image) || []),
-  ];
+    ...variantImages,
+  ].filter((img): img is string => Boolean(img));
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { left, top, width, height } =

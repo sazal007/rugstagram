@@ -39,14 +39,7 @@ function ShopContent({ collectionId }: ShopProps) {
         return [...prev, slug];
       }
     });
-    // Optional: Clear sub-categories when category changes if they are dependent
-    // setSelectedSubCategories([]); 
-  };
-
-  const toggleSubCategory = (slug: string) => {
-    setSelectedSubCategories((prev) =>
-      prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug]
-    );
+   
   };
 
   const clearFilters = () => {
@@ -54,34 +47,21 @@ function ShopContent({ collectionId }: ShopProps) {
     setSelectedSubCategories([]);
   };
 
-  // Prepare backend filters
+
   const filters: ProductFilters = useMemo(() => {
     const f: ProductFilters = {};
     
-    // For now, if multiple categories are selected, we might need a different API approach 
-    // or just take the first one if the backend only supports one category slug at a time.
-    // Based on service, it takes a single string.
+  
     if (selectedCategories.length > 0) {
       f.category = selectedCategories[0];
     }
 
     if (selectedSubCategories.length > 0) {
-      // Backend might expect 'sub_category__slug' or just 'sub_category' depending on service.
-      // Service says: if (filters.sub_category) params.append("sub_category__slug", filters.sub_category);
-      // It currently joins multiple params? No, standard URLSearchParams with same key?
-      // The service implementation: if (filters.sub_category) params.append("sub_category__slug", filters.sub_category);
-      // It looks like it only supports ONE sub_category based on the service signature `sub_category?: string;`.
-      // If we want multiple, we might need to update service or just pick first.
-      // Let's assume we pick the first one for now or if the user selects multiple we might need an array in service.
-      // Looking at service, it's string. Let's pass the first one for now or comma separate if backend supports 'in'.
-      // Usually Django filters use multiple keys.
-      // Ideally we update service to accept array, but let's stick to simple first item or simple param.
-      // Let's just take the first one for now.
       f.sub_category = selectedSubCategories[0];
     }
     
     if (filterParam === "new") {
-      f.is_featured = true; // Mapping 'new' arrivals to 'featured' for now
+      f.is_featured = true;
     }
     
     return f;
@@ -90,7 +70,6 @@ function ShopContent({ collectionId }: ShopProps) {
   const { data, isLoading, error } = useProducts(filters);
   const products = data?.results || [];
 
-  // Determine page title
   const pageTitle = collectionId
     ? `${collectionId} Collection`
     : filterParam === "new"
@@ -122,7 +101,7 @@ function ShopContent({ collectionId }: ShopProps) {
       <FilterToggle
         isOpen={isFilterOpen}
         onToggle={() => setIsFilterOpen(!isFilterOpen)}
-        productCount={products.length}
+        productCount={data?.count || 0}
       />
 
       <div className="flex flex-col lg:flex-row gap-12">
@@ -131,7 +110,6 @@ function ShopContent({ collectionId }: ShopProps) {
           selectedCategories={selectedCategories}
           selectedSubCategories={selectedSubCategories}
           onToggleCategory={toggleCategory}
-          onToggleSubCategory={toggleSubCategory}
         />
 
         {isLoading ? (

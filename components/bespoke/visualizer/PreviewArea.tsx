@@ -126,7 +126,7 @@ export const PreviewArea: React.FC<PreviewAreaProps> = ({
               </div>
               <p className="font-serif text-lg mb-2">Room Visualization</p>
               <p className="text-sm max-w-xs mx-auto">
-                Click "Visualize in Room" to see your design placed in a {selectedRoomName}.
+                Click &quot;Visualize in Room&quot; to see your design placed in a {selectedRoomName}.
               </p>
             </div>
           )

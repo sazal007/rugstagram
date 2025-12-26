@@ -18,23 +18,23 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { ProductFormValues } from "@/schemas/product-form";
-import { Room } from "@/types/room";
-import { X, Upload, Image as ImageIcon } from "lucide-react";
+import {
+  Collection,
+  Product,
+  Quality,
+  PileHeight,
+  Size,
+  LuxuryEdition,
+  AffordableEdition,
+  Material,
+} from "@/types/product";
+import { X, Upload, ImageIcon } from "lucide-react";
 import Image from "next/image";
-
-import { Product } from "@/types/product"; // Add this import
-
-interface ProductBasicInfoProps {
-  control: Control<ProductFormValues>;
-  rooms: Room[] | undefined;
-  isLoadingRooms: boolean;
-  initialData?: Product; // Add this prop
-}
 
 interface ImageDropzoneProps {
   onFileSelect: (files: FileList | null) => void;
   currentFiles: FileList | null;
-  existingImageUrl?: string; 
+  existingImageUrl?: string | null;
   label: string;
   accept?: string;
 }
@@ -42,7 +42,7 @@ interface ImageDropzoneProps {
 const ImageDropzone: React.FC<ImageDropzoneProps> = ({
   onFileSelect,
   currentFiles,
-  existingImageUrl, 
+  existingImageUrl,
   accept = "image/*",
 }) => {
   const [isDragOver, setIsDragOver] = useState(false);
@@ -68,7 +68,6 @@ const ImageDropzone: React.FC<ImageDropzoneProps> = ({
 
     const files = e.dataTransfer.files;
     if (files && files.length > 0) {
-      // Create a new FileList-like object
       const fileList = Array.from(files).filter((file) =>
         file.type.startsWith("image/")
       );
@@ -105,7 +104,6 @@ const ImageDropzone: React.FC<ImageDropzoneProps> = ({
     fileInputRef.current?.click();
   };
 
-  // Determine if we're showing a new file or existing image
   const isNewFile = currentFiles && currentFiles.length > 0;
   const fileName = isNewFile ? currentFiles[0].name : null;
   const fileSize = isNewFile ? currentFiles[0].size : null;
@@ -134,7 +132,7 @@ const ImageDropzone: React.FC<ImageDropzoneProps> = ({
         {previewUrl ? (
           <div className="relative">
             <Image
-              src={previewUrl||`${process.env.NEXT_PUBLIC_API_URL}${existingImageUrl}`}
+              src={previewUrl}
               alt="Preview"
               width={500}
               height={128}
@@ -180,11 +178,42 @@ const ImageDropzone: React.FC<ImageDropzoneProps> = ({
   );
 };
 
+interface ProductBasicInfoProps {
+  control: Control<ProductFormValues>;
+  collections: Collection[] | undefined;
+  isLoadingCollections: boolean;
+  qualities: Quality[] | undefined;
+  isLoadingQualities: boolean;
+  pileHeights: PileHeight[] | undefined;
+  isLoadingPileHeights: boolean;
+  sizes: Size[] | undefined;
+  isLoadingSizes: boolean;
+  luxuryEditions: LuxuryEdition[] | undefined;
+  isLoadingLuxuryEditions: boolean;
+  affordableEditions: AffordableEdition[] | undefined;
+  isLoadingAffordableEditions: boolean;
+  materials: Material[] | undefined;
+  isLoadingMaterials: boolean;
+  initialData?: Product;
+}
+// ...
 export const ProductBasicInfo: React.FC<ProductBasicInfoProps> = ({
   control,
-  rooms,
-  isLoadingRooms,
-  initialData, // Add this prop
+  collections,
+  isLoadingCollections,
+  qualities,
+  isLoadingQualities,
+  pileHeights,
+  isLoadingPileHeights,
+  sizes,
+  isLoadingSizes,
+  luxuryEditions,
+  isLoadingLuxuryEditions,
+  affordableEditions,
+  isLoadingAffordableEditions,
+  materials,
+  isLoadingMaterials,
+  initialData,
 }) => {
   return (
     <Card>
@@ -192,26 +221,13 @@ export const ProductBasicInfo: React.FC<ProductBasicInfoProps> = ({
         <CardTitle>Basic Information</CardTitle>
       </CardHeader>
       <CardContent className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
         <FormField
           name="name"
           control={control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Product Name</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          name="brand_name"
-          control={control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Brand Name</FormLabel>
+              <FormLabel>Name</FormLabel>
               <FormControl>
                 <Input {...field} value={field.value || ""} />
               </FormControl>
@@ -219,13 +235,13 @@ export const ProductBasicInfo: React.FC<ProductBasicInfoProps> = ({
             </FormItem>
           )}
         />
-
+        
         <FormField
-          name="designer"
+          name="code"
           control={control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Designer</FormLabel>
+              <FormLabel>Code</FormLabel>
               <FormControl>
                 <Input {...field} value={field.value || ""} />
               </FormControl>
@@ -233,16 +249,212 @@ export const ProductBasicInfo: React.FC<ProductBasicInfoProps> = ({
             </FormItem>
           )}
         />
-
+        
         <FormField
-          name="market_price"
+           name="description"
+           control={control}
+           render={({ field }) => (
+            <FormItem className="col-span-full">
+             <FormLabel>Description</FormLabel>
+              <FormControl>
+               <Input {...field} value={field.value || ""} />
+              </FormControl>
+             <FormMessage />
+            </FormItem>
+           )}
+        />
+
+         <FormField
+          name="collection_id"
           control={control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Market Price</FormLabel>
-              <FormControl>
-                <Input type="number" step="0.01" {...field} />
-              </FormControl>
+              <FormLabel>Collection</FormLabel>
+              <Select
+                onValueChange={field.onChange}
+                defaultValue={field.value || ""}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder={isLoadingCollections ? "Loading..." : "Select Collection"} />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {collections?.map((c) => (
+                    <SelectItem key={c.id} value={String(c.id)}>
+                      {c.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          name="quality_id"
+          control={control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Quality</FormLabel>
+              <Select
+                onValueChange={field.onChange}
+                defaultValue={field.value || ""}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder={isLoadingQualities ? "Loading..." : "Select Quality"} />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {qualities?.map((q) => (
+                    <SelectItem key={q.id} value={String(q.id)}>
+                      {q.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          name="pile_height_id"
+          control={control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Pile Height</FormLabel>
+              <Select
+                onValueChange={field.onChange}
+                defaultValue={field.value || ""}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder={isLoadingPileHeights ? "Loading..." : "Select Pile Height"} />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {pileHeights?.map((ph) => (
+                    <SelectItem key={ph.id} value={String(ph.id)}>
+                      {ph.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          name="size_id"
+          control={control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Size</FormLabel>
+              <Select
+                onValueChange={field.onChange}
+                defaultValue={field.value || ""}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder={isLoadingSizes ? "Loading..." : "Select Size"} />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {sizes?.map((s) => (
+                    <SelectItem key={s.id} value={String(s.id)}>
+                      {s.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          name="luxury_edition_id"
+          control={control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Luxury Edition</FormLabel>
+              <Select
+                onValueChange={field.onChange}
+                defaultValue={field.value || ""}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder={isLoadingLuxuryEditions ? "Loading..." : "Select Luxury Edition"} />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {luxuryEditions?.map((e) => (
+                    <SelectItem key={e.id} value={String(e.id)}>
+                      {e.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          name="affordable_edition_id"
+          control={control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Affordable Edition</FormLabel>
+              <Select
+                onValueChange={field.onChange}
+                defaultValue={field.value || ""}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder={isLoadingAffordableEditions ? "Loading..." : "Select Affordable Edition"} />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {affordableEditions?.map((e) => (
+                    <SelectItem key={e.id} value={String(e.id)}>
+                      {e.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          name="material_id"
+          control={control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Material</FormLabel>
+              <Select
+                onValueChange={field.onChange}
+                defaultValue={field.value || ""}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder={isLoadingMaterials ? "Loading..." : "Select Material"} />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {materials?.map((m) => (
+                    <SelectItem key={m.id} value={String(m.id)}>
+                      {m.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}
@@ -255,7 +467,7 @@ export const ProductBasicInfo: React.FC<ProductBasicInfoProps> = ({
             <FormItem>
               <FormLabel>Price</FormLabel>
               <FormControl>
-                <Input type="number" step="0.01" {...field} />
+                <Input type="number" step="0.01" {...field} value={field.value || ""} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -263,13 +475,13 @@ export const ProductBasicInfo: React.FC<ProductBasicInfoProps> = ({
         />
 
         <FormField
-          name="stock"
+          name="sale_price"
           control={control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Total Stock</FormLabel>
+              <FormLabel>Sale Price</FormLabel>
               <FormControl>
-                <Input type="number" {...field} />
+                <Input type="number" step="0.01" {...field} value={field.value || ""} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -277,56 +489,22 @@ export const ProductBasicInfo: React.FC<ProductBasicInfoProps> = ({
         />
 
         <FormField
-          name="discount"
-          control={control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Discount</FormLabel>
-              <FormControl>
-                <Input
-                  type="number"
-                  step="0.01"
-                  {...field}
-                  value={field.value || ""}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          name="room_type"
-          control={control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Room</FormLabel>
-              <Select
-                onValueChange={field.onChange}
-                defaultValue={field.value || ""}
-              >
+            name="is_new"
+            control={control}
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                <FormLabel className="text-sm">Is New?</FormLabel>
                 <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a Room" />
-                  </SelectTrigger>
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
                 </FormControl>
-                <SelectContent>
-                  {!isLoadingRooms &&
-                    rooms?.map((r) => (
-                      <SelectItem key={r.id} value={r.slug}>
-                        {r.name}
-                      </SelectItem>
-                    ))}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+              </FormItem>
+            )}
+          />
 
-        {/* Toggle Switches in a compact row */}
-        <div className="col-span-1 md:col-span-2 lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-4">
-          <FormField
+        <FormField
             name="is_featured"
             control={control}
             render={({ field }) => (
@@ -341,12 +519,13 @@ export const ProductBasicInfo: React.FC<ProductBasicInfoProps> = ({
               </FormItem>
             )}
           />
+          
           <FormField
-            name="is_clearance"
+            name="is_best_seller"
             control={control}
             render={({ field }) => (
               <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-                <FormLabel className="text-sm">Is Clearance?</FormLabel>
+                <FormLabel className="text-sm">Is Best Seller?</FormLabel>
                 <FormControl>
                   <Switch
                     checked={field.value}
@@ -356,24 +535,8 @@ export const ProductBasicInfo: React.FC<ProductBasicInfoProps> = ({
               </FormItem>
             )}
           />
-
-          <FormField
-            name="is_popular"
-            control={control}
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-                <FormLabel className="text-sm">Is Popular?</FormLabel>
-                <FormControl>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-
-          <FormField
+          
+           <FormField
             name="is_active"
             control={control}
             render={({ field }) => (
@@ -388,9 +551,7 @@ export const ProductBasicInfo: React.FC<ProductBasicInfoProps> = ({
               </FormItem>
             )}
           />
-        </div>
 
-        {/* Image Upload Fields */}
         <FormField
           name="thumbnail_image"
           control={control}
@@ -409,25 +570,49 @@ export const ProductBasicInfo: React.FC<ProductBasicInfoProps> = ({
             </FormItem>
           )}
         />
-
+        
         <FormField
-          name="hover_thumbnail_image"
-          control={control}
-          render={({ field }) => (
-            <FormItem className="col-span-1 md:col-span-1 lg:col-span-1">
-              <FormLabel>Hover Thumbnail Image</FormLabel>
+           name="thumbnail_image_alt_description"
+           control={control}
+           render={({ field }) => (
+            <FormItem>
+             <FormLabel>Thumbnail Alt Text</FormLabel>
               <FormControl>
-                <ImageDropzone
-                  onFileSelect={field.onChange}
-                  currentFiles={field.value}
-                  existingImageUrl={initialData?.hover_thumbnail_image} // Pass existing image URL
-                  label="Hover Thumbnail Image"
-                />
+               <Input {...field} value={field.value || ""} />
               </FormControl>
-              <FormMessage />
+             <FormMessage />
             </FormItem>
-          )}
+           )}
         />
+        
+        <FormField
+           name="meta_title"
+           control={control}
+           render={({ field }) => (
+            <FormItem>
+             <FormLabel>Meta Title</FormLabel>
+              <FormControl>
+               <Input {...field} value={field.value || ""} />
+              </FormControl>
+             <FormMessage />
+            </FormItem>
+           )}
+        />
+        
+         <FormField
+           name="meta_description"
+           control={control}
+           render={({ field }) => (
+            <FormItem className="col-span-full">
+             <FormLabel>Meta Description</FormLabel>
+              <FormControl>
+               <Input {...field} value={field.value || ""} />
+              </FormControl>
+             <FormMessage />
+            </FormItem>
+           )}
+        />
+
       </CardContent>
     </Card>
   );

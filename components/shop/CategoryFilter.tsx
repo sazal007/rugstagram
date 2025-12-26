@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "motion/react";
-import { useCategories } from "@/hooks/use-category";
+import { useCollections } from "@/hooks/use-collections";
 
 interface CategoryFilterProps {
   selectedCategories: string[];
@@ -13,7 +13,7 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({
   selectedCategories,
   onToggleCategory,
 }) => {
-  const { data: categories = [], isLoading, error } = useCategories();
+  const { data: categories = [], isLoading, error } = useCollections();
 
   if (isLoading) {
     return (
@@ -40,31 +40,31 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({
         Collections
       </h3>
       <div className="space-y-2">
-        {categories.map((cat) => (
+        {categories.filter((cat) => cat.slug).map((cat) => (
           <label
             key={cat.id}
             className="flex items-center gap-3 cursor-pointer group"
           >
             <div
               className={`w-4 h-4 border transition-colors flex items-center justify-center ${
-                selectedCategories.includes(cat.slug)
+                selectedCategories.includes(cat.slug!)
                   ? "bg-primary border-primary"
                   : "border-gray-300 group-hover:border-primary"
               }`}
             >
-              {selectedCategories.includes(cat.slug) && (
+              {selectedCategories.includes(cat.slug!) && (
                 <div className="w-2 h-2 bg-white" />
               )}
             </div>
             <input
               type="checkbox"
               className="hidden"
-              checked={selectedCategories.includes(cat.slug)}
-              onChange={() => onToggleCategory(cat.slug)}
+              checked={selectedCategories.includes(cat.slug!)}
+              onChange={() => onToggleCategory(cat.slug!)}
             />
             <span
               className={`text-sm ${
-                selectedCategories.includes(cat.slug)
+                selectedCategories.includes(cat.slug!)
                   ? "text-primary font-medium"
                   : "text-muted group-hover:text-primary"
               }`}

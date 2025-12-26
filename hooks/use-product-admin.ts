@@ -12,14 +12,15 @@ export function useCreateProduct() {
     mutationFn: async (data: ProductFormValues) => {
       return productAdminApi.createProduct(data);
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast({
         title: "Success!",
         description: "Product created successfully!",
         variant: "default",
       });
       queryClient.invalidateQueries({ queryKey: ["products"] });
-      router.push(`/admin/products/edit/${data.slug}`);
+      // Redirect to list instead of specific edit page since we might not have slug easily or it might be numeric ID now
+      router.push("/admin/products");
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {
@@ -47,7 +48,8 @@ export function useUpdateProduct(slug: string) {
         variant: "default",
       });
       queryClient.invalidateQueries({ queryKey: ["products"] });
-      queryClient.invalidateQueries({ queryKey: ["product", slug] });
+      // Invalidate specific product query by ID if used, or by slug if we can map it
+      queryClient.invalidateQueries({ queryKey: ["product", slug] }); 
       router.refresh();
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -107,6 +109,38 @@ export function useDeleteProduct() {
       toast({
         title: "Error",
         description: `Failed to delete product: ${error.message}`,
+        variant: "destructive",
+      });
+    },
+  });
+}
+
+export function useUpdateProductStatus() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      slug,
+      data,
+    }: {
+      slug: string;
+      data: Partial<{
+        is_active: boolean;
+        is_new: boolean;
+        is_best_seller: boolean;
+        is_featured: boolean;
+      }>;
+    }) => {
+      return productAdminApi.updateProductStatus(slug, data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: `Failed to update: ${error.message}`,
         variant: "destructive",
       });
     },

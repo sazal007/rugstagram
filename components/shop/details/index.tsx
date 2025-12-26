@@ -17,7 +17,7 @@ interface ProductDetailProps {
 
 function ProductDetailContent({ product }: ProductDetailProps) {
   // Derive default size from product
-  const defaultSize = product.size?.[0]?.name || "";
+  const defaultSize = product.size?.name || "";
 
   const [selectedSize, setSelectedSize] = useState<string>(defaultSize);
   const [quantity, setQuantity] = useState(1);

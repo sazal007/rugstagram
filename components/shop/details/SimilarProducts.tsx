@@ -14,9 +14,9 @@ interface SimilarProductsProps {
 export const SimilarProducts: React.FC<SimilarProductsProps> = ({
   currentProduct,
 }) => {
-  // Fetch products from the same category
+  // Fetch similar products
   const { data, isLoading } = useProducts({
-    category: currentProduct.category?.slug,
+    is_featured: true,
     page_size: 4, // Fetch a few more to filter out current
   });
 

@@ -1,103 +1,140 @@
-export interface ProductSize {
+// Base interfaces for related models
+export interface Collection {
   id: number;
   name: string;
   slug: string | null;
-  description: string;
-  image: string;
+  description: string | null;
+  image: string | null;
+  image_alt_description: string | null;
+  is_featured: boolean;
 }
 
-export interface ProductColor {
+export interface DesignName {
   id: number;
   name: string;
   slug: string | null;
-  description: string | undefined;
-  image: string;
+  description: string | null;
+  image: string | null;
+  image_alt_description: string | null;
+  is_best_seller: boolean;
+  is_popular: boolean;
 }
 
-export interface ProductTexture {
+export interface Size {
   id: number;
   name: string;
-  slug: string;
-  description: string;
-  image: string;
+  slug: string | null;
+}
+
+export interface Color {
+  id: number;
+  name: string;
+  slug: string | null;
+}
+
+export interface Quality {
+  id: number;
+  name: string;
+  slug: string | null;
 }
 
 export interface ProductImage {
   id: number;
   image: string;
-  image_alt_description: string;
-  color: ProductColor;
-  size: ProductSize[];
-  stock: number;
-  product: number;
-  is_in_stock: boolean;
+  created_at: string;
+  updated_at: string;
 }
 
-export interface ProductStyle {
+export interface ProductVariant {
   id: number;
-  name: string;
-  slug: string;
-  description: string;
-}
-
-export interface ProductCollaboration {
-  id: number;
-  name: string;
-  slug: string;
-  description: string;
-}
-
-export interface ProductCategory {
-  id: number;
-  name: string;
-  slug: string;
+  color_id: number | null;
+  stock: number | null;
+  product_images: ProductImage[];
+  // For UI display helpers
+  color?: Color;
 }
 
 export interface Product {
+    id: number;
+    name: string;
+    slug: string;
+    code: string | null;
+    description: string | null;
+    collection: Collection | null;
+    sale_price: string | null;
+    price: string | null;
+    thumbnail_image: string | null;
+    thumbnail_image_alt_description: string | null;
+    is_new: boolean;
+    is_best_seller: boolean;
+    is_featured: boolean;
+    is_active: boolean;
+    meta_title: string | null;
+    meta_description: string | null;
+    created_at: string;
+    updated_at: string;
+    variants: ProductVariant[];
+    quality: Quality | null;
+    pile_height: PileHeight | null;
+    size: Size | null;
+    luxury_edition: LuxuryEdition | null;
+    affordable_edition: AffordableEdition | null;
+    material: Material | null;
+}
+
+export interface ProductListItem {
   id: number;
-  size: ProductSize[];
-  designer: string;
-  images: ProductImage[];
-  thumbnail_image: string;
-  hover_thumbnail_image: string;
-  hover_thumbnail_image_alt_description: string;
-  brand_name: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  reviews: any[];
-  reviews_count: number;
-  average_rating: number;
-  color: ProductColor[];
-  texture: ProductTexture[];
-  style: ProductStyle[];
-  collaboration: ProductCollaboration[];
   name: string;
   slug: string;
-  description: string;
-  highlight_description: string;
-  extra_description: string;
-  about_this_design_description: string;
-  specifications: string;
-  market_price: string;
-  price: string;
-  stock: number;
-  thumbnail_image_alt_description: string;
-  is_popular: boolean;
+  code: string | null;
+  sale_price: string | null;
+  price: string | null;
+  thumbnail_image: string | null;
+  thumbnail_image_alt_description: string | null;
+  is_new: boolean;
+  is_best_seller: boolean;
   is_featured: boolean;
-  is_clearance: boolean;
-  discount: string;
   is_active: boolean;
-  meta_title: string;
-  meta_description: string;
+  // New fields from backend response
+  collection_name?: string;
+  quality_name?: string;
+  pile_height_name?: string;
+  size_name?: string;
+  edition_name?: string;
+  material_name?: string;
+  meta_title?: string | null;
+  meta_description?: string | null;
   created_at: string;
   updated_at: string;
-  is_wishlisted: boolean;
-  category?: ProductCategory;
-  room_type: string | null;
 }
 
 export interface ProductListResponse {
-  results: Product[];
+  results: ProductListItem[];
   count: number;
   next?: string | null;
   previous?: string | null;
+}
+
+export interface PileHeight {
+  id: number;
+  name: string;
+  slug: string | null;
+}
+
+export interface LuxuryEdition {
+  id: number;
+  name: string;
+  slug: string | null;
+}
+
+export interface AffordableEdition {
+  id: number;
+  name: string;
+  slug: string | null;
+}
+
+export interface Material {
+  id: number;
+  name: string;
+  slug: string | null;
 }

@@ -26,7 +26,8 @@ const staggerContainer = {
 
 export const FeaturedProducts: React.FC = () => {
   const { data, isLoading } = useProducts({ is_featured: true });
-  const products = data?.results.slice(0, 4) || [];
+  // data is ProductListResponse, so we need data.results
+  const products = data?.results?.slice(0, 4) || [];
 
   if (isLoading) {
     return (
