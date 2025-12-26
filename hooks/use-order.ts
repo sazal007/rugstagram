@@ -8,7 +8,7 @@ import {
   getOrders,
   updateOrder,
 } from '@/services/order';
-import { CreateOrderPayload, Order, OrderFilters, UpdateOrderData, OrdersResponse } from '@/types/order';
+import { CreateOrderPayload, OrderFilters, UpdateOrderData, OrdersResponse } from '@/types/order';
 
 export const useOrders = (
   filters?: OrderFilters,
