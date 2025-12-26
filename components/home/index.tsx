@@ -1,7 +1,6 @@
 import React from "react";
 import { HeroSection } from "./HeroSection";
 import { FeaturedCollections } from "./FeaturedCollections";
-import { BentoGrid } from "./BentoGrid";
 import { BrandStory } from "./BrandStory";
 import { FeaturedProducts } from "./FeaturedProducts";
 import { ColorShowcase } from "./ColorShowcase";
@@ -12,9 +11,8 @@ export const Home: React.FC = () => {
     <>
       <HeroSection />
       <FeaturedCollections />
-      <ColorShowcase />
-      <BentoGrid />
       <BrandStory />
+      <ColorShowcase />
       <FeaturedProducts />
       <BespokeCTA />
     </>
