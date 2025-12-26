@@ -9,6 +9,7 @@ import {
   ArrowLeft,
   Mail,
   ListTodo,
+  Phone,
 } from "lucide-react";
 import {
   Sidebar,
@@ -44,6 +45,11 @@ const adminNavItems = [
     title: "Orders",
     href: "/admin/orders",
     icon: ShoppingCart,
+  },
+  {
+    title: "Contact",
+    href: "/admin/contacts",
+    icon: Phone,
   },
   {
     title: "Newsletter",
