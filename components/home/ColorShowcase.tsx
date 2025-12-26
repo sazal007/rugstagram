@@ -58,7 +58,7 @@ export const ColorShowcase: React.FC = () => {
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
       variants={staggerContainer}
-      className="bg-white py-10"
+      className="bg-white py-28"
     >
       <div className="max-w-7xl mx-auto px-6">
         <motion.div variants={fadeInUp} className="text-center mb-16">
