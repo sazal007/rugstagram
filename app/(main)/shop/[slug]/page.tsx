@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getProductBySlug } from "@/services/product";
+import { productApi } from "@/services/product";
 import { ProductDetail } from "@/components/shop/details";
 import type { Metadata } from "next";
 
@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   const { slug } = await params;
   
   try {
-    const product = await getProductBySlug(slug);
+    const product = await productApi.getBySlug(slug);
     
     // Mock keywords or use available data
     const keywords = [product.name, "handcrafted rug", "Himalayan rug"];
@@ -34,7 +34,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   
   let product;
   try {
-    product = await getProductBySlug(slug);
+    product = await productApi.getBySlug(slug);
   } catch {
     notFound();
   }

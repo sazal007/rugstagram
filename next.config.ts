@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "testimonials-golden-joan-hotel.trycloudflare.com",
+        hostname: "creations-bristol-charlie-poet.trycloudflare.com",
       }
     ],
   },

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -17,6 +17,8 @@ import { NAV_ITEMS } from "@/constants";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { CustomButton } from "@/components/ui/custom-button";
+import { useColors } from "@/hooks/use-colors";
+import { useCollections } from "@/hooks/use-collections";
 
 interface NavDropdownContentProps {
   items: Array<{ label: string; href: string; image?: string }>;
@@ -172,6 +174,39 @@ export function Navbar() {
   const isHome = pathname === "/";
   const { totalItems: cartItemCount } = useCart();
   const { isAuthenticated } = useAuth();
+  const { data: colors } = useColors();
+  const { data: collections } = useCollections();
+
+  const navItems = useMemo(() => {
+    return NAV_ITEMS.map((item) => {
+      // Handle Shop Colors
+      if (item.label === "Shop" && colors) {
+        const dynamicChildren = [
+          // Keep the static "All Stock" item
+          ...(item.children ? item.children.slice(0, 1) : []),
+          // Add dynamic colors
+          ...colors.map((color) => ({
+            label: color.name,
+            href: `/shop?color=${color.slug}`,
+            image: color.image,
+          })),
+        ];
+        return { ...item, children: dynamicChildren };
+      }
+
+      // Handle Collections
+      if (item.label === "Collections" && collections) {
+        const dynamicChildren = collections.map((collection) => ({
+          label: collection.name,
+          href: `/collections/${collection.slug}`,
+          image: collection.image,
+        }));
+        return { ...item, children: dynamicChildren };
+      }
+
+      return item;
+    });
+  }, [colors, collections]);
 
   const isActive = (href: string) => {
     if (href === "/") {
@@ -226,7 +261,7 @@ export function Navbar() {
           <nav className="hidden lg:flex items-center gap-8">
             <NavigationMenu viewport={false}>
               <NavigationMenuList className="gap-8">
-                {NAV_ITEMS.map((item) => (
+                {navItems.map((item) => (
                   <NavigationMenuItem
                     key={item.label}
                     className="relative group h-20 flex items-center"
@@ -330,7 +365,7 @@ export function Navbar() {
               </CustomButton>
             </div>
             <nav className="space-y-4 sm:space-y-6">
-              {NAV_ITEMS.map((item) => (
+              {navItems.map((item) => (
                 <div key={item.label}>
                   <Link
                     href={item.href}

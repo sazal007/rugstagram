@@ -2,12 +2,16 @@
 export interface Collection {
   id: number;
   name: string;
-  slug: string | null;
-  description: string | null;
-  image: string | null;
+  slug: string;
+  description: string;
+  image: string;
   image_alt_description: string | null;
+  order: number;
   is_featured: boolean;
+  created_at: string;
+  updated_at: string;
 }
+
 
 export interface DesignName {
   id: number;
