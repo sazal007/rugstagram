@@ -34,6 +34,8 @@ export interface Color {
   id: number;
   name: string;
   slug: string | null;
+  image?: string;
+  image_alt_description?: string;
 }
 
 export interface Quality {
@@ -52,6 +54,7 @@ export interface ProductImage {
 export interface ProductVariant {
   id: number;
   color_id: number | null;
+  color_name?: string; // Added based on backend JSON
   stock: number | null;
   product_images: ProductImage[];
   // For UI display helpers

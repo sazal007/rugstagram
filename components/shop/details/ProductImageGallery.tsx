@@ -7,19 +7,29 @@ import Image from "next/image";
 
 interface ProductImageGalleryProps {
   product: Product;
+  selectedColor?: Product["variants"][0]["color"] | null;
 }
 
 export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
   product,
+  selectedColor,
 }) => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isHoveringImage, setIsHoveringImage] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-  // Use thumbnail_image and product variant images from backend
-  const variantImages = product.variants?.flatMap((v) =>
-    v.product_images?.map((img) => img.image) || []
-  ) || [];
+  // Filter variant images based on selected color
+  const variantImages = product.variants
+    ?.filter((v) => {
+      if (!selectedColor) return true;
+      // Match by ID if available
+      if (v.color?.id === selectedColor.id) return true;
+      // Match by Name (case insensitive) if available
+      if (v.color_name && v.color_name.toLowerCase() === selectedColor.name.toLowerCase()) return true;
+      
+      return false;
+    })
+    .flatMap((v) => v.product_images?.map((img) => img.image) || []) || [];
   const productImages = [
     product.thumbnail_image,
     ...variantImages,
