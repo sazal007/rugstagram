@@ -17,47 +17,37 @@ interface ShopProps {
 function ShopContent({ collectionId }: ShopProps) {
   const searchParams = useSearchParams();
   const filterParam = searchParams.get("filter");
+  const colorParam = searchParams.get("color");
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  // Derive initial categories from collectionId (slug)
-  const initialCategory = useMemo(() => {
-    return collectionId || "";
-  }, [collectionId]);
-
-  const [selectedCategories, setSelectedCategories] = useState<string[]>(
-    initialCategory ? [initialCategory] : []
+  // Derive initial category from collectionId (slug)
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(
+    collectionId || null
   );
-  const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>([]);
 
   const toggleCategory = (slug: string) => {
-    setSelectedCategories((prev) => {
-      const isSelected = prev.includes(slug);
-      if (isSelected) {
-        return prev.filter((c) => c !== slug);
-      } else {
-        return [...prev, slug];
-      }
-    });
-   
+    setSelectedCategory((prev) => (prev === slug ? null : slug));
   };
 
   const clearFilters = () => {
-    setSelectedCategories([]);
-    setSelectedSubCategories([]);
+    setSelectedCategory(null);
   };
 
 
   const filters: ProductFilters = useMemo(() => {
     const f: ProductFilters = {};
     
-  
-    if (selectedCategories.length > 0) {
-      f.category = selectedCategories[0];
+    // Handle Collection
+    if (collectionId) {
+      f.collection = collectionId;
+    } else if (selectedCategory) {
+      f.collection = selectedCategory;
     }
 
-    if (selectedSubCategories.length > 0) {
-      f.sub_category = selectedSubCategories[0];
+    // Handle Color from URL (dynamic navbar link)
+    if (colorParam) {
+      f.color = colorParam;
     }
     
     if (filterParam === "new") {
@@ -65,16 +55,23 @@ function ShopContent({ collectionId }: ShopProps) {
     }
     
     return f;
-  }, [selectedCategories, selectedSubCategories, filterParam]);
+  }, [collectionId, selectedCategory, colorParam, filterParam]);
 
   const { data, isLoading, error } = useProducts(filters);
   const products = data?.results || [];
 
-  const pageTitle = collectionId
-    ? `${collectionId} Collection`
-    : filterParam === "new"
-    ? "New Arrivals"
-    : "All Rugs";
+  const pageTitle = useMemo(() => {
+    if (collectionId) {
+      return `${collectionId.charAt(0).toUpperCase() + collectionId.slice(1)} Collection`;
+    }
+    if (colorParam) {
+      return `${colorParam.charAt(0).toUpperCase() + colorParam.slice(1)} Rugs`;
+    }
+    if (filterParam === "new") {
+      return "New Arrivals";
+    }
+    return "All Rugs";
+  }, [collectionId, colorParam, filterParam]);
 
   const subtitle =
     "Discover our curated selection of hand-knotted masterpieces, crafted with precision and passion in the heart of the Himalayas.";
@@ -107,8 +104,7 @@ function ShopContent({ collectionId }: ShopProps) {
       <div className="flex flex-col lg:flex-row gap-12">
         <FilterSidebar
           isOpen={isFilterOpen}
-          selectedCategories={selectedCategories}
-          selectedSubCategories={selectedSubCategories}
+          selectedCategory={selectedCategory}
           onToggleCategory={toggleCategory}
         />
 
@@ -124,7 +120,7 @@ function ShopContent({ collectionId }: ShopProps) {
           </div>
         ) : products.length > 0 ? (
           <ProductGrid
-            key={`products-${selectedCategories.join(",")}-${filterParam || ""}`}
+            key={`products-${selectedCategory || "all"}-${filterParam || ""}`}
             products={products}
           />
         ) : (

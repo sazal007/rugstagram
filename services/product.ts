@@ -2,15 +2,16 @@ import { siteConfig } from "@/config/siteConfig";
 import { Product, ProductListResponse } from "@/types/product";
 
 export interface ProductFilters {
-  category?: string;
-  sub_category?: string;
   is_featured?: boolean;
   is_popular?: boolean;
-  is_clearance?: boolean;
+  is_best_seller?: boolean;
+  collection?: string;
+  color?: string;
   search?: string;
   ordering?: string;
   page?: number;
   page_size?: number;
+
 }
 
 const API_BASE_URL = siteConfig.backendUrl;
@@ -19,11 +20,10 @@ export const productApi = {
   getAll: async (filters: ProductFilters = {}): Promise<ProductListResponse> => {
     const params = new URLSearchParams();
     
-    if (filters.category) params.append("category__slug", filters.category);
-    if (filters.sub_category) params.append("sub_category__slug", filters.sub_category);
     if (filters.is_featured !== undefined) params.append("is_featured", filters.is_featured.toString());
-    if (filters.is_popular !== undefined) params.append("is_popular", filters.is_popular.toString());
-    if (filters.is_clearance !== undefined) params.append("is_clearance", filters.is_clearance.toString());
+    if (filters.is_best_seller !== undefined) params.append("is_best_seller", filters.is_best_seller.toString());
+    if(filters.collection !==undefined) params.append("collection", filters.collection.toString());
+    if(filters.color !== undefined) params.append("color", filters.color.toString());
     if (filters.search) params.append("search", filters.search);
     if (filters.ordering) params.append("ordering", filters.ordering);
     if (filters.page) params.append("page", filters.page.toString());

@@ -11,63 +11,13 @@ export const NAV_ITEMS: NavItem[] = [
         href: "/shop",
         image: "/colors/all.avif",
       },
-      {
-        label: "Originals",
-        href: "/shop?color=originals",
-        image: "/colors/originals.png",
-      },
-      {
-        label: "Silver & Greiges",
-        href: "/shop?color=silver-greiges",
-        image: "/colors/silver&greiges.png",
-      },
-      {
-        label: "Beiges",
-        href: "/shop?color=beiges",
-        image: "/colors/beiges.png",
-      },
-      {
-        label: "Toupes",
-        href: "/shop?color=toupes",
-        image: "/colors/toupes.png",
-      },
+      // Dynamic items will be added here
     ],
   },
   {
     label: "Collections",
     href: "#",
-    children: [
-      {
-        label: "Modern Collection",
-        href: "/collections/modern",
-        image: "/collections/modern-collection.jpeg",
-      },
-      {
-        label: "Artwork Collection",
-        href: "/collections/artwork",
-        image: "/collections/artwork-collection.jpeg",
-      },
-      {
-        label: "Ombre Collection",
-        href: "/collections/ombre",
-        image: "/collections/ombre-collection.jpeg",
-      },
-      {
-        label: "Traditional Collection",
-        href: "/collections/traditional",
-        image: "/collections/traditional-collection.jpeg",
-      },
-      {
-        label: "Ombre Classic Collection",
-        href: "/collections/ombre-classic",
-        image: "/collections/ombre-classic-collection.jpeg",
-      },
-      {
-        label: "Transitional Collection",
-        href: "/collections/transitional",
-        image: "/collections/transitional-collection.jpeg",
-      },
-    ],
+    children: [], // Dynamic items will be populated here
   },
   {
     label: "Bespoke",

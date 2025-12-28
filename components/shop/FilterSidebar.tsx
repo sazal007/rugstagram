@@ -5,14 +5,13 @@ import { CategoryFilter } from "./CategoryFilter";
 
 interface FilterSidebarProps {
   isOpen: boolean;
-  selectedCategories: string[];
-  selectedSubCategories: string[];
+  selectedCategory: string | null;
   onToggleCategory: (categorySlug: string) => void;
 }
 
 export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   isOpen,
-  selectedCategories,
+  selectedCategory,
   onToggleCategory,
 }) => {
   return (
@@ -23,7 +22,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
     >
       <div className="sticky top-32 space-y-8">
         <CategoryFilter
-          selectedCategories={selectedCategories}
+          selectedCategory={selectedCategory}
           onToggleCategory={onToggleCategory}
         />
       </div>

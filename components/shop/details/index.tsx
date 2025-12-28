@@ -11,6 +11,7 @@ import { ProductAccordion } from "./ProductAccordion";
 import { ReviewsSection } from "./ReviewsSection";
 import { SimilarProducts } from "./SimilarProducts";
 
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useColors } from "@/hooks/use-colors";
 
 interface ProductDetailProps {
@@ -21,13 +22,18 @@ function ProductDetailContent({ product }: ProductDetailProps) {
   // Derive default size from product
   const defaultSize = product.size?.name || "";
 
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const colorSlug = searchParams.get("color");
+
   const [selectedSize, setSelectedSize] = useState<string>(defaultSize);
   const [quantity, setQuantity] = useState(1);
   const { data: allColors } = useColors();
 
   // Extract unique colors from variants and match with full color data
   const availableColors = React.useMemo(() => {
-    const colors = new Map<string, Product["variants"][0]["color"]>();
+    const colors = new Map<string, NonNullable<Product["variants"][0]["color"]>>();
     
     product.variants?.forEach((variant) => {
       // Priority 1: Variant has full color object
@@ -56,16 +62,32 @@ function ProductDetailContent({ product }: ProductDetailProps) {
           colors.set(variant.color_name, {
               id: -variant.id, // Temporary fallback ID
               name: variant.color_name,
-              slug: null
+              slug: variant.color_name.toLowerCase().replace(/\s+/g, '-'), // Generate basic slug
           });
       }
     });
     return Array.from(colors.values());
   }, [product.variants, allColors]);
 
-  const [selectedColor, setSelectedColor] = useState<Product["variants"][0]["color"] | null>(
-    availableColors.length > 0 ? availableColors[0] : null
-  );
+  const [selectedColor, setSelectedColor] = useState<Product["variants"][0]["color"] | null>(() => {
+    if (colorSlug && availableColors.length > 0) {
+      const matched = availableColors.find(
+        (c) => c && (c.slug === colorSlug || c.name.toLowerCase() === colorSlug.toLowerCase())
+      );
+      if (matched) return matched;
+    }
+    return availableColors.length > 0 ? availableColors[0] : null;
+  });
+
+  // Update URL function
+  const handleColorChange = (color: Product["variants"][0]["color"]) => {
+    setSelectedColor(color);
+    if (color && color.slug) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("color", color.slug);
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    }
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -84,7 +106,7 @@ function ProductDetailContent({ product }: ProductDetailProps) {
             product={product}
             colors={availableColors}
             selectedColor={selectedColor}
-            onColorChange={setSelectedColor}
+            onColorChange={handleColorChange}
             onSizeChange={setSelectedSize}
             onQuantityChange={setQuantity}
           />
