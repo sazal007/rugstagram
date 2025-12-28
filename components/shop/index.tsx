@@ -20,6 +20,16 @@ function ShopContent({ collectionId }: ShopProps) {
   const pathname = usePathname();
   const filterParam = searchParams.get("filter");
   const colorParam = searchParams.get("color");
+  const collectionParam = searchParams.get("collection");
+
+  const selectedColors = useMemo(() => colorParam ? colorParam.split(",") : [], [colorParam]);
+  const selectedCollections = useMemo(() => {
+    const fromParams = collectionParam ? collectionParam.split(",") : [];
+    if (collectionId && !fromParams.includes(collectionId)) {
+      return [collectionId, ...fromParams];
+    }
+    return fromParams;
+  }, [collectionParam, collectionId]);
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
@@ -29,22 +39,42 @@ function ShopContent({ collectionId }: ShopProps) {
 
   const toggleCategory = (slug: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    if (collectionId === slug) {
-      router.push(`/shop${params.toString() ? `?${params.toString()}` : ""}`);
+    let currentCollections = params.get("collection")?.split(",").filter(Boolean) || [];
+    
+    if (currentCollections.includes(slug)) {
+      currentCollections = currentCollections.filter(c => c !== slug);
     } else {
-      router.push(`/collections/${slug}${params.toString() ? `?${params.toString()}` : ""}`);
+      currentCollections.push(slug);
     }
+
+    if (currentCollections.length > 0) {
+      params.set("collection", currentCollections.join(","));
+    } else {
+      params.delete("collection");
+    }
+
+    // If we were on a specific collection route, moving to /shop for multi-select
+    const targetPath = collectionId ? "/shop" : pathname;
+    router.push(`${targetPath}?${params.toString()}`, { scroll: false });
   };
 
   const toggleColor = (slug: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    if (params.get("color") === slug) {
-      params.delete("color");
+    let currentColors = params.get("color")?.split(",").filter(Boolean) || [];
+
+    if (currentColors.includes(slug)) {
+      currentColors = currentColors.filter(c => c !== slug);
     } else {
-      params.set("color", slug);
+      currentColors.push(slug);
+    }
+
+    if (currentColors.length > 0) {
+      params.set("color", currentColors.join(","));
+    } else {
+      params.delete("color");
     }
     
-    router.push(`${pathname}${params.toString() ? `?${params.toString()}` : ""}`);
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
   const clearFilters = () => {
@@ -55,14 +85,12 @@ function ShopContent({ collectionId }: ShopProps) {
   const filters: ProductFilters = useMemo(() => {
     const f: ProductFilters = {};
     
-    // Handle Collection (directly from URL via collectionId prop)
-    if (collectionId) {
-      f.collection = collectionId;
+    if (selectedCollections.length > 0) {
+      f.collection = selectedCollections.join(",");
     }
 
-    // Handle Color from URL (dynamic navbar link or sidebar)
-    if (colorParam) {
-      f.color = colorParam;
+    if (selectedColors.length > 0) {
+      f.color = selectedColors.join(",");
     }
     
     if (filterParam === "new") {
@@ -70,23 +98,29 @@ function ShopContent({ collectionId }: ShopProps) {
     }
     
     return f;
-  }, [collectionId, colorParam, filterParam]);
+  }, [selectedCollections, selectedColors, filterParam]);
 
   const { data, isLoading, error } = useProducts(filters);
   const products = data?.results || [];
 
   const pageTitle = useMemo(() => {
-    if (collectionId) {
-      return `${collectionId.charAt(0).toUpperCase() + collectionId.slice(1)} Collection`;
+    if (selectedCollections.length === 1) {
+      return `${selectedCollections[0].charAt(0).toUpperCase() + selectedCollections[0].slice(1)} Collection`;
     }
-    if (colorParam) {
-      return `${colorParam.charAt(0).toUpperCase() + colorParam.slice(1)} Rugs`;
+    if (selectedCollections.length > 1) {
+      return "Selected Collections";
+    }
+    if (selectedColors.length === 1) {
+      return `${selectedColors[0].charAt(0).toUpperCase() + selectedColors[0].slice(1)} Rugs`;
+    }
+    if (selectedColors.length > 1) {
+      return "Selected Colors";
     }
     if (filterParam === "new") {
       return "New Arrivals";
     }
     return "All Rugs";
-  }, [collectionId, colorParam, filterParam]);
+  }, [selectedCollections, selectedColors, filterParam]);
 
   const subtitle =
     "Discover our curated selection of hand-knotted masterpieces, crafted with precision and passion in the heart of the Himalayas.";
@@ -119,9 +153,9 @@ function ShopContent({ collectionId }: ShopProps) {
       <div className="flex flex-col lg:flex-row gap-12">
         <FilterSidebar
           isOpen={isFilterOpen}
-          selectedCategory={selectedCategory}
+          selectedCategories={selectedCollections}
           onToggleCategory={toggleCategory}
-          selectedColor={colorParam}
+          selectedColors={selectedColors}
           onToggleColor={toggleColor}
         />
 

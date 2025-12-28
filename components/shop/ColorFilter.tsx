@@ -5,12 +5,12 @@ import { motion } from "motion/react";
 import { useColors } from "@/hooks/use-colors";
 
 interface ColorFilterProps {
-  selectedColor: string | null;
+  selectedColors: string[];
   onToggleColor: (colorSlug: string) => void;
 }
 
 export const ColorFilter: React.FC<ColorFilterProps> = ({
-  selectedColor,
+  selectedColors,
   onToggleColor,
 }) => {
   const { data: colors = [], isLoading, error } = useColors();
@@ -47,24 +47,24 @@ export const ColorFilter: React.FC<ColorFilterProps> = ({
           >
             <div
               className={`w-4 h-4 border transition-colors flex items-center justify-center ${
-                selectedColor === color.slug
+                selectedColors.includes(color.slug)
                   ? "bg-primary border-primary"
                   : "border-gray-300 group-hover:border-primary"
               }`}
             >
-              {selectedColor === color.slug && (
+              {selectedColors.includes(color.slug) && (
                 <div className="w-2 h-2 bg-white" />
               )}
             </div>
             <input
               type="checkbox"
               className="hidden"
-              checked={selectedColor === color.slug}
+              checked={selectedColors.includes(color.slug)}
               onChange={() => onToggleColor(color.slug)}
             />
             <span
               className={`text-sm ${
-                selectedColor === color.slug
+                selectedColors.includes(color.slug)
                   ? "text-primary font-medium"
                   : "text-muted group-hover:text-primary"
               }`}

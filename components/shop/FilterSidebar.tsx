@@ -6,17 +6,17 @@ import { ColorFilter } from "./ColorFilter";
 
 interface FilterSidebarProps {
   isOpen: boolean;
-  selectedCategory: string | null;
+  selectedCategories: string[];
   onToggleCategory: (categorySlug: string) => void;
-  selectedColor: string | null;
+  selectedColors: string[];
   onToggleColor: (colorSlug: string) => void;
 }
 
 export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   isOpen,
-  selectedCategory,
+  selectedCategories,
   onToggleCategory,
-  selectedColor,
+  selectedColors,
   onToggleColor,
 }) => {
   return (
@@ -27,11 +27,11 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
     >
       <div className="sticky top-32 space-y-8">
         <CategoryFilter
-          selectedCategory={selectedCategory}
+          selectedCategories={selectedCategories}
           onToggleCategory={onToggleCategory}
         />
         <ColorFilter
-          selectedColor={selectedColor}
+          selectedColors={selectedColors}
           onToggleColor={onToggleColor}
         />
       </div>

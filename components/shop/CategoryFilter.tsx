@@ -5,12 +5,12 @@ import { motion } from "motion/react";
 import { useCollections } from "@/hooks/use-collections";
 
 interface CategoryFilterProps {
-  selectedCategory: string | null;
+  selectedCategories: string[];
   onToggleCategory: (categorySlug: string) => void;
 }
 
 export const CategoryFilter: React.FC<CategoryFilterProps> = ({
-  selectedCategory,
+  selectedCategories,
   onToggleCategory,
 }) => {
   const { data: categories = [], isLoading, error } = useCollections();
@@ -47,24 +47,24 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({
           >
             <div
               className={`w-4 h-4 border transition-colors flex items-center justify-center ${
-                selectedCategory === cat.slug
+                selectedCategories.includes(cat.slug!)
                   ? "bg-primary border-primary"
                   : "border-gray-300 group-hover:border-primary"
               }`}
             >
-              {selectedCategory === cat.slug && (
+              {selectedCategories.includes(cat.slug!) && (
                 <div className="w-2 h-2 bg-white" />
               )}
             </div>
             <input
               type="checkbox"
               className="hidden"
-              checked={selectedCategory === cat.slug}
+              checked={selectedCategories.includes(cat.slug!)}
               onChange={() => onToggleCategory(cat.slug!)}
             />
             <span
               className={`text-sm ${
-                selectedCategory === cat.slug
+                selectedCategories.includes(cat.slug!)
                   ? "text-primary font-medium"
                   : "text-muted group-hover:text-primary"
               }`}

@@ -68,7 +68,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ color, index }) => {
   const isEven = index % 2 === 1; // Even numbers (1-indexed: 2nd, 4th items)
 
   // Fallback description related to the color
-  const description = `The ${color.name} palette reflects our commitment to timeless elegance and Himalayan artistry. Each rug in this collection is hand-knotted using the finest materials, ensuring a unique depth of texture and a serene aesthetic for your home.`;
+  const description = color.description || `The ${color.name} palette reflects our commitment to timeless elegance and Himalayan artistry. Each rug in this collection is hand-knotted using the finest materials, ensuring a unique depth of texture and a serene aesthetic for your home.`;
 
   // Content JSX
   const contentArea = (

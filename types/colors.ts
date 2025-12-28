@@ -4,4 +4,5 @@ export interface Color {
   name: string;
   image: string;
   image_alt_description: string;
+  description?: string;
 }
