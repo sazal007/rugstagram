@@ -7,6 +7,8 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import { ArrowRight } from "lucide-react";
 
+import { useFeaturedCollections } from "@/hooks/use-featured-collections";
+
 type CornerPosition = "topLeft" | "topRight" | "bottomLeft" | "bottomRight";
 
 interface CollectionImage {
@@ -21,6 +23,17 @@ interface Collection {
   image: string;
   images: CollectionImage[];
 }
+
+interface CornerPositionMap {
+  [key: number]: CornerPosition;
+}
+
+const POSITION_MAP: CornerPositionMap = {
+  0: "topLeft",
+  1: "topRight",
+  2: "bottomLeft",
+  3: "bottomRight",
+};
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 60 },
@@ -40,171 +53,6 @@ const staggerContainer = {
     },
   },
 };
-
-const collections: Collection[] = [
-  {
-    name: "Modern Collection",
-    slug: "modern",
-    image: "/collections/modern-collection.jpeg",
-    images: [
-      {
-        src: "/collections/modern-collection.jpeg",
-        position: "topLeft",
-        title: "Modern Perspective 1",
-      },
-      {
-        src: "/collections/modern-collection.jpeg",
-        position: "topRight",
-        title: "Modern Perspective 2",
-      },
-      {
-        src: "/collections/modern-collection.jpeg",
-        position: "bottomLeft",
-        title: "Modern Perspective 3",
-      },
-      {
-        src: "/collections/modern-collection.jpeg",
-        position: "bottomRight",
-        title: "Modern Perspective 4",
-      },
-    ],
-  },
-  {
-    name: "Artwork Collection",
-    slug: "artwork",
-    image: "/collections/artwork-collection.jpeg",
-    images: [
-      {
-        src: "/collections/artwork-collection.jpeg",
-        position: "topLeft",
-        title: "Artwork Perspective 1",
-      },
-      {
-        src: "/collections/artwork-collection.jpeg",
-        position: "topRight",
-        title: "Artwork Perspective 2",
-      },
-      {
-        src: "/collections/artwork-collection.jpeg",
-        position: "bottomLeft",
-        title: "Artwork Perspective 3",
-      },
-      {
-        src: "/collections/artwork-collection.jpeg",
-        position: "bottomRight",
-        title: "Artwork Perspective 4",
-      },
-    ],
-  },
-  {
-    name: "Ombre Collection",
-    slug: "ombre",
-    image: "/collections/ombre-collection.jpeg",
-    images: [
-      {
-        src: "/collections/ombre-collection.jpeg",
-        position: "topLeft",
-        title: "Ombre Perspective 1",
-      },
-      {
-        src: "/collections/ombre-collection.jpeg",
-        position: "topRight",
-        title: "Ombre Perspective 2",
-      },
-      {
-        src: "/collections/ombre-collection.jpeg",
-        position: "bottomLeft",
-        title: "Ombre Perspective 3",
-      },
-      {
-        src: "/collections/ombre-collection.jpeg",
-        position: "bottomRight",
-        title: "Ombre Perspective 4",
-      },
-    ],
-  },
-  {
-    name: "Traditional Collection",
-    slug: "traditional",
-    image: "/collections/traditional-collection.jpeg",
-    images: [
-      {
-        src: "/collections/traditional-collection.jpeg",
-        position: "topLeft",
-        title: "Traditional Perspective 1",
-      },
-      {
-        src: "/collections/traditional-collection.jpeg",
-        position: "topRight",
-        title: "Traditional Perspective 2",
-      },
-      {
-        src: "/collections/traditional-collection.jpeg",
-        position: "bottomLeft",
-        title: "Traditional Perspective 3",
-      },
-      {
-        src: "/collections/traditional-collection.jpeg",
-        position: "bottomRight",
-        title: "Traditional Perspective 4",
-      },
-    ],
-  },
-  {
-    name: "Transitional Collection",
-    slug: "transitional",
-    image: "/collections/transitional-collection.jpeg",
-    images: [
-      {
-        src: "/collections/transitional-collection.jpeg",
-        position: "topLeft",
-        title: "Transitional Perspective 1",
-      },
-      {
-        src: "/collections/transitional-collection.jpeg",
-        position: "topRight",
-        title: "Transitional Perspective 2",
-      },
-      {
-        src: "/collections/transitional-collection.jpeg",
-        position: "bottomLeft",
-        title: "Transitional Perspective 3",
-      },
-      {
-        src: "/collections/transitional-collection.jpeg",
-        position: "bottomRight",
-        title: "Transitional Perspective 4",
-      },
-    ],
-  },
-  {
-    name: "Ombre Classic Collection",
-    slug: "ombre-classic",
-    image: "/collections/ombre-classic-collection.jpeg",
-    images: [
-      {
-        src: "/collections/ombre-classic-collection.jpeg",
-        position: "topLeft",
-        title: "Ombre Classic Perspective 1",
-      },
-      {
-        src: "/collections/ombre-classic-collection.jpeg",
-        position: "topRight",
-        title: "Ombre Classic Perspective 2",
-      },
-      {
-        src: "/collections/ombre-classic-collection.jpeg",
-        position: "bottomLeft",
-        title: "Ombre Classic Perspective 3",
-      },
-      {
-        src: "/collections/ombre-classic-collection.jpeg",
-        position: "bottomRight",
-        title: "Ombre Classic Perspective 4",
-      },
-    ],
-  },
-];
 
 interface RevealCardProps {
   collection: Collection;
@@ -237,7 +85,7 @@ const RevealCard: React.FC<RevealCardProps> = ({ collection, onNavigate }) => {
       {/* 1. COLLAPSED STACK VIEW (Main Card) */}
       <div className="relative w-full h-full cursor-pointer flex items-center justify-center transition-all duration-1000 group-hover:opacity-40">
         <div className="relative w-[240px] h-[300px] sm:w-64 sm:h-80 md:w-72 md:h-96">
-          {collection.images.map((img, idx) => {
+          {collection.images.map((img: CollectionImage, idx: number) => {
             const stackIndex = order.indexOf(idx);
             const isTop = stackIndex === 3;
             const isBottom = stackIndex === 0;
@@ -309,7 +157,7 @@ const RevealCard: React.FC<RevealCardProps> = ({ collection, onNavigate }) => {
         <div className="absolute inset-[-10px] sm:inset-[-15px] md:inset-[-20px] bg-surface shadow-[0_40px_100px_rgba(0,0,0,0.15)] border border-border overflow-hidden cursor-pointer">
           {/* 4 Quadrants Container */}
           <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-0.5 sm:gap-1 p-1 sm:p-1.5 md:p-2">
-            {collection.images.map((img, idx) => (
+            {collection.images.map((img: CollectionImage, idx: number) => (
               <div
                 key={img.position}
                 className={`relative w-full h-full overflow-hidden transition-all ease-out 
@@ -368,10 +216,44 @@ const RevealCard: React.FC<RevealCardProps> = ({ collection, onNavigate }) => {
 
 export const FeaturedCollections: React.FC = () => {
   const router = useRouter();
+  const { data: apiCollections = [], isLoading, error } = useFeaturedCollections();
 
   const handleNavigate = (slug: string) => {
     router.push(`/collections/${slug}`);
   };
+
+  const displayCollections: Collection[] = apiCollections.map((apiCat) => {
+    // We need 4 images for the reveal effect. Fill gaps with thumbnails if available.
+    const thumbnails = apiCat.product_thumbnails || [];
+    const images: CollectionImage[] = Array.from({ length: 4 }).map((_, idx) => {
+      // Rotate through thumbnails if fewer than 4 provided
+      const src = thumbnails[idx % thumbnails.length] || "/collections/artwork-collection.jpeg";
+      return {
+        src,
+        position: POSITION_MAP[idx],
+        title: `${apiCat.name} Perspective ${idx + 1}`,
+      };
+    });
+
+    return {
+      name: apiCat.name,
+      slug: apiCat.slug,
+      image: thumbnails[0] || "/collections/artwork-collection.jpeg",
+      images,
+    };
+  });
+
+  if (isLoading) {
+    return (
+      <div className="max-w-7xl mx-auto px-6 py-24 text-center">
+        <p className="text-muted tracking-widest uppercase text-xs animate-pulse">Loading Collections...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return null;
+  }
 
   return (
     <motion.section
@@ -404,7 +286,7 @@ export const FeaturedCollections: React.FC = () => {
       </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12 sm:gap-x-12 sm:gap-y-20 md:gap-x-16 md:gap-y-32 lg:gap-x-20 lg:gap-y-40 pb-12 sm:pb-16 md:pb-20">
-        {collections.map((collection) => (
+        {displayCollections.map((collection) => (
           <motion.div key={collection.slug} variants={fadeInUp}>
             <RevealCard collection={collection} onNavigate={handleNavigate} />
           </motion.div>

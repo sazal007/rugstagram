@@ -1,4 +1,5 @@
 export interface OrderItemPayload {
+  product: number;
   product_id: number;
   quantity: number;
   price: string;

@@ -97,11 +97,13 @@ export function CheckoutPage() {
           items: cartItems.map((item) => {
             console.log("Mapping item to payload:", item);
             return {
-            product_id: Number(item.productId),
-            quantity: item.quantity,
-            price: String(item.price),
-            size: item.sizeId || undefined,
-          }}),
+              product: Number(item.productId),
+              product_id: Number(item.productId),
+              quantity: item.quantity,
+              price: String(item.price),
+              size: item.sizeId || undefined,
+            };
+          }),
         };
 
         console.log("Order Payload:", JSON.stringify(payload, null, 2));

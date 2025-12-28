@@ -56,24 +56,19 @@ const imageVariants = {
   },
 };
 
-interface ColorEpoch {
-  id: string;
-  name: string;
-  year: string;
-  hex: string;
-  description: string;
-  significance: string;
-  imageUrl: string;
-  href: string;
-}
+import { useColors } from "@/hooks/use-colors";
+import { Color } from "@/types/colors";
 
 interface TimelineItemProps {
-  epoch: ColorEpoch;
+  color: Color;
   index: number;
 }
 
-const TimelineItem: React.FC<TimelineItemProps> = ({ epoch, index }) => {
+const TimelineItem: React.FC<TimelineItemProps> = ({ color, index }) => {
   const isEven = index % 2 === 1; // Even numbers (1-indexed: 2nd, 4th items)
+
+  // Fallback description related to the color
+  const description = `The ${color.name} palette reflects our commitment to timeless elegance and Himalayan artistry. Each rug in this collection is hand-knotted using the finest materials, ensuring a unique depth of texture and a serene aesthetic for your home.`;
 
   // Content JSX
   const contentArea = (
@@ -83,7 +78,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ epoch, index }) => {
     >
       <div className="space-y-2 min-[375px]:space-y-3">
         <h2 className="text-3xl min-[375px]:text-4xl sm:text-5xl md:text-6xl font-serif italic tracking-tighter leading-[0.9] text-foreground">
-          {epoch.name}
+          {color.name}
         </h2>
       </div>
 
@@ -93,12 +88,12 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ epoch, index }) => {
             The Narrative
           </h3>
           <p className="text-sm min-[375px]:text-base sm:text-base md:text-lg text-foreground/70 leading-relaxed font-light">
-            {epoch.description}
+            {description}
           </p>
         </div>
         <div className="pt-1 min-[375px]:pt-2">
           <Link
-            href={epoch.href}
+            href={`/shop?color=${color.slug}`}
             className="text-[10px] min-[375px]:text-xs sm:text-sm uppercase tracking-widest border-b border-primary pb-1 hover:text-accent hover:border-accent transition-colors inline-block"
           >
             View More{" "}
@@ -117,19 +112,18 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ epoch, index }) => {
         className="flex items-center justify-center px-3 min-[375px]:px-4 sm:px-6 md:px-12 py-4 min-[375px]:py-5 sm:py-6 md:py-8 h-full"
       >
         <Link
-          href={epoch.href}
+          href={`/shop?color=${color.slug}`}
           className="relative w-full max-w-[240px] min-[375px]:max-w-[280px] sm:max-w-sm md:max-w-md aspect-3/4 md:aspect-4/5 rounded-lg overflow-hidden group border border-foreground/10 bg-background"
         >
-          {/* Subtle Ambient Color Glow */}
+          {/* Subtle Ambient Color Glow - If hex code is missing, use a transparent primary as fallback */}
           <div
-            className="absolute -inset-10 opacity-10 blur-3xl transition-opacity duration-1000 group-hover:opacity-30"
-            style={{ backgroundColor: epoch.hex }}
+            className="absolute -inset-10 opacity-10 blur-3xl transition-opacity duration-1000 group-hover:opacity-30 bg-primary/20"
           />
 
           {/* Main Content Image */}
           <Image
-            src={epoch.imageUrl}
-            alt={epoch.name}
+            src={color.image || "/colors/originals.png"}
+            alt={color.image_alt_description || color.name}
             fill
             className="object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-1000 ease-in-out scale-105 group-hover:scale-100"
             sizes="(max-width: 768px) 100vw, 50vw"
@@ -144,7 +138,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ epoch, index }) => {
                 Visual Core
               </p>
               <p className="text-lg min-[375px]:text-xl font-serif italic text-white/90">
-                {epoch.name}
+                {color.name}
               </p>
             </div>
           </div>
@@ -183,58 +177,21 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ epoch, index }) => {
   );
 };
 
-const epochs: ColorEpoch[] = [
-  {
-    id: "originals",
-    name: "Originals",
-    year: "2020",
-    hex: "#1c1c1c",
-    description:
-      "The Originals palette reflects the true essence of each design, combining colors from traditional and history with new hues for the Abstract, Modern, and Ombre collections. This blend of classic and contemporary shades ensures timeless appeal.",
-    significance:
-      "The foundation of our color philosophy, Originals represents the heritage and authenticity that sets our rugs apart in the world of fine textiles.",
-    imageUrl: "/colors/originals.png",
-    href: "/shop?color=originals",
-  },
-  {
-    id: "silver-greiges",
-    name: "Silver & Greiges",
-    year: "2021",
-    hex: "#8b8b7a",
-    description:
-      "The Greys palette includes Green Gray Beige, Blue Green Gray, and Green Gray, offering sophisticated, understated tones that bring depth and tranquility to modern spaces. These versatile shades anchor designs with a serene, calm aesthetic that complements both warm and cool interiors.",
-    significance:
-      "A revolutionary shift towards minimalist elegance, this palette has become synonymous with modern luxury interiors and architectural harmony.",
-    imageUrl: "/colors/silver&greiges.png",
-    href: "/shop?color=silver-greiges",
-  },
-  {
-    id: "beiges",
-    name: "Beiges",
-    year: "2022",
-    hex: "#c7a17a",
-    description:
-      "The Beige palette includes shades like Pink Beige, Yellow Beige, Gold Beige, Orange Beige, and Green Beige, offering a warm and inviting spectrum perfect for cozy interiors. These versatile tones bring warmth and balance to any space, making them ideal for creating a welcoming atmosphere.",
-    significance:
-      "Celebrated for their versatility and universal appeal, Beiges have transformed countless interiors into sanctuaries of calm and sophistication.",
-    imageUrl: "/colors/beiges.png",
-    href: "/shop?color=beiges",
-  },
-  {
-    id: "toupes",
-    name: "Toupes",
-    year: "2023",
-    hex: "#8b5e3c",
-    description:
-      "Taupe, the chameleon of colors, adapts effortlessly to both warm and cool interiors. Its subtle blend of gray and brown creates depth, while it pairs seamlessly with any color, making it a flexible choice for diverse design needs. Whether enhancing warm tones or balancing cooler hues, taupe provides timeless elegance. Greige—a mix of grey and beige—further amplifies this adaptability, blending harmoniously with all shades in the collection.",
-    significance:
-      "The latest evolution in our color journey, Toupes have redefined what it means to create spaces that are both bold and understated, modern and timeless.",
-    imageUrl: "/colors/toupes.png",
-    href: "/shop?color=toupes",
-  },
-];
-
 export const ColorShowcase: React.FC = () => {
+  const { data: colors = [], isLoading, error } = useColors();
+
+  if (isLoading) {
+    return (
+      <div className="py-24 text-center">
+        <p className="text-muted tracking-widest uppercase text-xs animate-pulse">Loading Color Palette...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return null;
+  }
+
   return (
     <main className="relative bg-background">
       {/* Title Section */}
@@ -273,8 +230,8 @@ export const ColorShowcase: React.FC = () => {
           variants={staggerContainer}
           className="overflow-visible"
         >
-          {epochs.map((epoch, index) => (
-            <TimelineItem key={epoch.id} epoch={epoch} index={index} />
+          {colors.map((color, index) => (
+            <TimelineItem key={color.id} color={color} index={index} />
           ))}
         </motion.div>
       </div>

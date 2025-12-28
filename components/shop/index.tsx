@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { ShopHeader } from "./ShopHeader";
 import { FilterToggle } from "./FilterToggle";
 import { FilterSidebar } from "./FilterSidebar";
@@ -17,6 +17,7 @@ interface ShopProps {
 function ShopContent({ collectionId }: ShopProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const pathname = usePathname();
   const filterParam = searchParams.get("filter");
   const colorParam = searchParams.get("color");
 
@@ -27,13 +28,23 @@ function ShopContent({ collectionId }: ShopProps) {
   const selectedCategory = collectionId || null;
 
   const toggleCategory = (slug: string) => {
-    // If clicking the currently active collection, go back to main shop
+    const params = new URLSearchParams(searchParams.toString());
     if (collectionId === slug) {
-      router.push("/shop");
+      router.push(`/shop${params.toString() ? `?${params.toString()}` : ""}`);
     } else {
-      // Otherwise navigate to the new collection
-      router.push(`/collections/${slug}`);
+      router.push(`/collections/${slug}${params.toString() ? `?${params.toString()}` : ""}`);
     }
+  };
+
+  const toggleColor = (slug: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (params.get("color") === slug) {
+      params.delete("color");
+    } else {
+      params.set("color", slug);
+    }
+    
+    router.push(`${pathname}${params.toString() ? `?${params.toString()}` : ""}`);
   };
 
   const clearFilters = () => {
@@ -49,7 +60,7 @@ function ShopContent({ collectionId }: ShopProps) {
       f.collection = collectionId;
     }
 
-    // Handle Color from URL (dynamic navbar link)
+    // Handle Color from URL (dynamic navbar link or sidebar)
     if (colorParam) {
       f.color = colorParam;
     }
@@ -110,6 +121,8 @@ function ShopContent({ collectionId }: ShopProps) {
           isOpen={isFilterOpen}
           selectedCategory={selectedCategory}
           onToggleCategory={toggleCategory}
+          selectedColor={colorParam}
+          onToggleColor={toggleColor}
         />
 
         {isLoading ? (
