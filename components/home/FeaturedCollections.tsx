@@ -148,21 +148,21 @@ const RevealCard: React.FC<RevealCardProps> = ({ collection, onNavigate }) => {
         transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]
         ${
           isHovered
-            ? "opacity-100 scale-100"
+            ? "opacity-100 scale-90"
             : "opacity-0 scale-90 translate-y-4"
         }
       `}
       >
         {/* Background of the pop-up */}
-        <div className="absolute inset-[-10px] sm:inset-[-15px] md:inset-[-20px] bg-surface shadow-[0_40px_100px_rgba(0,0,0,0.15)] border border-border overflow-hidden cursor-pointer">
+        <div className="absolute inset-[-10px] sm:inset-[-15px] h-[650px] md:inset-[-20px] bg-surface shadow-[0_40px_100px_rgba(0,0,0,0.15)] border border-border overflow-hidden cursor-pointer">
           {/* 4 Quadrants Container */}
-          <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-0.5 sm:gap-1 p-1 sm:p-1.5 md:p-2">
+          <div className="absolute h-[650px] inset-0 grid grid-cols-2 grid-rows-2 gap-0.5 sm:gap-1 p-1 sm:p-1.5 md:p-2">
             {collection.images.map((img: CollectionImage, idx: number) => (
               <div
                 key={img.position}
-                className={`relative w-full h-full overflow-hidden transition-all ease-out 
+                className={`relative w-full h-[350px] overflow-hidden transition-all ease-out 
                   ${
-                    isHovered ? "scale-100 opacity-100" : "scale-125 opacity-0"
+                    isHovered ? "scale-100 opacity-100" : "scale-85 opacity-0"
                   }`}
                 style={{
                   transitionDuration: "1200ms",
@@ -174,7 +174,6 @@ const RevealCard: React.FC<RevealCardProps> = ({ collection, onNavigate }) => {
                   fill
                   className="object-cover  hover:grayscale-0 transition-all duration-700"
                   alt={img.title}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
                 <div className="absolute inset-0 bg-foreground/10"></div>
               </div>
