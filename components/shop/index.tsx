@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { ShopHeader } from "./ShopHeader";
 import { FilterToggle } from "./FilterToggle";
 import { FilterSidebar } from "./FilterSidebar";
@@ -16,33 +16,37 @@ interface ShopProps {
 
 function ShopContent({ collectionId }: ShopProps) {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const filterParam = searchParams.get("filter");
   const colorParam = searchParams.get("color");
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  // Derive initial category from collectionId (slug)
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(
-    collectionId || null
-  );
+  // The collectionId comes from the URL slug via dynamic routing
+  // and serves as our "selectedCategory"
+  const selectedCategory = collectionId || null;
 
   const toggleCategory = (slug: string) => {
-    setSelectedCategory((prev) => (prev === slug ? null : slug));
+    // If clicking the currently active collection, go back to main shop
+    if (collectionId === slug) {
+      router.push("/shop");
+    } else {
+      // Otherwise navigate to the new collection
+      router.push(`/collections/${slug}`);
+    }
   };
 
   const clearFilters = () => {
-    setSelectedCategory(null);
+    router.push("/shop");
   };
 
 
   const filters: ProductFilters = useMemo(() => {
     const f: ProductFilters = {};
     
-    // Handle Collection
+    // Handle Collection (directly from URL via collectionId prop)
     if (collectionId) {
       f.collection = collectionId;
-    } else if (selectedCategory) {
-      f.collection = selectedCategory;
     }
 
     // Handle Color from URL (dynamic navbar link)
@@ -55,7 +59,7 @@ function ShopContent({ collectionId }: ShopProps) {
     }
     
     return f;
-  }, [collectionId, selectedCategory, colorParam, filterParam]);
+  }, [collectionId, colorParam, filterParam]);
 
   const { data, isLoading, error } = useProducts(filters);
   const products = data?.results || [];
