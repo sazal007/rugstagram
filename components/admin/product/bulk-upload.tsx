@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react';
 import { Upload, FileSpreadsheet, FileArchive, X, Loader2 } from 'lucide-react';
 
-import { useToast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 import { useBulkUpload } from '@/hooks/use-bulk-products';
 
 import { Button } from '@/components/ui/button';
@@ -20,7 +20,6 @@ export default function BulkUploadComponent({ onUploadSuccess }: BulkUploadCompo
   const [uploadProgress, setUploadProgress] = useState(0);
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { toast } = useToast();
 
   const { uploadFile, isUploading } = useBulkUpload({
     onUploadSuccess: () => {
@@ -69,19 +68,15 @@ export default function BulkUploadComponent({ onUploadSuccess }: BulkUploadCompo
     const isZip = zipTypes.includes(file.type) || file.name.endsWith('.zip');
 
     if (!isExcel && !isZip) {
-      toast({
-        title: 'Invalid file type',
+      toast.error('Invalid file type', {
         description: 'Please select an Excel file (.xlsx, .xls) or Zip file (.zip)',
-        variant: 'destructive'
       });
       return;
     }
 
     if (file.size > 10 * 1024 * 1024) { // 10MB limit
-      toast({
-        title: 'File too large',
+      toast.error('File too large', {
         description: `File ${file.name} is larger than 10MB`,
-        variant: 'destructive'
       });
       return;
     }
@@ -104,10 +99,8 @@ export default function BulkUploadComponent({ onUploadSuccess }: BulkUploadCompo
 
   const handleUpload = () => {
     if (!excelFile) {
-      toast({
-        title: 'Excel file missing',
+      toast.error('Excel file missing', {
         description: 'Please upload an Excel file to proceed.',
-        variant: 'destructive'
       });
       return;
     }

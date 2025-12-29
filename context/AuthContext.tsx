@@ -3,9 +3,10 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode"; 
-import { User, AuthTokens, DecodedAccessToken, LoginData, SignupData } from "@/types/auth";
-import { loginUser, signupUser } from "@/services/auth";
-import { useToast } from "../hooks/use-toast";
+import { User, AuthTokens, DecodedAccessToken, LoginData, SignupData, UpdateProfileData, ChangePasswordData } from "@/types/auth";
+import { loginUser, signupUser, updateUserProfile, changePassword as changePasswordService } from "@/services/auth";
+import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/error-utils";
 
 interface AuthContextType {
   user: User | null;
@@ -14,6 +15,8 @@ interface AuthContextType {
   signup: (data: SignupData) => Promise<void>;
   logout: () => void;
   updateTokens: (tokens: AuthTokens) => void; 
+  updateProfile: (data: UpdateProfileData) => Promise<void>;
+  changePassword: (data: ChangePasswordData) => Promise<void>;
   isLoading: boolean;
   isAuthenticated: boolean;
 }
@@ -25,7 +28,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [tokens, setTokens] = useState<AuthTokens | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-  const { toast } = useToast();
 
   useEffect(() => {
     const storedTokens = localStorage.getItem("authTokens");
@@ -52,7 +54,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         } else {
           // Token expired
           localStorage.removeItem("authTokens");
-          toast({ title: "Session expired", description: "Please log in again.", variant: "destructive" });
+          toast.error("Session expired", { description: "Please log in again." });
         }
       } catch (error) {
         console.error("Failed to parse stored tokens or decode token:", error);
@@ -60,7 +62,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     }
     setIsLoading(false);
-  }, [toast]);
+  }, []);
 
   const handleAuthSuccess = (userData: User, tokenData: AuthTokens) => {
     setUser(userData);
@@ -96,71 +98,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const getErrorMessage = (error: unknown) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const err = error as any;
-    // Handle different types of errors
-    if (err.response) {
-      const status = err.response.status;
-      const data = err.response.data;
-      
-      // Handle errors array format: {status: 400, errors: [{message: "...", code: "..."}]}
-      if (data?.errors && Array.isArray(data.errors) && data.errors.length > 0) {
-        const firstError = data.errors[0];
-        
-        // Check for specific error codes
-        if (firstError.code === "too_many_login_attempts") {
-          return "Too many failed login attempts. Please wait a few minutes before trying again.";
-        }
-        
-        if (firstError.code === "invalid_credentials") {
-          return "Invalid email or password. Please check your credentials and try again.";
-        }
-        
-        if (firstError.code === "user_not_found") {
-          return "Account not found. Please check your email address or sign up for a new account.";
-        }
-        
-        if (firstError.code === "account_disabled") {
-          return "Your account has been disabled. Please contact support for assistance.";
-        }
-        
-        // Return the error message from the backend
-        return firstError.message || "Login failed. Please try again.";
-      }
-      
-      // Fallback to status code based handling
-      switch (status) {
-        case 401:
-          return "Invalid email or password. Please check your credentials and try again.";
-        case 400:
-          if (data?.message) {
-            return data.message;
-          }
-          if (data?.error) {
-            return data.error;
-          }
-          if (data?.detail) {
-            return data.detail;
-          }
-          return "Invalid login credentials. Please check your email and password.";
-        case 403:
-          return "Your account has been suspended or disabled. Please contact support.";
-        case 404:
-          return "Account not found. Please check your email address or sign up for a new account.";
-        case 429:
-          return "Too many login attempts. Please wait a few minutes before trying again.";
-        case 500:
-          return "Server error occurred. Please try again later.";
-        default:
-          return data?.message || data?.error || data?.detail || "Login failed. Please try again.";
-      }
-    } else if (err.request) {
-      return "Network error. Please check your internet connection and try again.";
-    } else {
-      return err.message || "An unexpected error occurred. Please try again.";
-    }
-  };
 
   const login = async (data: LoginData) => {
     setIsLoading(true);
@@ -191,7 +128,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         refresh_token: refreshToken 
       });
       
-      toast({ title: "Login Successful", description: "Welcome back!" });
+      toast.success("Login Successful", { description: "Welcome back!" });
       
       // Handle redirect after successful login
       if (typeof window !== 'undefined') {
@@ -222,14 +159,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } catch (error: unknown) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const err = error as any;
-      const errorMessage = getErrorMessage(err);
-      
-      toast({ 
-        title: "Login Failed", 
-        description: errorMessage,
-        variant: "destructive" 
-      });
-      
       console.error("Login error:", {
         message: err.message,
         status: err.response?.status,
@@ -257,28 +186,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       await signupUser(signupData);
       
       // Don't auto-login after signup, just redirect to login page
-      toast({ 
-        title: "Signup Successful", 
+      toast.success("Signup Successful", { 
         description: "Your account has been created. Please log in to continue." 
       });
       router.push("/login"); 
     } catch (error: unknown) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const err = error as any;
-      const errorMessage = getErrorMessage(err);
-      
-      toast({ 
-        title: "Signup Failed", 
-        description: errorMessage,
-        variant: "destructive" 
-      });
-      
       console.error("Signup error:", {
         message: err.message,
         status: err.response?.status,
         data: err.response?.data,
         error: err
       });
+      throw err;
     } finally {
       setIsLoading(false);
     }
@@ -292,8 +213,56 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (typeof window !== 'undefined') {
       sessionStorage.removeItem('redirectAfterLogin');
     }
-    toast({ title: "Logged Out", description: "You have been successfully logged out." });
+    toast.success("Logged Out", { description: "You have been successfully logged out." });
     router.push("/login");
+  };
+
+  const updateProfile = async (data: UpdateProfileData) => {
+    if (!tokens?.access_token) {
+      throw new Error("No access token available");
+    }
+    
+    try {
+      const updatedUserData = await updateUserProfile(data, tokens.access_token);
+      
+      // If the backend returns the updated user, we update our local state
+      // Note: If the backend returns a new token, we should use updateTokens instead
+      // For now, we manually update the user state with returned data if available
+      if (updatedUserData) {
+        setUser(prevUser => {
+          if (!prevUser) return null;
+          return {
+            ...prevUser,
+            ...updatedUserData
+          };
+        });
+      }
+      
+      toast.success("Profile Updated", { description: "Your personal information has been updated." });
+    } catch (error: unknown) {
+      console.error("Profile update error:", error);
+      toast.error("Update Failed", { 
+        description: getErrorMessage(error),
+      });
+      throw error;
+    }
+  };
+
+  const changePassword = async (data: ChangePasswordData) => {
+    if (!tokens?.access_token) {
+      throw new Error("No access token available");
+    }
+
+    try {
+      await changePasswordService(data, tokens.access_token);
+      toast.success("Password Changed", { description: "Your password has been changed successfully." });
+    } catch (error: unknown) {
+      console.error("Password change error:", error);
+      toast.error("Change Failed", { 
+        description: getErrorMessage(error),
+      });
+      throw error;
+    }
   };
 
  return (
@@ -304,6 +273,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       signup, 
       logout, 
       updateTokens, 
+      updateProfile,
+      changePassword,
       isLoading, 
       isAuthenticated: !!user && !!tokens 
     }}>

@@ -187,7 +187,7 @@ export function Navbar() {
           // Add dynamic colors
           ...colors.map((color) => ({
             label: color.name,
-            href: `/shop?color=${color.slug}`,
+            href: `/shop/?color=${color.slug}`,
             image: color.image,
           })),
         ];
@@ -198,7 +198,7 @@ export function Navbar() {
       if (item.label === "Collections" && collections) {
         const dynamicChildren = collections.map((collection) => ({
           label: collection.name,
-          href: `/collections/${collection.slug}`,
+          href: `/collections/?collection=${collection.slug}`,
           image: collection.image,
         }));
         return { ...item, children: dynamicChildren };
@@ -212,6 +212,11 @@ export function Navbar() {
     if (href === "/") {
       return pathname === "/";
     }
+    if (href === "#" || href === "") return false;
+    
+    // Custom logic for Shop and colors
+    if (href === "/shop" && pathname.startsWith("/colors")) return true;
+    
     return pathname.startsWith(href);
   };
 
@@ -269,7 +274,7 @@ export function Navbar() {
                     {item.children ? (
                       <>
                         <NavigationMenuTrigger
-                          className={`h-full bg-transparent! hover:bg-transparent! hover:text-accent! data-[state=open]:bg-transparent! data-[state=open]:text-accent! data-[state=open]:hover:bg-transparent! data-[state=open]:hover:text-accent! focus:bg-transparent! focus:text-accent! focus:hover:bg-transparent! focus:hover:text-accent! px-0 py-0 text-sm uppercase tracking-wide transition-colors duration-200 focus-visible:ring-0 items-center justify-center ${
+                          className={`h-full cursor-pointer bg-transparent! hover:bg-transparent! hover:text-accent! data-[state=open]:bg-transparent! data-[state=open]:text-accent! data-[state=open]:hover:bg-transparent! data-[state=open]:hover:text-accent! focus:bg-transparent! focus:text-accent! focus:hover:bg-transparent! focus:hover:text-accent! px-0 py-0 text-sm uppercase tracking-wide transition-colors duration-200 focus-visible:ring-0 items-center justify-center ${
                             isActive(item.href)
                               ? "text-accent"
                               : "text-foreground"
@@ -277,7 +282,7 @@ export function Navbar() {
                         >
                           {item.label}
                         </NavigationMenuTrigger>
-                        <NavigationMenuContent className="fixed! left-0! right-0! top-[110px]! mt-0! z-50 w-screen! p-0! bg-transparent! border-0! shadow-none! data-[motion^=from-]:animate-none! data-[motion^=to-]:animate-none! rounded-none!">
+                        <NavigationMenuContent className="fixed! cursor-pointer left-0! right-0! top-[110px]! mt-0! z-50 w-screen! p-0! bg-transparent! border-0! shadow-none! data-[motion^=from-]:animate-none! data-[motion^=to-]:animate-none! rounded-none!">
                           <NavDropdownContent
                             items={item.children || []}
                             isActive={isActive}
@@ -287,7 +292,7 @@ export function Navbar() {
                     ) : (
                       <NavigationMenuLink
                         asChild
-                        className="h-full flex items-center bg-transparent! hover:bg-transparent! hover:text-accent! focus:bg-transparent! focus:text-accent!"
+                        className="h-full cursor-pointer flex items-center bg-transparent! hover:bg-transparent! hover:text-accent! focus:bg-transparent! focus:text-accent!"
                       >
                         <Link
                           href={item.href}
@@ -309,23 +314,12 @@ export function Navbar() {
 
           {/* Icons */}
           <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
-            <CustomButton
-              variant="ghost"
-              size="icon"
-              className="p-2 hover:text-accent transition-colors duration-200"
-              aria-label="Search"
+            <Link
+              href={isAuthenticated ? "/profile" : "/login"}
+              className="p-2 hover:text-accent transition-colors duration-200 relative"
+              aria-label="Account"
             >
-              <Search className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]" />
-            </CustomButton>
-            <Link href={isAuthenticated ? "/profile" : "/login"}>
-              <CustomButton
-                variant="ghost"
-                size="icon"
-                className="p-2 hover:text-accent transition-colors duration-200"
-                aria-label="Account"
-              >
-                <User className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]" />
-              </CustomButton>
+              <User className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]" />
             </Link>
             <Link
               href="/cart"

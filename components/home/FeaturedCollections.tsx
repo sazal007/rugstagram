@@ -218,7 +218,7 @@ export const FeaturedCollections: React.FC = () => {
   const { data: apiCollections = [], isLoading, error } = useFeaturedCollections();
 
   const handleNavigate = (slug: string) => {
-    router.push(`/collections/${slug}`);
+    router.push(`/collections/?collection=${slug}`);
   };
 
   const displayCollections: Collection[] = apiCollections.map((apiCat) => {

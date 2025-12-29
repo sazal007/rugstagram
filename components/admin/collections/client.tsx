@@ -7,14 +7,14 @@ import { Separator } from "@/components/ui/separator";
 import { CategoryList } from "@/components/admin/collections/category-list";
 import { CategoryForm } from "@/components/admin/collections/category-form";
 import { Collection } from "@/types/product";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/error-utils";
 
 export const CategoryClient = () => {
   const { data: categories = [], isLoading } = useCollections();
   const createCategory = useCreateCollection();
   const updateCategory = useUpdateCollection();
   const deleteCategory = useDeleteCollection();
-  const { toast } = useToast();
 
   const [open, setOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<Collection | null>(null);
@@ -81,8 +81,7 @@ export const CategoryClient = () => {
         }
         
         await updateCategory.mutateAsync({ id: selectedCategory.id, data: payload });
-        toast({
-          title: "Success",
+        toast.success("Success", {
           description: "Category updated successfully.",
         });
       } else {
@@ -96,18 +95,15 @@ export const CategoryClient = () => {
          }
         
         await createCategory.mutateAsync(formData);
-        toast({
-          title: "Success",
+        toast.success("Success", {
           description: "Category created successfully.",
         });
       }
       onClose();
     } catch (error) {
         console.error(error);
-      toast({
-        title: "Error",
-        description: "Something went wrong.",
-        variant: "destructive",
+      toast.error("Error", {
+        description: getErrorMessage(error),
       });
     }
   };
@@ -115,17 +111,14 @@ export const CategoryClient = () => {
   const onDelete = async (category: Collection) => {
     try {
       await deleteCategory.mutateAsync(category.id);
-      toast({
-        title: "Success",
+      toast.success("Success", {
         description: "Category deleted successfully.",
       });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
         console.error(error);
-      toast({
-        title: "Error",
-        description: error.message || "Make sure you removed all products using this category first.",
-        variant: "destructive",
+      toast.error("Error", {
+        description: getErrorMessage(error),
       });
     }
   };

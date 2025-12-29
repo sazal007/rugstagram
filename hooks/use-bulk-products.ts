@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { uploadExcelFile, BulkUploadResponse, UploadFiles } from '@/services/bulk-upload';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
+import { getErrorMessage } from '@/lib/error-utils';
 
 interface UseBulkUploadOptions {
   onUploadSuccess?: () => void;
@@ -8,15 +9,12 @@ interface UseBulkUploadOptions {
 
 export const useBulkUpload = ({ onUploadSuccess }: UseBulkUploadOptions = {}) => {
   const queryClient = useQueryClient();
-  const { toast } = useToast();
 
   const mutation = useMutation({
     mutationFn: uploadExcelFile,
     onSuccess: (data: BulkUploadResponse) => {
-      toast({
-        title: 'Upload successful',
+      toast.success('Upload successful', {
         description: `${data.processed || 0} products processed successfully.`,
-        className: 'bg-emerald-50 border-emerald-200 text-emerald-900'
       });
       
       // Invalidate products query to refresh the list
@@ -26,10 +24,8 @@ export const useBulkUpload = ({ onUploadSuccess }: UseBulkUploadOptions = {}) =>
       onUploadSuccess?.();
     },
     onError: (error: Error) => {
-      toast({
-        title: 'Upload failed',
-        description: error.message,
-        variant: 'destructive'
+      toast.error('Upload failed', {
+        description: getErrorMessage(error),
       });
     }
   });

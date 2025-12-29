@@ -9,6 +9,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { FieldSeparator } from "@/components/ui/field";
 
 import { useAuth } from "@/context/AuthContext";
+import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/error-utils";
 
 export function LoginForm({
   className,
@@ -26,8 +28,13 @@ export function LoginForm({
     e.preventDefault();
     try {
       await login(formData);
-    } catch (error) {
-      // Error handled by AuthContext (toast)
+      toast.success("Login Successful", {
+        description: "Welcome back!",
+      });
+    } catch (error: unknown) {
+      toast.error("Login Failed", {
+        description: getErrorMessage(error),
+      });
       console.error("Login submission error:", error);
     }
   };

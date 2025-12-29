@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { toast } from "./use-toast";
+import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/error-utils";
 import { ProductFormValues } from "@/schemas/product-form";
 import { productAdminApi } from "@/services/product-admin";
 
@@ -13,10 +14,8 @@ export function useCreateProduct() {
       return productAdminApi.createProduct(data);
     },
     onSuccess: () => {
-      toast({
-        title: "Success!",
+      toast.success("Success!", {
         description: "Product created successfully!",
-        variant: "default",
       });
       queryClient.invalidateQueries({ queryKey: ["products"] });
       // Redirect to list instead of specific edit page since we might not have slug easily or it might be numeric ID now
@@ -24,10 +23,8 @@ export function useCreateProduct() {
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {
-      toast({
-        title: "Error",
-        description: `Failed to create product: ${error.message}`,
-        variant: "destructive",
+      toast.error("Error", {
+        description: `Failed to create product: ${getErrorMessage(error)}`,
       });
     },
   });
@@ -42,22 +39,18 @@ export function useUpdateProduct(slug: string) {
       return productAdminApi.updateProduct(slug, data);
     },
     onSuccess: () => {
-      toast({
-        title: "Success!",
+      toast.success("Success!", {
         description: "Product updated successfully!",
-        variant: "default",
       });
       queryClient.invalidateQueries({ queryKey: ["products"] });
       // Invalidate specific product query by ID if used, or by slug if we can map it
       queryClient.invalidateQueries({ queryKey: ["product", slug] }); 
-      router.refresh();
+      router.push("/admin/products");
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {
-      toast({
-        title: "Error",
-        description: `Failed to update product: ${error.message}`,
-        variant: "destructive",
+      toast.error("Error", {
+        description: `Failed to update product: ${getErrorMessage(error)}`,
       });
     },
   });
@@ -71,19 +64,15 @@ export function useDeleteProductImage() {
       return productAdminApi.deleteProductImage(imageId);
     },
     onSuccess: () => {
-      toast({
-        title: "Success!",
+      toast.success("Success!", {
         description: "Image deleted successfully!",
-        variant: "default",
       });
       queryClient.invalidateQueries({ queryKey: ["products"] });
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {
-      toast({
-        title: "Error",
-        description: `Failed to delete image: ${error.message}`,
-        variant: "destructive",
+      toast.error("Error", {
+        description: `Failed to delete image: ${getErrorMessage(error)}`,
       });
     },
   });
@@ -97,19 +86,15 @@ export function useDeleteProduct() {
       return productAdminApi.deleteProduct(slug);
     },
     onSuccess: () => {
-      toast({
-        title: "Success!",
+      toast.success("Success!", {
         description: "Product deleted successfully!",
-        variant: "default",
       });
       queryClient.invalidateQueries({ queryKey: ["products"] });
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {
-      toast({
-        title: "Error",
-        description: `Failed to delete product: ${error.message}`,
-        variant: "destructive",
+      toast.error("Error", {
+        description: `Failed to delete product: ${getErrorMessage(error)}`,
       });
     },
   });
@@ -138,10 +123,8 @@ export function useUpdateProductStatus() {
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {
-      toast({
-        title: "Error",
-        description: `Failed to update: ${error.message}`,
-        variant: "destructive",
+      toast.error("Error", {
+        description: `Failed to update: ${getErrorMessage(error)}`,
       });
     },
   });

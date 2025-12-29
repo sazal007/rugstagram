@@ -115,7 +115,7 @@ function ProductDetailContent({ product }: ProductDetailProps) {
         </div>
       </div>
 
-      <ReviewsSection />
+      <ReviewsSection productId={product.id} />
       <SimilarProducts currentProduct={product} />
     </div>
   );

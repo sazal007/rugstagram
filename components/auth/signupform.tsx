@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { FieldSeparator } from "@/components/ui/field";
 import { useAuth } from "@/context/AuthContext";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/error-utils";
 import Image from "next/image";
 
 export function SignupForm({
@@ -15,7 +16,6 @@ export function SignupForm({
   ...props
 }: React.ComponentProps<"div">) {
   const { signup, isLoading } = useAuth();
-  const { toast } = useToast();
   
   const [formData, setFormData] = useState({
     first_name: "",
@@ -33,17 +33,21 @@ export function SignupForm({
     e.preventDefault();
     
     if (formData.password !== formData.confirmPassword) {
-      toast({
-        title: "Passwords do not match",
+      toast.error("Passwords do not match", {
         description: "Please make sure your passwords match.",
-        variant: "destructive",
       });
       return;
     }
 
     try {
       await signup(formData);
-    } catch (error) {
+      toast.success("Account Created", {
+        description: "Your account has been created successfully. Welcome to Rugstagram!",
+      });
+    } catch (error: unknown) {
+      toast.error("Signup Failed", {
+        description: getErrorMessage(error),
+      });
       console.error("Signup submission error:", error);
     }
   };

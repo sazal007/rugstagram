@@ -1,6 +1,11 @@
-
 import { siteConfig } from "@/config/siteConfig";
-import { LoginResponse, SignupResponse } from "@/types/auth";
+import { 
+  LoginResponse, 
+  SignupResponse, 
+  UpdateProfileData, 
+  ChangePasswordData, 
+  User
+} from "@/types/auth";
 
 const API_BASE_URL = siteConfig.backendUrl;
 
@@ -47,6 +52,66 @@ export async function loginUser(data: LoginData): Promise<LoginResponse> {
   if (!response.ok) {
     const errorData = await response.json();
     throw new Error(errorData.error || "Login failed");
+  }
+  return response.json();
+}
+
+/**
+ * Update user profile information.
+ * @param data - The profile data to update.
+ * @param token - The authentication token.
+ */
+export async function updateUserProfile(data: UpdateProfileData, token: string): Promise<unknown> {
+  const response = await fetch(`${API_BASE_URL}/api/profile/`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Failed to update profile");
+  }
+  return response.json();
+}
+
+export async function getUserProfile(token: string): Promise<User> {
+  const response = await fetch(`${API_BASE_URL}/api/profile/`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Failed to get profile");
+  }
+  return response.json();
+}
+
+/**
+ * Change user password.
+ * @param data - The password change data.
+ * @param token - The authentication token.
+ */
+export async function changePassword(data: ChangePasswordData, token: string): Promise<unknown> {
+  const response = await fetch(`${API_BASE_URL}/_allauth/browser/v1/auth/password/change`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Failed to change password");
   }
   return response.json();
 }

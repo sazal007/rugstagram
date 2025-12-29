@@ -49,6 +49,9 @@ function buildProductFormData(data: ProductFormValues): FormData {
   if (data.variants && data.variants.length > 0) {
     data.variants.forEach((variant, index) => {
       // Append simple variant fields
+      if (variant.id) {
+        appendField(formData, `variants[${index}]id`, variant.id);
+      }
       appendField(formData, `variants[${index}]color_id`, variant.color_id);
       appendField(formData, `variants[${index}]stock`, variant.stock);
 
@@ -66,14 +69,23 @@ function buildProductFormData(data: ProductFormValues): FormData {
   return formData;
 }
 
+const getAuthToken = (): string | null => {
+  if (typeof window === "undefined") return null;
+  const tokens = localStorage.getItem("authTokens");
+  return tokens ? JSON.parse(tokens).access_token : null;
+};
+
 export const productAdminApi = {
   createProduct: async (data: ProductFormValues): Promise<Product> => {
     const formData = buildProductFormData(data);
+    const token = getAuthToken();
 
     const response = await fetch(`${API_BASE_URL}/api/products/`, {
       method: "POST",
+      headers: {
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
       body: formData,
-      // Do not set Content-Type header, browser sets it with boundary for FormData
     });
 
     if (!response.ok) {
@@ -89,9 +101,13 @@ export const productAdminApi = {
     data: ProductFormValues
   ): Promise<Product> => {
     const formData = buildProductFormData(data);
+    const token = getAuthToken();
 
     const response = await fetch(`${API_BASE_URL}/api/products/${slug}/`, {
-      method: "PUT",
+      method: "PATCH",
+      headers: {
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
       body: formData,
     });
 
@@ -104,8 +120,12 @@ export const productAdminApi = {
   },
 
   deleteProductImage: async (imageId: number): Promise<void> => {
+    const token = getAuthToken();
     const response = await fetch(`${API_BASE_URL}/api/images/${imageId}/`, {
       method: "DELETE",
+      headers: {
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
     });
 
     if (!response.ok) {
@@ -114,8 +134,12 @@ export const productAdminApi = {
   },
 
   deleteProduct: async (slug: string): Promise<void> => {
+    const token = getAuthToken();
     const response = await fetch(`${API_BASE_URL}/api/products/${slug}/`, {
       method: "DELETE",
+      headers: {
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
     });
 
     if (!response.ok) {
@@ -132,10 +156,12 @@ export const productAdminApi = {
       is_featured: boolean;
     }>
   ): Promise<Product> => {
+    const token = getAuthToken();
     const response = await fetch(`${API_BASE_URL}/api/products/${slug}/`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
       body: JSON.stringify(data),
     });

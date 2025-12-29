@@ -77,3 +77,20 @@ export interface SignupData {
   phone?: string;
   username?: string;
 }
+
+export interface UpdateProfileData {
+  first_name?: string;
+  last_name?: string;
+  phone?: string;
+  street_address_1?: string;
+  street_address_2?: string;
+  city?: string;
+  postcode?: string;
+  country?: string;
+}
+
+export interface ChangePasswordData {
+  old_password?: string;
+  new_password?: string;
+  confirm_password?: string;
+}

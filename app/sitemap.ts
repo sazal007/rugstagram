@@ -95,7 +95,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "Stripes",
     "Abstract",
   ].map((collection) => ({
-    url: `${baseUrl}/collections/${collection}`,
+    url: `${baseUrl}/collections/?collection=${collection}`,
     lastModified: new Date(),
     changeFrequency: "weekly" as const,
     priority: 0.8,

@@ -87,7 +87,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ color, index }) => {
           <h3 className="text-[9px] min-[375px]:text-[10px] uppercase tracking-widest text-accent/40 font-black">
             The Narrative
           </h3>
-          <p className="text-sm min-[375px]:text-base sm:text-base md:text-lg text-foreground/70 leading-relaxed font-light">
+          <p className="text-sm min-[375px]:text-base sm:text-base md:text-md text-foreground/70 leading-relaxed font-light">
             {description}
           </p>
         </div>

@@ -12,7 +12,8 @@ import {
   useQueryClient,
   UseQueryOptions,
 } from "@tanstack/react-query";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/error-utils";
 
 export const orderKeys = {
   all: ["orders"] as const,
@@ -74,25 +75,20 @@ export const useOrderCounts = (
 
 export const useAddReview = () => {
   const queryClient = useQueryClient();
-  const { toast } = useToast();
 
   return useMutation<ProductReview, Error, ReviewPayload>({
     mutationFn: orderApi.addReview,
     onSuccess: () => {
-      toast({
-        title: "Review Submitted Successfully!",
+      toast.success("Review Submitted Successfully!", {
         description:
           "Thank you for your feedback. Your review will be published shortly.",
-        variant: "default",
       });
       // Invalidate and refetch orders to update review status
       queryClient.invalidateQueries({ queryKey: orderKeys.all });
     },
     onError: (error: Error) => {
-      toast({
-        title: "Failed to Submit Review",
-        description: error.message || "Something went wrong. Please try again.",
-        variant: "destructive",
+      toast.error("Failed to Submit Review", {
+        description: getErrorMessage(error),
       });
     },
   });
