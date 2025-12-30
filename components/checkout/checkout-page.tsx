@@ -13,6 +13,7 @@ import { OrderSummary } from "./order-summary";
 import { CheckoutFormData, CheckoutCartItem } from "./types";
 import { useCreateOrder } from "@/hooks/use-order";
 import { CreateOrderPayload } from "@/types/order";
+import { toast } from "sonner";
 
 export function CheckoutPage() {
   const { user, tokens, isLoading: isAuthLoading } = useAuth();
@@ -99,11 +100,17 @@ export function CheckoutPage() {
       await createOrderMutation.mutateAsync({ data: payload, token });
       console.log("Mutation successful");
       
+      toast.success("Order placed successfully!", {
+        description: "Thank you for your purchase.",
+      });
+
       clearCart();
       router.push("/");
     } catch (error) {
       console.error("Order creation failed:", error);
-      // Could add toast notification here
+      toast.error("Failed to place order", {
+        description: "Please try again later or contact support.",
+      });
     }
   };
 

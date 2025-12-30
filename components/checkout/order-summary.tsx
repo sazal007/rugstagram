@@ -7,7 +7,8 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../ui/card
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
-import { Badge } from "../ui/badge";
+import { Trash2, Plus, Minus } from "lucide-react";
+import { useCart } from "@/context/CartContext";
 
 interface OrderSummaryProps {
   cartItems: CheckoutCartItem[];
@@ -26,6 +27,7 @@ export function OrderSummary({
   onSubmit,
   isSubmitting,
 }: OrderSummaryProps) {
+  const { updateQuantity, removeFromCart } = useCart();
   const [discountCode, setDiscountCode] = useState("");
   const [isFocused, setIsFocused] = useState(false);
 
@@ -34,31 +36,59 @@ export function OrderSummary({
   return (
     <Card className="sticky border-transparent dark:border-border-dark shadow-soft">
       <CardHeader>
-        <CardTitle>Your Cart</CardTitle>
+        <CardTitle>Order summary</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-6 mb-8">
           {cartItems.map((item) => (
-            <div key={item.id} className="flex gap-4 items-center">
-              <div className="relative shrink-0 w-16 h-16 rounded-md overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
+            <div key={item.id} className="flex gap-4 items-start">
+              <div className="relative shrink-0 w-20 h-20 rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
                 <Image
                   alt={item.name}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover p-2"
                   src={item.image || "/placeholder.jpg"}
-                  width={64}
-                  height={64}
+                  width={80}
+                  height={80}
                 />
-                <Badge 
-                  className="absolute top-0 right-0 -mr-2 -mt-2 min-w-[20px] h-[20px] flex items-center justify-center px-1 rounded-full shadow-sm"
-                  variant="default"
-                >
-                  {item.quantity}
-                </Badge>
               </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-sm font-medium text-gray-900 dark:text-white truncate">{item.name}</h3>
+              
+              <div className="flex-1 min-w-0 flex flex-col justify-between h-20">
+                <div className="space-y-1">
+                  <h3 className="text-sm font-medium text-gray-900 dark:text-white truncate">{item.name}</h3>
+                  <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                    Rs.{(item.price * item.quantity).toFixed(2)}
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center border border-gray-200 dark:border-gray-700 rounded-md">
+                    <button
+                      type="button"
+                      className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50 transition-colors"
+                      onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
+                      disabled={item.quantity <= 1}
+                    >
+                      <Minus className="w-3 h-3" />
+                    </button>
+                    <span className="w-8 text-center text-xs font-medium">{item.quantity}</span>
+                    <button
+                      type="button"
+                      className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                    >
+                      <Plus className="w-3 h-3" />
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div className="text-sm font-medium text-gray-900 dark:text-white">Rs.{(item.price * item.quantity).toFixed(2)}</div>
+
+              <button
+                type="button"
+                className="text-gray-400 hover:text-red-500 transition-colors p-1"
+                onClick={() => removeFromCart(item.id)}
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
             </div>
           ))}
         </div>

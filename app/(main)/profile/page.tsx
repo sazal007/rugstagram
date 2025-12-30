@@ -28,7 +28,7 @@ export default function ProfileRoute() {
   }
 
   return (
-    <main className="min-h-screen pt-28 pb-16 bg-background">
+    <main className="min-h-screen pt-12 pb-16 bg-background">
       <ProfilePage />
     </main>
   );

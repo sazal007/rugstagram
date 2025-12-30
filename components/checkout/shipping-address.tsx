@@ -3,6 +3,8 @@ import { useState } from "react";
 import { CheckoutFormData } from "./types";
 import { PhoneInput } from "../ui/phone-input";
 import { Input } from "../ui/input";
+import { useAuth } from "@/context/AuthContext";
+import { Button } from "../ui/button";
 
 interface ShippingAddressProps {
   formData: Pick<
@@ -13,7 +15,6 @@ interface ShippingAddressProps {
     | "phone"
     | "address"
     | "city"
-    | "state"
     | "zipCode"
   >;
   onChange: (field: keyof CheckoutFormData, value: string) => void;
@@ -39,11 +40,37 @@ export function ShippingAddress({ formData, onChange }: ShippingAddressProps) {
     return (value !== "" && value !== undefined) || focusedFields.has(field);
   };
 
+  const { user } = useAuth();
+
+  const handleImportProfile = () => {
+    if (user) {
+      if (user.first_name) onChange("firstName", user.first_name);
+      if (user.last_name) onChange("lastName", user.last_name);
+      if (user.email) onChange("email", user.email);
+      if (user.phone) onChange("phone", user.phone);
+      if (user.street_address_1) onChange("address", user.street_address_1);
+      if (user.city) onChange("city", user.city);
+      if (user.postcode) onChange("zipCode", user.postcode);
+    }
+  };
+
   return (
     <div className="bg-surface-light dark:bg-surface-dark rounded-xl shadow-soft p-6 sm:p-8 ">
-      <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
-        Shipping Address
-      </h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+          Shipping Address
+        </h2>
+        {user && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleImportProfile}
+            type="button"
+          >
+            Import from Profile
+          </Button>
+        )}
+      </div>
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="relative">
@@ -193,29 +220,7 @@ export function ShippingAddress({ formData, onChange }: ShippingAddressProps) {
               City
             </label>
           </div>
-          <div className="relative">
-            <Input
-              id="state"
-              type="text"
-              value={formData.state}
-              onChange={(e) => onChange("state", e.target.value)}
-              onFocus={() => handleFocus("state")}
-              onBlur={() => handleBlur("state")}
-              required
-              className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border border-border appearance-none focus:outline-none focus:ring-0 focus:border-primary h-11"
-              placeholder=" "
-            />
-            <label
-              htmlFor="state"
-              className={`absolute text-sm duration-300 transform origin-left bg-background px-2 start-1 z-10 ${
-                isLabelFloating("state")
-                  ? "-translate-y-4 scale-75 top-2 text-primary"
-                  : "scale-100 -translate-y-1/2 top-1/2 text-gray-500"
-              }`}
-            >
-              State
-            </label>
-          </div>
+        
           <div className="relative">
             <Input
               id="zip"

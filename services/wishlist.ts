@@ -50,7 +50,7 @@ export async function removeFromWishlist(wishlistItemId: number, accessToken?: s
     headers["Authorization"] = `Bearer ${accessToken}`;
   }
 
-  const response = await fetch(`${API_BASE_URL}/api/wishlist/${wishlistItemId}/`, {
+  const response = await fetch(`${API_BASE_URL}/api/wishlists/${wishlistItemId}/`, {
     method: "DELETE",
     headers,
   });
