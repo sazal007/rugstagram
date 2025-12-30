@@ -110,7 +110,12 @@ function ProductDetailContent({ product }: ProductDetailProps) {
             onSizeChange={setSelectedSize}
             onQuantityChange={setQuantity}
           />
-          <ProductCTAs product={product} selectedSize={selectedSize} quantity={quantity} />
+          <ProductCTAs 
+            product={product} 
+            selectedSize={selectedSize} 
+            quantity={quantity} 
+            selectedColor={selectedColor} 
+          />
           <ProductAccordion />
         </div>
       </div>

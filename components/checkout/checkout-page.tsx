@@ -105,7 +105,7 @@ export function CheckoutPage() {
       });
 
       clearCart();
-      router.push("/");
+      router.push("/order-completed");
     } catch (error) {
       console.error("Order creation failed:", error);
       toast.error("Failed to place order", {

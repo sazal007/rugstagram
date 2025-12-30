@@ -22,11 +22,21 @@ export interface CartItem {
   image: string;
   size: string;
   sizeId: number;
+  color?: {
+    name: string;
+    slug: string;
+    image?: string;
+  };
 }
 
 interface CartContextType {
   cartItems: CartItem[];
-  addToCart: (product: Product, size: string, quantity: number) => void;
+  addToCart: (
+    product: Product,
+    size: string,
+    quantity: number,
+    color?: { name: string; slug: string; image?: string }
+  ) => void;
   removeFromCart: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
@@ -93,13 +103,24 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [cartItems]);
 
   const addToCart = useCallback(
-    (product: Product, size: string, quantity: number) => {
-      console.log("Adding to cart:", { productName: product.name, size, quantity });
+    (
+      product: Product,
+      size: string,
+      quantity: number,
+      color?: { name: string; slug: string; image?: string }
+    ) => {
+      console.log("Adding to cart:", {
+        productName: product.name,
+        size,
+        quantity,
+        color,
+      });
       setCartItems((prevItems) => {
-        // Create a unique ID for this cart item (productId + size)
-        const cartItemId = `${product.id}-${size}`;
+        // Create a unique ID for this cart item (productId + size + color)
+        const colorPart = color ? `-${color.slug}` : "";
+        const cartItemId = `${product.id}-${size}${colorPart}`;
 
-        // Check if this exact product+size combination already exists
+        // Check if this exact product+size+color combination already exists
         const existingItemIndex = prevItems.findIndex(
           (item) => item.id === cartItemId
         );
@@ -116,16 +137,22 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           // Add new item
           // Mock materials or use logic if derived from somewhere else
           const materials = "Wool"; // Mock for now
-          const variant = `${size} • ${materials}`;
+          let variant = `${size} • ${materials}`;
+          if (color) {
+            variant = `${size} • ${color.name} • ${materials}`;
+          }
 
           const price = parseFloat(product.price || "0");
-          const originalPrice = product.sale_price ? parseFloat(product.sale_price) : undefined;
-          
-          
+          const originalPrice = product.sale_price
+            ? parseFloat(product.sale_price)
+            : undefined;
+
           // product.size is a single Size object, not an array
           const sizeId = product.size?.id || 0;
           console.log("Derived sizeId:", sizeId);
 
+          // Use color image if available, otherwise fallback to product thumbnail
+          const image = color?.image || product.thumbnail_image || "";
 
           const newItem: CartItem = {
             id: cartItemId,
@@ -135,9 +162,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             price,
             originalPrice,
             quantity,
-            image: product.thumbnail_image || "",
+            image,
             size,
             sizeId,
+            color,
           };
 
           return [...prevItems, newItem];

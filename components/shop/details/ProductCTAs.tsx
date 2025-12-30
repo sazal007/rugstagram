@@ -10,12 +10,14 @@ interface ProductCTAsProps {
   product: Product;
   selectedSize: string;
   quantity: number;
+  selectedColor: Product["variants"][0]["color"] | null;
 }
 
 export const ProductCTAs: React.FC<ProductCTAsProps> = ({
   product,
   selectedSize,
   quantity,
+  selectedColor,
 }) => {
   const { addToCart } = useCart();
 
@@ -24,7 +26,17 @@ export const ProductCTAs: React.FC<ProductCTAsProps> = ({
       alert("Please select a size");
       return;
     }
-    addToCart(product, selectedSize, quantity);
+    
+    // Transform selectedColor to match CartContext expected type if needed
+    // The types/product.ts Color interface has name, slug, image
+    // Product["variants"][0]["color"] is consistent with that
+    const colorForCart = selectedColor ? {
+        name: selectedColor.name,
+        slug: selectedColor.slug || "", // Handle null slug if necessary
+        image: selectedColor.image
+    } : undefined;
+
+    addToCart(product, selectedSize, quantity, colorForCart);
   };
 
   return (
