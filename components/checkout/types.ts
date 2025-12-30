@@ -4,14 +4,10 @@ export interface CheckoutFormData {
   lastName: string;
   address: string;
   city: string;
+  state: string;
   zipCode: string;
   phone: string;
   shippingMethod: "standard" | "express";
-}
-
-export interface CheckoutStep {
-  number: number;
-  label: string;
 }
 
 export interface ShippingOption {

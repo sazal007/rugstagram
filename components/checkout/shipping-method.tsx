@@ -11,72 +11,46 @@ interface ShippingMethodProps {
 const shippingOptions: ShippingOption[] = [
   {
     id: "standard",
-    label: "Standard Shipping",
-    price: "Free",
-    time: "5-7 business days",
+    label: "Free Shipping",
+    price: "$0",
+    time: "7-20 Days",
   },
   {
     id: "express",
     label: "Express Shipping",
-    price: "Rs.200",
-    time: "2-3 business days",
+    price: "$9",
+    time: "1-3 Days",
   },
 ];
 
 export function ShippingMethod({
   selectedMethod,
   onChange,
-  subtotal,
 }: ShippingMethodProps) {
-  const getPrice = (option: ShippingOption) => {
-    if (option.id === "standard" && subtotal >= 50) {
-      return "Free";
-    }
-    return option.id === "standard" ? "$5.99" : option.price;
-  };
-
   return (
-    <section className="space-y-6">
-      <h2 className="text-xl font-bold text-black">Shipping Method</h2>
-      <div className="space-y-3">
+    <div className="bg-surface-light dark:bg-surface-dark rounded-xl shadow-soft p-6 sm:p-8 border border-transparent dark:border-border-dark">
+      <h2 className="text-xl font-bold mb-6 text-gray-900 dark:text-white">Shipping Method</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {shippingOptions.map((option) => (
           <label
             key={option.id}
-            className={`flex items-center justify-between p-4 rounded-xl border-2 cursor-pointer transition-all ${
-              selectedMethod === option.id
-                ? "border-primary bg-secondary"
-                : "border-border hover:border-muted-foreground"
-            }`}
+            className="relative flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors border-gray-200 dark:border-border-dark has-checked:border-primary has-checked:ring-1 has-checked:ring-primary"
           >
-            <div className="flex items-center gap-3">
-              <input
-                type="radio"
-                name="shipping"
-                value={option.id}
-                checked={selectedMethod === option.id}
-                onChange={() => onChange(option.id)}
-                className="sr-only"
-              />
-              <div
-                className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                  selectedMethod === option.id
-                    ? "border-primary"
-                    : "border-border"
-                }`}
-              >
-                {selectedMethod === option.id && (
-                  <div className="w-2.5 h-2.5 rounded-full bg-primary" />
-                )}
-              </div>
-              <div>
-                <p className="font-medium text-black">{option.label}</p>
-                <p className="text-sm text-black/60">{option.time}</p>
-              </div>
+            <input
+              checked={selectedMethod === option.id}
+              className="h-4 w-4 text-primary border-gray-300 focus:ring-primary dark:bg-gray-700 dark:border-gray-600"
+              name="shipping-method"
+              type="radio"
+              onChange={() => onChange(option.id)}
+            />
+            <div className="ml-4 flex-1">
+              <span className="block text-sm font-semibold text-gray-900 dark:text-white">{option.label}</span>
+              <span className="block text-xs text-gray-500 dark:text-gray-400 mt-1">{option.time}</span>
             </div>
-            <span className="font-medium text-black">{getPrice(option)}</span>
+            <span className="text-sm font-medium text-gray-900 dark:text-white">{option.price}</span>
           </label>
         ))}
       </div>
-    </section>
+    </div>
   );
 }

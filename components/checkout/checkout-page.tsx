@@ -3,31 +3,20 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ChevronRight, ChevronLeft } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 
-import { CheckoutSteps } from "./checkout-steps";
-import { ContactInformation } from "./contact-information";
 import { ShippingAddress } from "./shipping-address";
 import { ShippingMethod } from "./shipping-method";
-import { PaymentMethod } from "./payment-method";
 import { OrderSummary } from "./order-summary";
-import { CheckoutFormData, CheckoutStep, CheckoutCartItem } from "./types";
+import { CheckoutFormData, CheckoutCartItem } from "./types";
 import { useCreateOrder } from "@/hooks/use-order";
 import { CreateOrderPayload } from "@/types/order";
-
-const CHECKOUT_STEPS: CheckoutStep[] = [
-  { number: 1, label: "Information" },
-  { number: 2, label: "Shipping & Payment" },
-];
 
 export function CheckoutPage() {
   const { user, tokens, isLoading: isAuthLoading } = useAuth();
   const { cartItems, subtotal, clearCart } = useCart();
-  const [step, setStep] = useState(1);
   const router = useRouter();
   const createOrderMutation = useCreateOrder();
 
@@ -37,13 +26,14 @@ export function CheckoutPage() {
     lastName: "",
     address: "",
     city: "",
+    state: "",
     zipCode: "",
     phone: "",
     shippingMethod: "standard",
   });
 
   const shipping =
-    formData.shippingMethod === "express" ? 200 : subtotal >= 50 ? 0 : 5.99;
+    formData.shippingMethod === "express" ? 9 : 0;
   const total = subtotal + shipping;
 
   useEffect(() => {
@@ -55,8 +45,8 @@ export function CheckoutPage() {
 
   if (isAuthLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <p>Loading...</p>
+      <div className="min-h-screen bg-background-light dark:bg-background-dark flex items-center justify-center">
+        <p className="text-gray-900 dark:text-gray-100">Loading...</p>
       </div>
     );
   }
@@ -74,67 +64,60 @@ export function CheckoutPage() {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("handleSubmit called. Step:", step);
+  const handleSubmit = async () => {
+    console.log("handleSubmit called");
     
-    if (step < 2) {
-      console.log("Moving to next step");
-      setStep(step + 1);
-    } else {
-      console.log("Attempting to submit order...");
-      try {
-        const payload: CreateOrderPayload = {
-          full_name: `${formData.firstName} ${formData.lastName}`,
-          email: formData.email,
-          phone_number: formData.phone,
-          shipping_address: formData.address,
-          city: formData.city,
-          zip_code: formData.zipCode,
-          shipping_method: formData.shippingMethod,
-          delivery_fee: shipping.toFixed(2),
-          total_amount: total.toFixed(2),
-          items: cartItems.map((item) => {
-            console.log("Mapping item to payload:", item);
-            return {
-              product: Number(item.productId),
-              product_id: Number(item.productId),
-              quantity: item.quantity,
-              price: String(item.price),
-              size: item.sizeId || undefined,
-            };
-          }),
-        };
+    try {
+      const payload: CreateOrderPayload = {
+        full_name: `${formData.firstName} ${formData.lastName}`,
+        email: formData.email,
+        phone_number: formData.phone,
+        shipping_address: `${formData.address}, ${formData.city}, ${formData.state} ${formData.zipCode}`,
+        city: formData.city,
+        zip_code: formData.zipCode,
+        shipping_method: formData.shippingMethod,
+        delivery_fee: shipping.toFixed(2),
+        total_amount: total.toFixed(2),
+        items: cartItems.map((item) => {
+          console.log("Mapping item to payload:", item);
+          return {
+            product: Number(item.productId),
+            product_id: Number(item.productId),
+            quantity: item.quantity,
+            price: String(item.price),
+            size: item.sizeId || undefined,
+          };
+        }),
+      };
 
-        console.log("Order Payload:", JSON.stringify(payload, null, 2));
-        console.log("Cart Items State:", JSON.stringify(cartItems, null, 2));
+      console.log("Order Payload:", JSON.stringify(payload, null, 2));
+      console.log("Cart Items State:", JSON.stringify(cartItems, null, 2));
 
-        // Get the auth token from the tokens context
-        const token = tokens?.access_token;
+      // Get the auth token from the tokens context
+      const token = tokens?.access_token;
 
-        await createOrderMutation.mutateAsync({ data: payload, token });
-        console.log("Mutation successful");
-        
-        clearCart();
-        router.push("/");
-      } catch (error) {
-        console.error("Order creation failed:", error);
-        // Could add toast notification here
-      }
+      await createOrderMutation.mutateAsync({ data: payload, token });
+      console.log("Mutation successful");
+      
+      clearCart();
+      router.push("/");
+    } catch (error) {
+      console.error("Order creation failed:", error);
+      // Could add toast notification here
     }
   };
 
   if (cartItems.length === 0) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background-light dark:bg-background-dark">
         <main className="pt-28 pb-16">
           <div className="container mx-auto px-4 text-center py-20">
-            <h1 className="text-2xl font-bold mb-4 text-black">Your cart is empty</h1>
-            <p className="mb-8 text-black">
+            <h1 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">Your cart is empty</h1>
+            <p className="mb-8 text-gray-900 dark:text-gray-100">
               Add some products to checkout.
             </p>
-            <Link href="/shop">
-              <Button size="lg">Browse Products</Button>
+            <Link href="/shop" className="inline-block bg-primary hover:bg-primary-hover text-white font-semibold py-3 px-6 rounded-lg transition-colors">
+              Browse Products
             </Link>
           </div>
         </main>
@@ -143,84 +126,36 @@ export function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <main className="pt-28 pb-16">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <CheckoutSteps currentStep={step} steps={CHECKOUT_STEPS} />
+    <div className="min-h-screen bg-background-light dark:bg-background-dark text-gray-900 dark:text-gray-100 font-sans antialiased transition-colors duration-200">
+      <main className="pt-2 pb-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
 
-          <div className="grid lg:grid-cols-5 gap-8">
-            {/* Form Section */}
-            <div key={step} className="lg:col-span-3">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {step === 1 && (
-                  <div className="space-y-6">
-                    <ContactInformation
-                      email={formData.email}
-                      onChange={(email) => handleFieldChange("email", email)}
-                    />
-                    <ShippingAddress
-                      formData={formData}
-                      onChange={handleFieldChange}
-                    />
-                  </div>
-                )}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+            <div className="lg:col-span-7 space-y-8">
 
-                {step === 2 && (
-                  <div className="space-y-8">
-                    <ShippingMethod
-                      selectedMethod={formData.shippingMethod}
-                      onChange={(method) =>
-                        handleFieldChange("shippingMethod", method)
-                      }
-                      subtotal={subtotal}
-                    />
-                    <PaymentMethod />
-                  </div>
-                )}
+              {/* Shipping Address Form */}
+              <ShippingAddress
+                formData={formData}
+                onChange={handleFieldChange}
+              />
 
-                <div className="flex items-center justify-between pt-6">
-                  {step > 1 ? (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => setStep(step - 1)}
-                      className="gap-2"
-                    >
-                      <ChevronLeft className="w-4 h-4" />
-                      Back
-                    </Button>
-                  ) : (
-                    <Link href="/cart">
-                      <Button variant="outline" className="gap-2">
-                        <ChevronLeft className="w-4 h-4" />
-                        Return to cart
-                      </Button>
-                    </Link>
-                  )}
-
-                  <Button 
-                    type="submit" 
-                    className="gap-2" 
-                    disabled={createOrderMutation.isPending}
-                  >
-                    {step === 2
-                      ? createOrderMutation.isPending
-                        ? "Processing..."
-                        : "Place Order"
-                      : "Continue"}
-                    {!createOrderMutation.isPending && <ChevronRight className="w-4 h-4" />}
-                  </Button>
-                </div>
-              </form>
+              {/* Shipping Method */}
+              <ShippingMethod
+                selectedMethod={formData.shippingMethod}
+                onChange={(method) => handleFieldChange("shippingMethod", method)}
+                subtotal={subtotal}
+              />
             </div>
 
-            {/* Order Summary */}
-            <div className="lg:col-span-2">
+            {/* Order Summary Sidebar */}
+            <div className="lg:col-span-5 pt-8">
               <OrderSummary
                 cartItems={checkoutCartItems}
                 subtotal={subtotal}
                 shipping={shipping}
                 total={total}
+                onSubmit={handleSubmit}
+                isSubmitting={createOrderMutation.isPending}
               />
             </div>
           </div>

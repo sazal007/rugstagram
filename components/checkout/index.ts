@@ -1,9 +1,5 @@
-export * from "./types";
-export * from "./checkout-steps";
-export * from "./contact-information";
-export * from "./shipping-address";
-export * from "./shipping-method";
-export * from "./payment-method";
-export * from "./order-summary";
-export * from "./checkout-page";
-
+export { CheckoutPage } from "./checkout-page";
+export { ShippingAddress } from "./shipping-address";
+export { ShippingMethod } from "./shipping-method";
+export { OrderSummary } from "./order-summary";
+export type { CheckoutFormData, CheckoutCartItem, ShippingOption } from "./types";

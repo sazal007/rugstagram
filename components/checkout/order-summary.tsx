@@ -1,13 +1,21 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { CheckoutCartItem } from "./types";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../ui/card";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Separator } from "../ui/separator";
+import { Badge } from "../ui/badge";
 
 interface OrderSummaryProps {
   cartItems: CheckoutCartItem[];
   subtotal: number;
   shipping: number;
   total: number;
+  onSubmit: () => void;
+  isSubmitting: boolean;
 }
 
 export function OrderSummary({
@@ -15,48 +23,105 @@ export function OrderSummary({
   subtotal,
   shipping,
   total,
+  onSubmit,
+  isSubmitting,
 }: OrderSummaryProps) {
+  const [discountCode, setDiscountCode] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
+
+  const isLabelFloating = discountCode !== "" || isFocused;
+
   return (
-    <div className="sticky top-28 bg-card rounded-3xl border border-border p-6">
-      <h2 className="text-lg font-bold mb-4 text-black">Order Summary</h2>
+    <Card className="sticky border-transparent dark:border-border-dark shadow-soft">
+      <CardHeader>
+        <CardTitle>Your Cart</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-6 mb-8">
+          {cartItems.map((item) => (
+            <div key={item.id} className="flex gap-4 items-center">
+              <div className="relative shrink-0 w-16 h-16 rounded-md overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
+                <Image
+                  alt={item.name}
+                  className="w-full h-full object-cover"
+                  src={item.image || "/placeholder.jpg"}
+                  width={64}
+                  height={64}
+                />
+                <Badge 
+                  className="absolute top-0 right-0 -mr-2 -mt-2 min-w-[20px] h-[20px] flex items-center justify-center px-1 rounded-full shadow-sm"
+                  variant="default"
+                >
+                  {item.quantity}
+                </Badge>
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-sm font-medium text-gray-900 dark:text-white truncate">{item.name}</h3>
+              </div>
+              <div className="text-sm font-medium text-gray-900 dark:text-white">Rs.{(item.price * item.quantity).toFixed(2)}</div>
+            </div>
+          ))}
+        </div>
 
-      <div className="space-y-4 mb-6">
-        {cartItems.map((item) => (
-          <div key={item.id} className="flex gap-3">
-            <div className="relative w-16 h-16 bg-secondary rounded-xl overflow-hidden shrink-0">
-              <Image
-                src={item.image || "/placeholder.jpg"}
-                alt={item.name}
-                width={64}
-                height={64}
-                className="w-full h-full object-cover"
+        <div className="mb-8">
+          <div className="flex gap-2">
+            <div className="relative flex-1">
+              <Input
+                id="discount-code"
+                type="text"
+                value={discountCode}
+                onChange={(e) => setDiscountCode(e.target.value)}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
+                className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border border-border appearance-none focus:outline-none focus:ring-0 focus:border-primary h-11"
+                placeholder=" "
               />
-              <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-primary-foreground text-xs rounded-full flex items-center justify-center">
-                {item.quantity}
-              </span>
+              <label
+                htmlFor="discount-code"
+                className={`absolute text-sm duration-300 transform origin-left bg-background px-2 start-1 z-10 ${
+                  isLabelFloating
+                    ? "-translate-y-4 scale-75 top-2 text-primary"
+                    : "scale-100 -translate-y-1/2 top-1/2 text-gray-500"
+                }`}
+              >
+                Discount code
+              </label>
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium line-clamp-2 text-black">{item.name}</p>
-            </div>
-            <p className="font-medium text-black">Rs.{item.price * item.quantity}</p>
+            <Button variant="secondary">
+              Apply
+            </Button>
           </div>
-        ))}
-      </div>
+        </div>
 
-      <div className="border-t border-border pt-4 space-y-3">
-        <div className="flex justify-between text-sm">
-          <span className="text-black">Subtotal</span>
-          <span className="text-black">Rs.{subtotal}</span>
+        <Separator className="my-6" />
+
+        <div className="space-y-3">
+          <div className="flex justify-between text-sm">
+            <span className="text-gray-600 dark:text-gray-400">Subtotal</span>
+            <span className="font-medium text-gray-900 dark:text-white">Rs.{subtotal.toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between text-sm">
+            <span className="text-gray-600 dark:text-gray-400">Shipping</span>
+            <span className="font-medium text-gray-900 dark:text-white">{shipping === 0 ? "Free" : `Rs.${shipping.toFixed(2)}`}</span>
+          </div>
         </div>
-        <div className="flex justify-between text-sm">
-          <span className="text-black">Shipping</span>
-          <span className="text-black">{shipping === 0 ? "Free" : `Rs.${shipping}`}</span>
+
+        <Separator className="my-6" />
+
+        <div className="flex justify-between items-center mb-6">
+          <span className="text-lg font-semibold text-gray-900 dark:text-white">Total</span>
+          <span className="text-xl font-bold text-gray-900 dark:text-white">Rs.{total.toFixed(2)}</span>
         </div>
-        <div className="flex justify-between font-bold text-lg pt-3 border-t border-border">
-          <span className="text-black">Total</span>
-          <span className="text-black">Rs.{total}</span>
-        </div>
-      </div>
-    </div>
+      </CardContent>
+      <CardFooter>
+        <Button
+          className="w-full text-lg py-6"
+          onClick={onSubmit}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Processing..." : "Continue to Payment"}
+        </Button>
+      </CardFooter>
+    </Card>
   );
 }
