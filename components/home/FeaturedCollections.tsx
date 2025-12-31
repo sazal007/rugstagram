@@ -215,7 +215,11 @@ const RevealCard: React.FC<RevealCardProps> = ({ collection, onNavigate }) => {
 
 export const FeaturedCollections: React.FC = () => {
   const router = useRouter();
-  const { data: apiCollections = [], isLoading, error } = useFeaturedCollections();
+  const {
+    data: apiCollections = [],
+    isLoading,
+    error,
+  } = useFeaturedCollections();
 
   const handleNavigate = (slug: string) => {
     router.push(`/collections/?collection=${slug}`);
@@ -224,15 +228,19 @@ export const FeaturedCollections: React.FC = () => {
   const displayCollections: Collection[] = apiCollections.map((apiCat) => {
     // We need 4 images for the reveal effect. Fill gaps with thumbnails if available.
     const thumbnails = apiCat.product_thumbnails || [];
-    const images: CollectionImage[] = Array.from({ length: 4 }).map((_, idx) => {
-      // Rotate through thumbnails if fewer than 4 provided
-      const src = thumbnails[idx % thumbnails.length] || "/collections/artwork-collection.jpeg";
-      return {
-        src,
-        position: POSITION_MAP[idx],
-        title: `${apiCat.name} Perspective ${idx + 1}`,
-      };
-    });
+    const images: CollectionImage[] = Array.from({ length: 4 }).map(
+      (_, idx) => {
+        // Rotate through thumbnails if fewer than 4 provided
+        const src =
+          thumbnails[idx % thumbnails.length] ||
+          "/collections/artwork-collection.jpeg";
+        return {
+          src,
+          position: POSITION_MAP[idx],
+          title: `${apiCat.name} Perspective ${idx + 1}`,
+        };
+      }
+    );
 
     return {
       name: apiCat.name,
@@ -245,7 +253,9 @@ export const FeaturedCollections: React.FC = () => {
   if (isLoading) {
     return (
       <div className="max-w-7xl mx-auto px-6 py-24 text-center">
-        <p className="text-muted tracking-widest uppercase text-xs animate-pulse">Loading Collections...</p>
+        <p className="text-muted tracking-widest uppercase text-xs animate-pulse">
+          Loading Collections...
+        </p>
       </div>
     );
   }
@@ -284,7 +294,7 @@ export const FeaturedCollections: React.FC = () => {
         </Link>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12 sm:gap-x-12 sm:gap-y-20 md:gap-x-16 md:gap-y-32 lg:gap-x-20 lg:gap-y-40 pb-12 sm:pb-16 md:pb-20">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-12 sm:gap-x-12 sm:gap-y-20 md:gap-x-16 md:gap-y-32 lg:gap-x-20 lg:gap-y-40 pb-12 sm:pb-16 md:pb-20">
         {displayCollections.map((collection) => (
           <motion.div key={collection.slug} variants={fadeInUp}>
             <RevealCard collection={collection} onNavigate={handleNavigate} />
