@@ -173,7 +173,7 @@ export const columns: ColumnDef<ProductListItem>[] = [
           {product.thumbnail_image ? (
             <Image
               src={product.thumbnail_image}
-              alt={product.thumbnail_image_alt_description || product.name}
+              alt={product.name}
               fill
               className="object-cover"
               sizes="64px"

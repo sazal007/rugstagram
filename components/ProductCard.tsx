@@ -27,8 +27,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   const collectionName = isFullProduct(product)
     ? product.collection?.name
-    : "collection_name" in product
+    : "collection_name" in product && product.collection_name
     ? product.collection_name
+    : "";
+
+  const colorName = isFullProduct(product)
+    ? product.variants?.[0]?.color?.name || product.variants?.[0]?.color_name 
+    : "color_name" in product && product.color_name
+    ? product.color_name
     : "";
 
   const wishlistItem = wishlistItems?.find((item) => item.product === product.id);
@@ -66,15 +72,30 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     }
   };
 
+  const colorSlug = isFullProduct(product)
+    ? product.variants?.[0]?.color?.slug
+    : "color_slug" in product
+    ? product.color_slug
+    : null;
+
+  const productUrl = colorSlug
+    ? `/shop/${product.slug}?color=${colorSlug}`
+    : `/shop/${product.slug}`;
+
+  const hasSalePrice = product.sale_price && parseFloat(product.sale_price) > 0;
+
   return (
     <Link
-      href={`/shop/${product.slug}`}
+      href={productUrl}
       className="group cursor-pointer block"
     >
       <div className="relative aspect-3/4 overflow-hidden bg-gray-100 rounded-sm mb-4">
         <Image
           src={product.thumbnail_image || "/placeholder.jpg"}
-          alt={product.thumbnail_image_alt_description || product.name}
+          alt={
+            ("thumbnail_image_alt_description" in product && product.thumbnail_image_alt_description) || 
+            product.name
+          }
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           width={500}
           height={500}
@@ -95,6 +116,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           {product.is_best_seller && (
             <span className="bg-white/90 backdrop-blur-sm px-2 py-1 text-[10px] uppercase tracking-wider font-bold shadow-sm text-amber-600">
               Best Seller
+            </span>
+          )}
+          {hasSalePrice && (
+            <span className="bg-red-500/90 backdrop-blur-sm px-2 py-1 text-[10px] uppercase tracking-wider font-bold shadow-sm text-white">
+              Sale
             </span>
           )}
         </div>
@@ -121,13 +147,33 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <h3 className="font-serif text-lg leading-none group-hover:text-accent transition-colors">
             {product.name}
           </h3>
-          <span className="text-sm font-medium text-gray-500">
-            ${parseFloat(product.price || "0").toLocaleString()}
-          </span>
+          <div className="flex flex-col items-end">
+             {hasSalePrice ? (
+               <>
+                  <span className="text-sm font-medium text-red-600">
+                    ${parseFloat(product.sale_price!).toLocaleString()}
+                  </span>
+                  <span className="text-xs text-gray-400 line-through">
+                    ${parseFloat(product.price || "0").toLocaleString()}
+                  </span>
+               </>
+             ) : (
+                <span className="text-sm font-medium text-gray-500">
+                  ${parseFloat(product.price || "0").toLocaleString()}
+                </span>
+             )}
+          </div>
         </div>
-        <p className="text-xs text-muted uppercase tracking-wide">
-          {collectionName}
-        </p>
+        <div className="flex flex-col gap-0.5">
+           <p className="text-xs text-muted uppercase tracking-wide">
+             {collectionName}
+           </p>
+           {colorName && (
+              <p className="text-xs text-muted/80">
+                {colorName}
+              </p>
+           )}
+        </div>
       </div>
     </Link>
   );

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "motion/react";
-import { Star, ThumbsUp, ThumbsDown, Edit3 } from "lucide-react";
+import { Star, Edit3 } from "lucide-react";
 import { StarRating } from "./StarRating";
 import { CustomButton } from "@/components/ui/custom-button";
 import { useReviews, useCreateReview } from "@/hooks/use-review";
@@ -263,14 +263,10 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
                       </div>
                       <div>
                         <h4 className="font-bold text-xs sm:text-sm text-primary">
-                          {review.user === Number(user?.id) ? (user?.username || "You") : (review.username || `Verified Buyer`)}
+                         {user?.username}
                         </h4>
                         <div className="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-muted mt-1">
                           <span>{new Date(review.created_at).toLocaleDateString()}</span>
-                          <span>•</span>
-                          <span className="text-green-600 font-medium">
-                            Verified Purchase
-                          </span>
                         </div>
                       </div>
                     </div>

@@ -91,28 +91,27 @@ export interface Product {
 
 export interface ProductListItem {
   id: number;
+  product_id: number;
   name: string;
   slug: string;
   code: string | null;
+  color_name: string;
+  color_slug: string;
+  thumbnail_image: string | null;
+  collection_name: string;
+  collection_slug: string;
+  quality_name: string;
+  pile_height_name: string;
+  size_name: string;
+  luxury_edition_name: string;
+  affordable_edition_name: string;
+  material_name: string;
   sale_price: string | null;
   price: string | null;
-  thumbnail_image: string | null;
-  thumbnail_image_alt_description: string | null;
   is_new: boolean;
   is_best_seller: boolean;
   is_featured: boolean;
   is_active: boolean;
-  // New fields from backend response
-  collection_name?: string;
-  quality_name?: string;
-  pile_height_name?: string;
-  size_name?: string;
-  edition_name?: string;
-  material_name?: string;
-  meta_title?: string | null;
-  meta_description?: string | null;
-  created_at: string;
-  updated_at: string;
 }
 
 export interface ProductListResponse {
