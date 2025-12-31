@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { 
   Search, 
-  Calendar, 
+ 
   ChevronLeft, 
   ChevronRight, 
   MoreVertical,
@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { Switch } from "@/components/ui/switch";
+import { MyOrder } from "@/types/my-order";
 import { 
   Select, 
   SelectContent, 
@@ -21,6 +22,7 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "@/components/ui/select";
+import OrderDetails from "./order-details/order-details";
 
 const STATUS_TABS = [
   { id: "all", label: "All" },
@@ -36,6 +38,7 @@ export function MyOrdersList() {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [isDense, setIsDense] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState<MyOrder | null>(null);
 
   const { data: ordersData, isLoading } = useMyOrders(
     activeTab,
@@ -152,7 +155,11 @@ export function MyOrdersList() {
                 </tr>
               ) : (
                 ordersData?.orders.map((order) => (
-                  <tr key={order.id} className={cn("hover:bg-slate-50/50 transition-colors group", isDense ? "py-2" : "py-6")}>
+                  <tr 
+                    key={order.id} 
+                    className={cn("hover:bg-slate-50/50 transition-colors group cursor-pointer", isDense ? "py-2" : "py-6")}
+                    onClick={() => setSelectedOrder(order)}
+                  >
                     <td className={cn("px-1", isDense ? "py-3" : "py-6")}>
                       <input type="checkbox" className="rounded-md border-slate-200" />
                     </td>
@@ -256,6 +263,13 @@ export function MyOrdersList() {
           </div>
         </div>
       </div>
+
+      
+      <OrderDetails 
+        isOpen={!!selectedOrder} 
+        onClose={() => setSelectedOrder(null)} 
+        order={selectedOrder}
+      />
     </div>
   );
 }
