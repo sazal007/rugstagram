@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { motion } from "motion/react";
 import { Product } from "@/types/product";
 import { ProductCard } from "@/components/ProductCard";
@@ -14,10 +15,14 @@ interface SimilarProductsProps {
 export const SimilarProducts: React.FC<SimilarProductsProps> = ({
   currentProduct,
 }) => {
+  const searchParams = useSearchParams();
+  const colorSlug = searchParams.get("color");
+
   // Fetch similar products
   const { data, isLoading } = useProducts({
     is_featured: true,
     page_size: 4, // Fetch a few more to filter out current
+    color: colorSlug || undefined,
   });
 
   const similarProducts = (data?.results || [])

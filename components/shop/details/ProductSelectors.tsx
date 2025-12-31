@@ -104,13 +104,6 @@ export const ProductSelectors: React.FC<ProductSelectorsProps> = ({
           <label className="text-[10px] sm:text-xs font-bold uppercase tracking-widest">
             Select Size
           </label>
-          <CustomButton
-            variant="link"
-            size="sm"
-            className="text-[10px] sm:text-xs text-muted underline hover:text-primary p-0 h-auto"
-          >
-            Size Guide
-          </CustomButton>
         </div>
         <div className="flex flex-wrap gap-2 sm:gap-3">
           {sizes.map((size) => (
