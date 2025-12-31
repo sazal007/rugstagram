@@ -31,7 +31,6 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
     })
     .flatMap((v) => v.product_images?.map((img) => img.image) || []) || [];
   const productImages = [
-    product.thumbnail_image,
     ...variantImages,
   ].filter((img): img is string => Boolean(img));
 

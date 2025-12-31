@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, Search, User, ShoppingBag } from "lucide-react";
+import { Menu, X, User, ShoppingBag, Heart } from "lucide-react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -332,6 +332,13 @@ export function Navbar() {
                   {cartItemCount > 99 ? "99+" : cartItemCount}
                 </span>
               )}
+            </Link>
+            <Link
+              href="/wishlist"
+              className="p-2 hover:text-accent transition-colors duration-200 relative"
+              aria-label="Wishlist"
+            >
+              <Heart className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]" />
             </Link>
           </div>
         </div>
