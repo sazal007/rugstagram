@@ -19,6 +19,10 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "nav-corps-powerseller-episode.trycloudflare.com",
+      },
+      {
+        protocol: "https",
+        hostname: "admin.rugkala.com",
       }
     ],
   },
