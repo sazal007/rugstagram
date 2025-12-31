@@ -27,11 +27,25 @@ export interface CreateReviewPayload {
 // Since the user mentioned the response can be a flat array, we should handle that in the service.
 // But we can keep ReviewsResponse as the standardized return type of our service for consistency in hooks/components.
 // The service layser will verify this.
+export interface RatingDistribution {
+  count: number;
+  percentage: number;
+}
+
+export interface ReviewSummary {
+  average_rating: number;
+  total_reviews: number;
+  rating_distribution: {
+    [key: string]: RatingDistribution;
+  };
+}
+
 export interface ReviewsResponse {
   count: number;
   next: string | null;
   previous: string | null;
   results: Review[];
+  summary?: ReviewSummary;
 }
 
 export interface ReviewFilters {

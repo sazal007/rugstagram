@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "motion/react";
-import { Star, Edit3 } from "lucide-react";
+import { Star, Edit3, ChevronLeft, ChevronRight } from "lucide-react";
 import { StarRating } from "./StarRating";
 import { CustomButton } from "@/components/ui/custom-button";
 import { useReviews, useCreateReview } from "@/hooks/use-review";
@@ -51,7 +51,7 @@ const InteractiveStarRating: React.FC<{
 export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId, productSlug }) => {
   const [page, setPage] = React.useState(1);
   const { user } = useAuth();
-  const { data: reviewsData, isLoading } = useReviews(productSlug, page);
+  const { data: reviewsData, isLoading } = useReviews(productSlug, page, 5);
   const { mutate: createReview, isPending: isSubmitting } = useCreateReview();
 
   const [isFormOpen, setIsFormOpen] = React.useState(false);
@@ -61,11 +61,9 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId, produ
   const [selectedImage, setSelectedImage] = React.useState<File | null>(null);
 
   const reviews = reviewsData?.results || [];
-  const totalReviews = reviewsData?.count || 0;
-
-  const averageRating = reviews.length > 0
-    ? (reviews.reduce((acc: number, rev: Review) => acc + rev.rating, 0) / reviews.length).toFixed(1)
-    : "0.0";
+  const totalReviews = reviewsData?.summary?.total_reviews ?? (reviewsData?.count || 0);
+  const averageRating = reviewsData?.summary?.average_rating?.toFixed(1) || "0.0";
+  const distribution = reviewsData?.summary?.rating_distribution;
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -127,32 +125,32 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId, produ
               </div>
             </div>
 
-            {/* Stats Bars - Using mock percentages for now as we don't have full aggregate data */}
+            {/* Stats Bars */}
             <div className="space-y-2 sm:space-y-3">
-              {[
-                { stars: 5, count: totalReviews > 0 ? "80%" : "0%", percent: "80%" },
-                { stars: 4, count: totalReviews > 0 ? "15%" : "0%", percent: "15%" },
-                { stars: 3, count: totalReviews > 0 ? "3%" : "0%", percent: "3%" },
-                { stars: 2, count: totalReviews > 0 ? "1%" : "0%", percent: "1%" },
-                { stars: 1, count: totalReviews > 0 ? "1%" : "0%", percent: "1%" },
-              ].map((stat) => (
-                <div
-                  key={stat.stars}
-                  className="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm"
-                >
-                  <span className="w-3 font-medium">{stat.stars}</span>
-                  <Star className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-gray-400" />
-                  <div className="flex-1 h-1.5 sm:h-2 bg-gray-200 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-primary rounded-full"
-                      style={{ width: totalReviews > 0 ? stat.percent : "0%" }}
-                    />
+              {[5, 4, 3, 2, 1].map((star) => {
+                const distItem = distribution?.[star.toString()];
+                const count = distItem?.count || 0;
+                const percent = distItem?.percentage || 0;
+                
+                return (
+                  <div
+                    key={star}
+                    className="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm"
+                  >
+                    <span className="w-3 font-medium">{star}</span>
+                    <Star className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-gray-400" />
+                    <div className="flex-1 h-1.5 sm:h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-primary rounded-full transition-all duration-500"
+                        style={{ width: `${percent}%` }}
+                      />
+                    </div>
+                    <span className="w-8 sm:w-10 text-right text-muted text-[10px] sm:text-xs">
+                      {count}
+                    </span>
                   </div>
-                  <span className="w-8 sm:w-10 text-right text-muted text-[10px] sm:text-xs">
-                    {totalReviews > 0 ? stat.count : 0}
-                  </span>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             {user ? (
@@ -287,20 +285,40 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId, produ
             )}
 
             {/* Pagination */}
-            {reviewsData && reviewsData.count > (reviewsData.results?.length ?? 0) && (
-               <div className="flex justify-center gap-1.5 sm:gap-2 pt-4">
-               {[...Array(Math.ceil(reviewsData.count / 10))].map((_, i) => (
-                  <CustomButton 
-                    key={i}
-                    variant={page === i + 1 ? "default" : "outline"}
-                    size="icon-sm" 
-                    onClick={() => setPage(i + 1)}
-                    className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-gray-200 text-xs sm:text-sm"
-                  >
-                    {i + 1}
-                  </CustomButton>
-               ))}
-             </div>
+            {reviewsData && reviewsData.count > 5 && (
+               <div className="flex justify-center items-center gap-1.5 sm:gap-2 pt-4">
+                 <CustomButton 
+                   variant="outline" 
+                   size="icon-sm" 
+                   onClick={() => setPage(Math.max(1, page - 1))}
+                   disabled={page === 1}
+                   className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-gray-200 text-xs sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                 >
+                   <ChevronLeft className="w-4 h-4" />
+                 </CustomButton>
+
+                 {[...Array(Math.ceil(reviewsData.count / 5))].map((_, i) => (
+                    <CustomButton 
+                      key={i}
+                      variant={page === i + 1 ? "default" : "outline"}
+                      size="icon-sm" 
+                      onClick={() => setPage(i + 1)}
+                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-gray-200 text-xs sm:text-sm"
+                    >
+                      {i + 1}
+                    </CustomButton>
+                 ))}
+
+                 <CustomButton 
+                   variant="outline" 
+                   size="icon-sm" 
+                   onClick={() => setPage(Math.min(Math.ceil(reviewsData.count / 5), page + 1))}
+                   disabled={page === Math.ceil(reviewsData.count / 5)}
+                   className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-gray-200 text-xs sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                 >
+                   <ChevronRight className="w-4 h-4" />
+                 </CustomButton>
+               </div>
             )}
           </div>
         </div>
