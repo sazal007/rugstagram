@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "creations-bristol-charlie-poet.trycloudflare.com",
+        hostname: "nav-corps-powerseller-episode.trycloudflare.com",
       }
     ],
   },

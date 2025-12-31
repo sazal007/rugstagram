@@ -263,7 +263,9 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
                       </div>
                       <div>
                         <h4 className="font-bold text-xs sm:text-sm text-primary">
-                         {user?.username}
+                          {review.first_name && review.last_name 
+                            ? `${review.first_name} ${review.last_name}`
+                            : review.username || "Anonymous"}
                         </h4>
                         <div className="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-muted mt-1">
                           <span>{new Date(review.created_at).toLocaleDateString()}</span>
@@ -304,4 +306,5 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
       </div>
     </motion.section>
   );
+
 };

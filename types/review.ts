@@ -10,6 +10,8 @@ export interface Review {
   product: number;
   user: number;
   username?: string;
+  first_name?: string;
+  last_name?: string;
 }
 
 export interface CreateReviewPayload {

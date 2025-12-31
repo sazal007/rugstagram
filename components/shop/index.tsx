@@ -9,6 +9,7 @@ import { ProductGrid } from "./ProductGrid";
 import { EmptyState } from "./EmptyState";
 import { useProducts } from "@/hooks/use-product";
 import { ProductFilters } from "@/services/product";
+import Pagination from "@/components/ui/pagination";
 
 interface ShopProps {
   collectionId?: string;
@@ -82,8 +83,17 @@ function ShopContent({ collectionId }: ShopProps) {
   };
 
 
+  /* import Pagination */
+  const PAGE_SIZE = 12;
+
+  const pageParam = searchParams.get("page");
+  const currentPage = pageParam ? Number(pageParam) : 1;
+
   const filters: ProductFilters = useMemo(() => {
-    const f: ProductFilters = {};
+    const f: ProductFilters = {
+      page: currentPage,
+      page_size: PAGE_SIZE,
+    };
     
     if (selectedCollections.length > 0) {
       f.collection = selectedCollections.join(",");
@@ -98,10 +108,18 @@ function ShopContent({ collectionId }: ShopProps) {
     }
     
     return f;
-  }, [selectedCollections, selectedColors, filterParam]);
+  }, [selectedCollections, selectedColors, filterParam, currentPage]);
 
   const { data, isLoading, error } = useProducts(filters);
   const products = data?.results || [];
+  const totalCount = data?.count || 0;
+  const totalPages = Math.ceil(totalCount / PAGE_SIZE);
+
+  const handlePageChange = (page: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", page.toString());
+    router.push(`${pathname}?${params.toString()}`, { scroll: true });
+  };
 
   const pageTitle = useMemo(() => {
     if (selectedCollections.length === 1) {
@@ -147,7 +165,7 @@ function ShopContent({ collectionId }: ShopProps) {
       <FilterToggle
         isOpen={isFilterOpen}
         onToggle={() => setIsFilterOpen(!isFilterOpen)}
-        productCount={data?.count || 0}
+        productCount={totalCount}
       />
 
       <div className="flex flex-col lg:flex-row gap-12">
@@ -159,26 +177,40 @@ function ShopContent({ collectionId }: ShopProps) {
           onToggleColor={toggleColor}
         />
 
-        {isLoading ? (
-          <div className="grow grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="space-y-4">
-                <div className="aspect-3/4 bg-gray-100 animate-pulse rounded-sm" />
-                <div className="h-4 bg-gray-100 animate-pulse w-3/4" />
-                <div className="h-4 bg-gray-100 animate-pulse w-1/2" />
+        <div className="grow">
+          {isLoading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <div key={i} className="space-y-4">
+                  <div className="aspect-3/4 bg-gray-100 animate-pulse rounded-sm" />
+                  <div className="h-4 bg-gray-100 animate-pulse w-3/4" />
+                  <div className="h-4 bg-gray-100 animate-pulse w-1/2" />
+                </div>
+              ))}
+            </div>
+          ) : products.length > 0 ? (
+            <>
+              <ProductGrid
+                key={`products-${selectedCategory || "all"}-${filterParam || ""}-${currentPage}`}
+                products={products}
+              />
+              <div className="mt-12">
+                 {/* Pagination Component */}
               </div>
-            ))}
-          </div>
-        ) : products.length > 0 ? (
-          <ProductGrid
-            key={`products-${selectedCategory || "all"}-${filterParam || ""}`}
-            products={products}
-          />
-        ) : (
-          <div className="grow">
-            <EmptyState onClearFilters={clearFilters} />
-          </div>
-        )}
+            </>
+          ) : (
+             <EmptyState onClearFilters={clearFilters} />
+          )}
+
+           {/* Pagination */}
+           {!isLoading && totalPages > 1 && products.length > 0 && (
+             <Pagination 
+               currentPage={currentPage}
+               totalPages={totalPages}
+               onPageChange={handlePageChange}
+             />
+           )}
+        </div>
       </div>
     </div>
   );
