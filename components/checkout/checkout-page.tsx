@@ -75,18 +75,16 @@ export function CheckoutPage() {
         phone_number: formData.phone,
         shipping_address: `${formData.address}, ${formData.city}, ${formData.state} ${formData.zipCode}`,
         city: formData.city,
+        state: formData.state,
         zip_code: formData.zipCode,
-        shipping_method: formData.shippingMethod,
-        delivery_fee: shipping.toFixed(2),
-        total_amount: total.toFixed(2),
+        country: "Nepal", // Hardcoded based on user request example
+        delivery_fee: shipping,
+        total_amount: total,
         items: cartItems.map((item) => {
           console.log("Mapping item to payload:", item);
           return {
-            product: Number(item.productId),
-            product_id: Number(item.productId),
+            variant: item.variantId,
             quantity: item.quantity,
-            price: String(item.price),
-            size: item.sizeId || undefined,
           };
         }),
       };

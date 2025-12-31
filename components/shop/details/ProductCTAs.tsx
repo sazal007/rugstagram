@@ -5,6 +5,7 @@ import { ShoppingBag, Share2 } from "lucide-react";
 import { CustomButton } from "@/components/ui/custom-button";
 import { useCart } from "@/context/CartContext";
 import { Product } from "@/types/product";
+import { toast } from "sonner";
 
 interface ProductCTAsProps {
   product: Product;
@@ -23,8 +24,46 @@ export const ProductCTAs: React.FC<ProductCTAsProps> = ({
 
   const handleAddToBag = () => {
     if (!selectedSize) {
-      alert("Please select a size");
+      toast.error("Please select a size");
       return;
+    }
+
+    // Debug logging
+    console.log("Selected Color:", selectedColor);
+    console.log("Product Variants:", product.variants);
+
+    // Find the correct variant based on selected color
+    // We check multiple properties because backend response structure might vary
+    const selectedVariant = product.variants.find(
+      (v) => 
+        v.color_id === selectedColor?.id || 
+        v.color?.id === selectedColor?.id ||
+        (v.color_name && selectedColor?.name && 
+         v.color_name.toLowerCase() === selectedColor.name.toLowerCase())
+    );
+
+    if (!selectedVariant) {
+      console.error("Variant not found for selected color");
+      // Fallback or alert? For now, we'll alert.
+      // Ideally, the UI shouldn't allow selecting an invalid combination.
+      // If no color selected, try finding a variant without color (if applicable)
+      // or just pick the first one?
+      // Given the requirement, let's look for a match.
+       if (selectedColor) {
+           toast.error("Selected combination not available");
+           return;
+       }
+       // If no color selection flow, maybe use the first variant?
+       // Let's assume there's always a variant if there's a product.
+       // But better safe than sorry.
+       const defaultVariant = product.variants[0];
+       if (!defaultVariant) {
+           toast.error("Product unavailable");
+           return;
+       }
+       addToCart(product, selectedSize, quantity, defaultVariant.id, undefined);
+       toast.success("Added to cart");
+       return;
     }
     
     // Transform selectedColor to match CartContext expected type if needed
@@ -36,7 +75,8 @@ export const ProductCTAs: React.FC<ProductCTAsProps> = ({
         image: selectedColor.image
     } : undefined;
 
-    addToCart(product, selectedSize, quantity, colorForCart);
+    addToCart(product, selectedSize, quantity, selectedVariant.id, colorForCart);
+    toast.success("Added to cart");
   };
 
   return (

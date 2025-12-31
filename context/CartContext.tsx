@@ -16,6 +16,7 @@ export interface CartItem {
   productId: string;
   name: string;
   variant: string; // e.g., "170x240 • Wool"
+  variantId: number; // Added for order payload
   price: number;
   originalPrice?: number;
   quantity: number;
@@ -35,6 +36,7 @@ interface CartContextType {
     product: Product,
     size: string,
     quantity: number,
+    variantId: number,
     color?: { name: string; slug: string; image?: string }
   ) => void;
   removeFromCart: (id: string) => void;
@@ -107,12 +109,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       product: Product,
       size: string,
       quantity: number,
+      variantId: number,
       color?: { name: string; slug: string; image?: string }
     ) => {
       console.log("Adding to cart:", {
         productName: product.name,
         size,
         quantity,
+        variantId,
         color,
       });
       setCartItems((prevItems) => {
@@ -159,6 +163,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             productId: product.id.toString(),
             name: product.name,
             variant,
+            variantId,
             price,
             originalPrice,
             quantity,

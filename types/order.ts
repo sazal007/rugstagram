@@ -1,12 +1,6 @@
 export interface OrderItemPayload {
-  product: number;
-  product_id: number;
+  variant: number;
   quantity: number;
-  price: string;
-  size?: number | null;
-  color?: number | null;
-  cover?: string | null;
-  pad?: string | null;
 }
 
 export interface StatusCounts {
@@ -38,16 +32,32 @@ export interface OrdersResponse {
 }
 export interface CreateOrderPayload {
   full_name: string;
+  email: string;
+  phone_number: string;
   shipping_address: string;
   city: string;
-  state?: string;
+  state: string;
   zip_code: string;
-  phone_number: string;
-  email: string;
-  delivery_fee: string;
-  shipping_method?: string;
+  country: string;
+  total_amount: number;
+  delivery_fee: number;
   items: OrderItemPayload[];
-  total_amount: string;
+}
+
+// Interface for items in the Order response (Read-only)
+export interface OrderItem {
+  id: number;
+  product_id: number;
+  product_name: string;
+  product_thumbnail_image: string | null;
+  product_price: string;
+  total_price: string;
+  quantity: number;
+  size?: string;
+  color?: string;
+  cover?: string;
+  pad?: string;
+  variant?: number; // In case backend returns it
 }
 
 export interface Order {
@@ -63,8 +73,7 @@ export interface Order {
   email: string;
   total_amount: string;
   delivery_fee: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  items: any[];
+  items: OrderItem[];
   created_at: string;
   updated_at: string;
 }
