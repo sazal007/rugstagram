@@ -6,14 +6,14 @@ import { getErrorMessage } from "@/lib/error-utils";
 
 export const reviewKeys = {
   all: ["reviews"] as const,
-  list: (productId?: number, page?: number, pageSize?: number) => 
-    [...reviewKeys.all, "list", { productId, page, pageSize }] as const,
+  list: (productSlug?: string, page?: number, pageSize?: number) => 
+    [...reviewKeys.all, "list", { productSlug, page, pageSize }] as const,
 };
 
-export function useReviews(productId?: number, page: number = 1, pageSize: number = 10) {
+export function useReviews(productSlug?: string, page: number = 1, pageSize: number = 10) {
   return useQuery({
-    queryKey: reviewKeys.list(productId, page, pageSize),
-    queryFn: () => reviewService.getReviews(productId, page, pageSize),
+    queryKey: reviewKeys.list(productSlug, page, pageSize),
+    queryFn: () => reviewService.getReviews(productSlug, page, pageSize),
   });
 }
 

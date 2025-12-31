@@ -7,8 +7,8 @@ export interface Review {
   rating: number;
   created_at: string;
   updated_at: string;
-  product: number;
-  user: number;
+  product: string | number;
+  user: string | number;
   username?: string;
   first_name?: string;
   last_name?: string;
@@ -24,6 +24,9 @@ export interface CreateReviewPayload {
   image_alt_description?: string;
 }
 
+// Since the user mentioned the response can be a flat array, we should handle that in the service.
+// But we can keep ReviewsResponse as the standardized return type of our service for consistency in hooks/components.
+// The service layser will verify this.
 export interface ReviewsResponse {
   count: number;
   next: string | null;
@@ -32,7 +35,7 @@ export interface ReviewsResponse {
 }
 
 export interface ReviewFilters {
-  product?: number;
+  product?: string;
   page?: number;
   page_size?: number;
   ordering?: string;

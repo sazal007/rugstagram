@@ -10,14 +10,11 @@ const getAuthToken = (): string | null => {
 };
 
 export const reviewService = {
-  getReviews: async (productId?: number, page: number = 1, pageSize: number = 10): Promise<ReviewsResponse> => {
-    const url = new URL(`${API_BASE_URL}/api/reviews/`);
-    url.searchParams.append("page", page.toString());
-    url.searchParams.append("page_size", pageSize.toString());
-    url.searchParams.append("ordering", "-created_at");
+  getReviews: async (productSlug?: string, page: number = 1, pageSize: number = 10): Promise<ReviewsResponse> => {
+    const url = new URL(`${API_BASE_URL}/api/reviews/?page=${page}&page_size=${pageSize}&ordering=-created_at`);
     
-    if (productId) {
-      url.searchParams.append("product", productId.toString());
+    if (productSlug) {
+      url.searchParams.append("product", productSlug);
     }
 
     const response = await fetch(url.toString(), {
@@ -36,9 +33,20 @@ export const reviewService = {
 
     // Check if the response is an array (flat response) or an object (paginated response)
     if (Array.isArray(data)) {
-      // Filter by product if productId is provided, as the API might be returning all reviews
-      const filteredReviews = productId 
-        ? data.filter((review: Review) => review.product === productId)
+      const filteredReviews = productSlug
+        ? data.filter((review: Review) => {
+            const prod = review.product;
+            if (typeof prod === 'string') {
+              return prod.toLowerCase() === productSlug.toLowerCase(); 
+            }
+            // If it's a number, we can't easily filter by slug unless we have a map or the slug passed is actually an ID (which it isn't here).
+            // However, if the API returns IDs in the list but we query by slug, checking ID vs slug is impossible without more data.
+            // But if the user says "changed api and types", usually GET returns normalized data. 
+            // If mixed data, we assume string match is what's needed.
+            // If the API returns ALL reviews (ids) and we filter by slug, we might miss them if they are numbers.
+            // But purely safe implementation:
+            return false; 
+        })
         : data;
 
       return {

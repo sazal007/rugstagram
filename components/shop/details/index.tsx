@@ -120,7 +120,7 @@ function ProductDetailContent({ product }: ProductDetailProps) {
         </div>
       </div>
 
-      <ReviewsSection productId={product.id} />
+      <ReviewsSection productId={product.id} productSlug={product.slug} />
       <SimilarProducts currentProduct={product} />
     </div>
   );

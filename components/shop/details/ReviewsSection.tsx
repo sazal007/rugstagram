@@ -14,6 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 interface ReviewsSectionProps {
   productId: number;
+  productSlug: string;
 }
 
 const InteractiveStarRating: React.FC<{
@@ -47,10 +48,10 @@ const InteractiveStarRating: React.FC<{
   );
 };
 
-export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => {
+export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId, productSlug }) => {
   const [page, setPage] = React.useState(1);
   const { user } = useAuth();
-  const { data: reviewsData, isLoading } = useReviews(productId, page);
+  const { data: reviewsData, isLoading } = useReviews(productSlug, page);
   const { mutate: createReview, isPending: isSubmitting } = useCreateReview();
 
   const [isFormOpen, setIsFormOpen] = React.useState(false);
@@ -265,7 +266,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
                         <h4 className="font-bold text-xs sm:text-sm text-primary">
                           {review.first_name && review.last_name 
                             ? `${review.first_name} ${review.last_name}`
-                            : review.username || "Anonymous"}
+                            : review.username || (typeof review.user === 'string' ? review.user : "Anonymous")}
                         </h4>
                         <div className="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-muted mt-1">
                           <span>{new Date(review.created_at).toLocaleDateString()}</span>
