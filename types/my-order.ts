@@ -1,3 +1,5 @@
+import { OrderStage } from "./order";
+
 export interface OrderItem {
   product_id: string;
   product_name: string;
@@ -18,6 +20,7 @@ export interface MyOrder {
   full_name: string;
   order_number: string;
   status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+  stage?: OrderStage | null;
   shipping_address: string;
   city: string;
   state: string;

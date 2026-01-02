@@ -7,9 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { FieldSeparator } from "@/components/ui/field";
 import { useAuth } from "@/context/AuthContext";
-import { toast } from "sonner";
-import { getErrorMessage } from "@/lib/error-utils";
+import { getErrorMessage, getFieldErrors } from "@/lib/error-utils";
 import Image from "next/image";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle, ChevronLeft } from "lucide-react";
+import Link from "next/link";
 
 export function SignupForm({
   className,
@@ -28,24 +30,27 @@ export function SignupForm({
   });
 
   const [focusedFields, setFocusedFields] = useState<Set<string>>(new Set());
+  const [formError, setFormError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    setFormError(null);
+    setFieldErrors({});
+    
     if (formData.password !== formData.confirmPassword) {
-      toast.error("Passwords do not match", {
-        description: "Please make sure your passwords match.",
-      });
+      setFieldErrors(prev => ({ ...prev, confirmPassword: "Passwords do not match" }));
       return;
     }
 
     try {
       await signup(formData);
     } catch (error: unknown) {
-      toast.error("Signup Failed", {
-        description: getErrorMessage(error),
-      });
-      console.error("Signup submission error:", error);
+      const message = getErrorMessage(error);
+      const errors = getFieldErrors(error);
+      setFormError(message);
+      setFieldErrors(errors);
     }
   };
 
@@ -82,7 +87,10 @@ export function SignupForm({
         onChange={(e) => handleInputChange(id, e.target.value)}
         onFocus={() => handleFocus(id)}
         onBlur={() => handleBlur(id)}
-        className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border border-border appearance-none focus:outline-none focus:ring-0 focus:border-accent focus-visible:ring-accent/20"
+        className={cn(
+          "block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border appearance-none focus:outline-none focus:ring-0 focus:border-accent focus-visible:ring-accent/20 transition-colors",
+          fieldErrors[id] ? "border-destructive focus:border-destructive" : "border-border"
+        )}
         placeholder=" "
         required={required}
       />
@@ -90,12 +98,15 @@ export function SignupForm({
         htmlFor={id}
         className={`absolute text-sm duration-300 transform origin-left bg-card px-2 start-1 z-10 ${
           isLabelFloating(id)
-            ? "-translate-y-4 scale-75 top-2 text-accent"
+            ? `-translate-y-4 scale-75 top-2 ${fieldErrors[id] ? "text-destructive" : "text-accent"}`
             : "scale-100 -translate-y-1/2 top-1/2 text-foreground/60"
         }`}
       >
         {label}
       </label>
+      {fieldErrors[id] && (
+        <p className="text-xs text-destructive mt-1 ml-1">{fieldErrors[id]}</p>
+      )}
     </div>
   );
 
@@ -104,6 +115,17 @@ export function SignupForm({
       <Card className="overflow-hidden border-border shadow-sm">
         <CardContent className="grid p-0 md:grid-cols-2">
           <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="-ml-2 text-foreground/60  transition-colors mb-2 group"
+              asChild
+            >
+              <Link href="/">
+                <ChevronLeft className="mr-1 h-4 w-4 transition-transform group-hover:-translate-x-1" />
+                Back to home
+              </Link>
+            </Button>
             <div className="flex flex-col items-center gap-2 text-center mb-2">
               <h1 className="text-2xl font-bold text-foreground">
                 Create your account
@@ -112,6 +134,13 @@ export function SignupForm({
                 Enter your details below to create your account
               </p>
             </div>
+
+            {formError && !Object.keys(fieldErrors).length && (
+              <Alert variant="destructive" className="py-2">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>{formError}</AlertDescription>
+              </Alert>
+            )}
 
             {/* Name Fields */}
             <div className="grid grid-cols-2 gap-4">

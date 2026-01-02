@@ -34,23 +34,6 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
   isUpdating,
   updatingOrderNumber,
 }) => {
-  const [localStages, setLocalStages] = React.useState<Record<string, OrderStage>>({});
-
-  // Remove local stage entry once the server data has caught up
-  React.useEffect(() => {
-    setLocalStages(prev => {
-      const next = { ...prev };
-      let changed = false;
-      orders.forEach(order => {
-        if (order.stage && next[order.order_number] === order.stage) {
-          delete next[order.order_number];
-          changed = true;
-        }
-      });
-      return changed ? next : prev;
-    });
-  }, [orders]);
-
   return (
     <div className="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
     {/* Mobile view - card layout */}
@@ -104,10 +87,9 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
                 <span className="text-xs text-gray-500">Stage:</span>
                 <div className="relative flex items-center">
                   <select
-                    value={localStages[order.order_number] || order.stage || ""}
+                    value={order.stage || ""}
                     onChange={(e) => {
                       const newStage = e.target.value as OrderStage;
-                      setLocalStages(prev => ({ ...prev, [order.order_number]: newStage }));
                       onUpdateStage(order.order_number, newStage);
                     }}
                     disabled={isCurrentlyUpdating}
@@ -133,7 +115,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
                 <table className="w-full">
                   <tbody>
                     <tr>
-                      <OrderDetails order={order} />
+                      <OrderDetails orderNumber={order.order_number} />
                     </tr>
                   </tbody>
                 </table>
@@ -219,10 +201,9 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
                   <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
                     <div className="relative flex items-center">
                       <select
-                        value={localStages[order.order_number] || order.stage || ""}
+                        value={order.stage || ""}
                         onChange={(e) => {
                           const newStage = e.target.value as OrderStage;
-                          setLocalStages(prev => ({ ...prev, [order.order_number]: newStage }));
                           onUpdateStage(order.order_number, newStage);
                         }}
                         disabled={isCurrentlyUpdating}
@@ -246,7 +227,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
                 </tr>
                 {expandedOrder === order.order_number && (
                   <tr>
-                    <OrderDetails order={order} />
+                    <OrderDetails orderNumber={order.order_number} />
                   </tr>
                 )}
               </React.Fragment>

@@ -9,8 +9,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { FieldSeparator } from "@/components/ui/field";
 
 import { useAuth } from "@/context/AuthContext";
-import { toast } from "sonner";
-import { getErrorMessage } from "@/lib/error-utils";
+import { getErrorMessage, getFieldErrors } from "@/lib/error-utils";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle, ChevronLeft } from "lucide-react";
+import Link from "next/link";
 
 export function LoginForm({
   className,
@@ -23,15 +25,22 @@ export function LoginForm({
   });
 
   const [focusedFields, setFocusedFields] = useState<Set<string>>(new Set());
+  const [formError, setFormError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFormError(null);
+    setFieldErrors({});
     try {
       await login(formData);
     } catch (error: unknown) {
-      toast.error("Login Failed", {
-        description: getErrorMessage(error),
-      });
+      const message = getErrorMessage(error);
+      const errors = getFieldErrors(error);
+      
+      setFormError(message);
+      setFieldErrors(errors);
+
       console.error("Login submission error:", error);
     }
   };
@@ -64,6 +73,17 @@ export function LoginForm({
       <Card className="overflow-hidden border-border shadow-sm">
         <CardContent className="grid p-0 md:grid-cols-2">
           <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-6">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="-ml-2 text-foreground/60  transition-colors mb-2 group"
+              asChild
+            >
+              <Link href="/">
+                <ChevronLeft className="mr-1 h-4 w-4 transition-transform group-hover:-translate-x-1" />
+                Back to home
+              </Link>
+            </Button>
             <div className="flex flex-col items-center gap-2 text-center">
               <h1 className="text-2xl font-bold text-foreground">
                 Welcome back
@@ -72,6 +92,13 @@ export function LoginForm({
                 Enter your email to sign in to your account
               </p>
             </div>
+
+            {formError && !Object.keys(fieldErrors).length && (
+              <Alert variant="destructive" className="py-2">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>{formError}</AlertDescription>
+              </Alert>
+            )}
 
             {/* Email Field */}
             <div>
@@ -83,7 +110,10 @@ export function LoginForm({
                   onChange={(e) => handleInputChange("email", e.target.value)}
                   onFocus={() => handleFocus("email")}
                   onBlur={() => handleBlur("email")}
-                  className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border border-border appearance-none focus:outline-none focus:ring-0 focus:border-accent focus-visible:ring-accent/20"
+                  className={cn(
+                    "block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border appearance-none focus:outline-none focus:ring-0 focus:border-accent focus-visible:ring-accent/20 transition-colors",
+                    fieldErrors.email ? "border-destructive focus:border-destructive" : "border-border"
+                  )}
                   placeholder=" "
                   required
                 />
@@ -91,13 +121,16 @@ export function LoginForm({
                   htmlFor="email"
                   className={`absolute text-sm duration-300 transform origin-left bg-card px-2 start-1 z-10 ${
                     isLabelFloating("email")
-                      ? "-translate-y-4 scale-75 top-2 text-accent"
+                      ? `-translate-y-4 scale-75 top-2 ${fieldErrors.email ? "text-destructive" : "text-accent"}`
                       : "scale-100 -translate-y-1/2 top-1/2 text-foreground/60"
                   }`}
                 >
                   Email
                 </label>
               </div>
+              {fieldErrors.email && (
+                <p className="text-xs text-destructive mt-1 ml-1">{fieldErrors.email}</p>
+              )}
             </div>
 
             {/* Password Field */}
@@ -112,7 +145,10 @@ export function LoginForm({
                   }
                   onFocus={() => handleFocus("password")}
                   onBlur={() => handleBlur("password")}
-                  className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border border-border appearance-none focus:outline-none focus:ring-0 focus:border-accent focus-visible:ring-accent/20"
+                  className={cn(
+                    "block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border appearance-none focus:outline-none focus:ring-0 focus:border-accent focus-visible:ring-accent/20 transition-colors",
+                    fieldErrors.password ? "border-destructive focus:border-destructive" : "border-border"
+                  )}
                   placeholder=" "
                   required
                 />
@@ -120,13 +156,16 @@ export function LoginForm({
                   htmlFor="password"
                   className={`absolute text-sm duration-300 transform origin-left bg-card px-2 start-1 z-10 ${
                     isLabelFloating("password")
-                      ? "-translate-y-4 scale-75 top-2 text-accent"
+                      ? `-translate-y-4 scale-75 top-2 ${fieldErrors.password ? "text-destructive" : "text-accent"}`
                       : "scale-100 -translate-y-1/2 top-1/2 text-foreground/60"
                   }`}
                 >
                   Password
                 </label>
               </div>
+              {fieldErrors.password && (
+                <p className="text-xs text-destructive mt-1 ml-1">{fieldErrors.password}</p>
+              )}
             </div>
 
             <div>
@@ -165,12 +204,14 @@ export function LoginForm({
               </a>
             </p>
           </form>
-          <div className="bg-sand/10 relative hidden md:block border-l border-border">
+         <div className="bg-sand/10 relative hidden md:block border-l border-border">
+ 
             <Image
               src="https://images.unsplash.com/photo-1534889156217-d643df14f14a?q=80&w=1064&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="Image"
-              fill
-              className="object-cover dark:brightness-[0.2] dark:grayscale"
+              width={100}
+              height={100}
+              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
             />
           </div>
         </CardContent>

@@ -10,6 +10,9 @@ import {
   Mail,
   ListTodo,
   Phone,
+  FileText,
+  Briefcase,
+  Image as ImageIcon,
 } from "lucide-react";
 import {
   Sidebar,
@@ -49,12 +52,17 @@ const adminNavItems = [
   {
     title: "Blogs",
     href: "/admin/blogs",
-    icon: ShoppingCart,
+    icon: FileText,
+  },
+  {
+    title: "Portfolio",
+    href: "/admin/portfolio",
+    icon: Briefcase,
   },
   {
     title: "Gallery",
     href: "/admin/gallery",
-    icon: ShoppingCart,
+    icon: ImageIcon,
   },
   {
     title: "Contact",

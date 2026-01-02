@@ -275,7 +275,7 @@ export const ProductBasicInfo: React.FC<ProductBasicInfoProps> = ({
                 defaultValue={field.value || ""}
               >
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full cursor-pointer [&_svg]:text-gray-500 [&_svg]:opacity-100">
                     <SelectValue placeholder={isLoadingCollections ? "Loading..." : "Select Collection"} />
                   </SelectTrigger>
                 </FormControl>
@@ -303,7 +303,7 @@ export const ProductBasicInfo: React.FC<ProductBasicInfoProps> = ({
                 defaultValue={field.value || ""}
               >
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full cursor-pointer [&_svg]:text-gray-500 [&_svg]:opacity-100">
                     <SelectValue placeholder={isLoadingQualities ? "Loading..." : "Select Quality"} />
                   </SelectTrigger>
                 </FormControl>
@@ -331,7 +331,7 @@ export const ProductBasicInfo: React.FC<ProductBasicInfoProps> = ({
                 defaultValue={field.value || ""}
               >
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full cursor-pointer [&_svg]:text-gray-500 [&_svg]:opacity-100">
                     <SelectValue placeholder={isLoadingPileHeights ? "Loading..." : "Select Pile Height"} />
                   </SelectTrigger>
                 </FormControl>
@@ -359,7 +359,7 @@ export const ProductBasicInfo: React.FC<ProductBasicInfoProps> = ({
                 defaultValue={field.value || ""}
               >
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full cursor-pointer [&_svg]:text-gray-500 [&_svg]:opacity-100">
                     <SelectValue placeholder={isLoadingSizes ? "Loading..." : "Select Size"} />
                   </SelectTrigger>
                 </FormControl>
@@ -387,7 +387,7 @@ export const ProductBasicInfo: React.FC<ProductBasicInfoProps> = ({
                 defaultValue={field.value || ""}
               >
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full cursor-pointer [&_svg]:text-gray-500 [&_svg]:opacity-100">
                     <SelectValue placeholder={isLoadingLuxuryEditions ? "Loading..." : "Select Luxury Edition"} />
                   </SelectTrigger>
                 </FormControl>
@@ -415,7 +415,7 @@ export const ProductBasicInfo: React.FC<ProductBasicInfoProps> = ({
                 defaultValue={field.value || ""}
               >
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full cursor-pointer [&_svg]:text-gray-500 [&_svg]:opacity-100">
                     <SelectValue placeholder={isLoadingAffordableEditions ? "Loading..." : "Select Affordable Edition"} />
                   </SelectTrigger>
                 </FormControl>
@@ -443,7 +443,7 @@ export const ProductBasicInfo: React.FC<ProductBasicInfoProps> = ({
                 defaultValue={field.value || ""}
               >
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full cursor-pointer [&_svg]:text-gray-500 [&_svg]:opacity-100">
                     <SelectValue placeholder={isLoadingMaterials ? "Loading..." : "Select Material"} />
                   </SelectTrigger>
                 </FormControl>

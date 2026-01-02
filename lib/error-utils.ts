@@ -63,3 +63,33 @@ export const getErrorMessage = (error: unknown) => {
     return err.message || "An unexpected error occurred. Please try again.";
   }
 };
+
+export const getFieldErrors = (error: unknown): Record<string, string> => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const err = error as any;
+  const fieldErrors: Record<string, string> = {};
+
+  if (err.response?.data?.errors && Array.isArray(err.response.data.errors)) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    err.response.data.errors.forEach((errorObj: any) => {
+      if (errorObj.param && errorObj.message) {
+        fieldErrors[errorObj.param] = errorObj.message;
+      }
+    });
+  }
+
+  // Also handle standard Django-style field errors: { "email": ["..."], "username": ["..."] }
+  if (err.response?.data && typeof err.response.data === "object" && !Array.isArray(err.response.data)) {
+    Object.entries(err.response.data).forEach(([key, value]) => {
+      if (key !== "status" && key !== "errors" && key !== "detail" && key !== "message") {
+        if (Array.isArray(value) && value.length > 0) {
+          fieldErrors[key] = value[0];
+        } else if (typeof value === "string") {
+          fieldErrors[key] = value;
+        }
+      }
+    });
+  }
+
+  return fieldErrors;
+};

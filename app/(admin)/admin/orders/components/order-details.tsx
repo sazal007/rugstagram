@@ -1,15 +1,40 @@
 import React from 'react';
 import Image from 'next/image';
-import { Order } from '@/types/order';
+import { useOrder } from '@/hooks/use-order';
 import { formatCurrency, formatDate } from './utils';
 import { getImageUrl } from '@/utils/image';
+import { RefreshCw } from 'lucide-react';
 
 interface OrderDetailsProps {
-  order: Order;
+  orderNumber: string;
 }
 
-const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => (
-  <td colSpan={6} className="px-2 py-4 bg-linear-to-br from-blue-50 to-indigo-50 sm:px-3 sm:py-6 md:px-6">
+const OrderDetails: React.FC<OrderDetailsProps> = ({ orderNumber }) => {
+  const { data: order, isLoading, error } = useOrder(orderNumber);
+
+  if (isLoading) {
+    return (
+      <td colSpan={6} className="px-6 py-12 text-center bg-gray-50/50">
+        <div className="flex flex-col items-center justify-center space-y-3">
+          <RefreshCw className="w-8 h-8 text-indigo-500 animate-spin" />
+          <p className="text-sm font-medium text-gray-500">Loading order details...</p>
+        </div>
+      </td>
+    );
+  }
+
+  if (error || !order) {
+    return (
+      <td colSpan={6} className="px-6 py-12 text-center bg-red-50/50">
+        <p className="text-sm font-medium text-red-500">
+          {error instanceof Error ? error.message : 'Failed to load order details. Please try again.'}
+        </p>
+      </td>
+    );
+  }
+
+  return (
+    <td colSpan={6} className="px-2 py-4 bg-linear-to-br from-blue-50 to-indigo-50 sm:px-3 sm:py-6 md:px-6">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-2 lg:gap-6">
           {/* Order Information Section */}
@@ -157,6 +182,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => (
         </div>
       </div>
     </td>
-);
+  );
+};
 
 export default OrderDetails;

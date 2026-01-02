@@ -60,12 +60,14 @@ export interface CreateOrderPayload {
 
 // Interface for items in the Order response (Read-only)
 export interface OrderItem {
-  id: number;
+  id?: number;
   product_id: number;
   product_name: string;
+  product_slug?: string;
   product_thumbnail_image: string | null;
-  product_price: string;
-  total_price: string;
+  product_price: number;
+  price?: number;
+  total_price: number;
   quantity: number;
   size?: string;
   color?: string;

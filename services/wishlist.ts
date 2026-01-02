@@ -3,7 +3,7 @@ import { Wishlist } from "@/types/wishlist";
 
 const API_BASE_URL = siteConfig.backendUrl;
 
-export async function getWishlist(userId: number, accessToken?: string): Promise<Wishlist[]> {
+export async function getWishlist(accessToken?: string): Promise<Wishlist[]> {
   const headers: HeadersInit = {
     "Content-Type": "application/json",
   };
@@ -21,7 +21,7 @@ export async function getWishlist(userId: number, accessToken?: string): Promise
   return response.json();
 }
 
-export async function addToWishlist(userId: number, productId: number, accessToken?: string): Promise<Wishlist> {
+export async function addToWishlist(productId: number, accessToken?: string): Promise<Wishlist> {
   const headers: HeadersInit = {
     "Content-Type": "application/json",
   };
@@ -33,7 +33,7 @@ export async function addToWishlist(userId: number, productId: number, accessTok
   const response = await fetch(`${API_BASE_URL}/api/wishlists/`, {
     method: "POST",
     headers,
-    body: JSON.stringify({ user: userId, product: productId }),
+    body: JSON.stringify({ product: productId }),
   });
   if (!response.ok) {
     throw new Error("Failed to add to wishlist");

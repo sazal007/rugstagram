@@ -27,9 +27,10 @@ const itemVariants: Variants = {
 
 interface ProductGridProps {
   products: (Product | ProductListItem)[];
+  fetchWishlist?: boolean;
 }
 
-export const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
+export const ProductGrid: React.FC<ProductGridProps> = ({ products, fetchWishlist = true }) => {
   // Create a key based on product IDs to force re-animation when products change
   const productsKey = useMemo(
     () => products.map((p) => p.id).join(","),
@@ -56,7 +57,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
         >
           {products.map((product) => (
             <motion.div key={product.id} variants={itemVariants}>
-              <ProductCard product={product} />
+              <ProductCard product={product} fetchWishlist={fetchWishlist} />
             </motion.div>
           ))}
         </motion.div>

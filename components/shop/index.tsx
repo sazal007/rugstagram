@@ -193,6 +193,7 @@ function ShopContent({ collectionId }: ShopProps) {
               <ProductGrid
                 key={`products-${selectedCategory || "all"}-${filterParam || ""}-${currentPage}`}
                 products={products}
+                fetchWishlist={false}
               />
               <div className="mt-12">
                  {/* Pagination Component */}

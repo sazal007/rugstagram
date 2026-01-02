@@ -109,16 +109,12 @@ const BlogForm: React.FC<BlogFormProps> = ({ blog = null, onSubmit, onCancel, is
   };
 
   const handleSubmit = (data: BlogFormValues) => {
-    let thumbnailImage = data.thumbnail_image;
+    let thumbnailImage: File | null = null;
 
-    // Check if it's a FileList (from input type="file") and has files
-    if (thumbnailImage && thumbnailImage instanceof FileList && thumbnailImage.length > 0) {
-      thumbnailImage = thumbnailImage[0];
-    } 
-    // If it's not a File object (and not a FileList with a file), sanitize it out
-    // This handles cases where it might be a string URL from initialization or other non-File data
-    else if (!(thumbnailImage instanceof File)) {
-      thumbnailImage = undefined;
+    if (data.thumbnail_image instanceof FileList && data.thumbnail_image.length > 0) {
+      thumbnailImage = data.thumbnail_image[0];
+    } else if (data.thumbnail_image instanceof File) {
+      thumbnailImage = data.thumbnail_image;
     }
 
     const transformedData = {
@@ -128,7 +124,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ blog = null, onSubmit, onCancel, is
       category_id: data.category_id ? String(data.category_id) : '',
     };
     
-    console.log('Submitting data:', transformedData);
+    console.log('Submitting transformed data:', transformedData);
     onSubmit(transformedData);
   };
 

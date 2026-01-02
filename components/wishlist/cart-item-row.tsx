@@ -1,5 +1,5 @@
 import React from 'react';
-import { Minus, Plus, Trash2, ShoppingBag } from 'lucide-react';
+import { Minus, Plus, Trash2, ShoppingBag, Heart } from 'lucide-react';
 import { ProductListItem } from '@/types/product';
 import Image from 'next/image';
 
@@ -48,7 +48,9 @@ export const CartItemRow: React.FC<CartItemRowProps> = ({
           />
         </div>
         <div>
-          <h3 className="text-gray-900 font-medium text-base">{product.name}</h3>
+          <div className="flex items-center gap-2">
+            <h3 className="text-gray-900 font-medium text-base">{product.name}</h3>
+          </div>
           <p className="text-gray-500 text-sm mt-1">{product.collection_name} • {product.color_name}</p>
         </div>
       </div>
@@ -89,11 +91,11 @@ export const CartItemRow: React.FC<CartItemRowProps> = ({
             className="text-gray-400 hover:text-red-500 transition-colors p-1"
             aria-label="Remove item"
           >
-            <Trash2 size={18} />
+            <Trash2 size={18} className="cursor-pointer" />
           </button>
           <button 
             onClick={() => onAddToCart(product, quantity)}
-            className="text-gray-400 hover:text-accent transition-colors p-1"
+            className="text-gray-400 hover:text-accent transition-colors p-1 cursor-pointer"
             aria-label="Add to cart"
           >
             <ShoppingBag size={18} />

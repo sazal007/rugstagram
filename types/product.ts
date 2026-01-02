@@ -76,6 +76,7 @@ export interface Product {
     is_best_seller: boolean;
     is_featured: boolean;
     is_active: boolean;
+    is_wishlist: boolean;
     meta_title: string | null;
     meta_description: string | null;
     created_at: string;
@@ -112,6 +113,7 @@ export interface ProductListItem {
   is_best_seller: boolean;
   is_featured: boolean;
   is_active: boolean;
+  is_wishlist: boolean;
 }
 
 export interface ProductListResponse {

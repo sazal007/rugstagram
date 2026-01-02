@@ -4,32 +4,36 @@ import React from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { motion } from "motion/react";
-import { Product } from "@/types/product";
+import { Product, ProductListItem } from "@/types/product";
 import { ProductCard } from "@/components/ProductCard";
 import { useProducts } from "@/hooks/use-product";
 
 interface SimilarProductsProps {
   currentProduct: Product;
+  similarProducts?: ProductListItem[];
 }
 
 export const SimilarProducts: React.FC<SimilarProductsProps> = ({
   currentProduct,
+  similarProducts: initialSimilarProducts,
 }) => {
   const searchParams = useSearchParams();
   const colorSlug = searchParams.get("color");
 
-  // Fetch similar products
+  // Fetch similar products if no initialSimilarProducts
   const { data, isLoading } = useProducts({
     is_featured: true,
-    page_size: 4, // Fetch a few more to filter out current
+    page_size: 4, 
     color: colorSlug || undefined,
   });
 
-  const similarProducts = (data?.results || [])
-    .filter((p) => p.id !== currentProduct.id)
-    .slice(0, 3);
+  const displayProducts = (initialSimilarProducts && initialSimilarProducts.length > 0) 
+    ? initialSimilarProducts.filter((p) => p.id !== currentProduct.id).slice(0, 3)
+    : (data?.results || []).filter((p) => p.id !== currentProduct.id).slice(0, 3);
 
-  if (isLoading) {
+  const shouldShowLoading = isLoading && (!initialSimilarProducts || initialSimilarProducts.length === 0);
+
+  if (shouldShowLoading) {
      return (
        <div className="pt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
          {[1, 2, 3].map((i) => (
@@ -42,7 +46,7 @@ export const SimilarProducts: React.FC<SimilarProductsProps> = ({
      );
   }
 
-  if (similarProducts.length === 0) return null;
+  if (displayProducts.length === 0) return null;
 
   return (
     <motion.section
@@ -61,7 +65,7 @@ export const SimilarProducts: React.FC<SimilarProductsProps> = ({
         </Link>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-        {similarProducts.map((similar) => (
+        {displayProducts.map((similar: ProductListItem) => (
           <ProductCard key={similar.id} product={similar} />
         ))}
       </div>

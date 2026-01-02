@@ -1,10 +1,12 @@
-import { notFound } from "next/navigation";
+import { ProductListItem } from "@/types/product";
 import { productApi } from "@/services/product";
 import { ProductDetail } from "@/components/shop/details";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ color?: string }>;
 }
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
@@ -29,15 +31,29 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   }
 }
 
-export default async function ProductPage({ params }: ProductPageProps) {
+export default async function ProductPage({ params, searchParams }: ProductPageProps) {
   const { slug } = await params;
+  const { color } = await searchParams;
   
   let product;
+  let similarProducts: ProductListItem[] = [];
+  
   try {
     product = await productApi.getBySlug(slug);
+    
+    // Get color slug from search params or fallback to first variant's color if available
+    const colorSlug = color || product.variants[0]?.color_name?.toLowerCase().replace(/\s+/g, '-');
+    
+    if (colorSlug) {
+      try {
+        similarProducts = await productApi.getSimilar(colorSlug);
+      } catch (err) {
+        console.error("Failed to fetch similar products:", err);
+      }
+    }
   } catch {
     notFound();
   }
 
-  return <ProductDetail product={product} />;
+  return <ProductDetail product={product} similarProducts={similarProducts} />;
 }

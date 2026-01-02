@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { Instagram, Facebook, Mail } from "lucide-react";
-import Image from "next/image";
 import { useState, FormEvent } from "react";
 import { useNewsletter } from "@/hooks/use-newsletter";
 

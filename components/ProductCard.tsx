@@ -4,7 +4,7 @@ import { Product, ProductListItem } from "@/types/product";
 import { Heart } from "lucide-react";
 import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
-import { useWishlist, useAddToWishlist, useRemoveFromWishlist } from "@/hooks/use-wishlist";
+import { useWishlistToggle } from "@/hooks/use-wishlist";
 import { toast } from "sonner";
 
 // Accept either Product or ProductListItem
@@ -12,14 +12,18 @@ type ProductCardProduct = Product | ProductListItem;
 
 interface ProductCardProps {
   product: ProductCardProduct;
+  fetchWishlist?: boolean;
 }
 
-export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const { user, tokens } = useAuth();
-  const { data: wishlistItems } = useWishlist(Number(user?.id), tokens?.access_token);
-  const addToWishlistMutation = useAddToWishlist();
-  const removeFromWishlistMutation = useRemoveFromWishlist();
-
+export const ProductCard: React.FC<ProductCardProps> = ({ product, fetchWishlist = true }) => {
+  const { tokens } = useAuth();
+  
+  const { isInWishlist, isLoading: isWishlistLoading, toggleWishlist } = useWishlistToggle(
+    product, 
+    tokens?.access_token,
+    { enabled: fetchWishlist }
+  );
+  
   // Type guard to check if this is a full Product
   const isFullProduct = (p: ProductCardProduct): p is Product => {
     return "collection" in p;
@@ -37,38 +41,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     ? product.color_name
     : "";
 
-  const wishlistItem = wishlistItems?.find((item) => item.product === product.id);
-  const isInWishlist = !!wishlistItem;
-
   const handleWishlistToggle = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (!user || !tokens?.access_token) {
+    if (!tokens?.access_token) {
       toast.error("Please login to add to wishlist");
       return;
     }
 
     try {
-      if (isInWishlist) {
-        if (wishlistItem) {
-          await removeFromWishlistMutation.mutateAsync({
-            wishlistItemId: wishlistItem.id,
-            accessToken: tokens.access_token,
-          });
-          toast.success("Removed from wishlist");
-        }
-      } else {
-        await addToWishlistMutation.mutateAsync({
-          userId: Number(user.id),
-          productId: product.id,
-          accessToken: tokens.access_token,
-        });
-        toast.success("Added to wishlist");
-      }
+      await toggleWishlist();
     } catch (error) {
       console.error("Wishlist operation failed:", error);
-      toast.error("Failed to update wishlist");
     }
   };
 
@@ -133,12 +118,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
 
         <button
-          className={`absolute top-3 right-3 p-2 bg-white/90 rounded-full transition-all duration-300 hover:text-accent ${
+          className={`absolute top-3 right-3 p-2 bg-white/90 rounded-full transition-all duration-300 hover:text-accent disabled:opacity-50 disabled:cursor-not-allowed ${
             isInWishlist ? "opacity-100 text-red-500" : "opacity-0 group-hover:opacity-100"
           }`}
           onClick={handleWishlistToggle}
+          disabled={isWishlistLoading}
         >
-          <Heart className={`w-4 h-4 ${isInWishlist ? "fill-current" : ""}`} />
+          <Heart className={`w-4 h-4 ${isInWishlist ? "fill-current" : ""} ${isWishlistLoading ? "animate-pulse" : ""}`} />
         </button>
       </div>
 

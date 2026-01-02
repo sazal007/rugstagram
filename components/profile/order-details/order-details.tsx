@@ -148,6 +148,11 @@ export default function OrderDetails({ isOpen, onClose, order }: OrderDetailsPro
                 }`}>
                   {order.status}
                 </span>
+                {order.stage && (
+                  <span className="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 text-xs font-bold uppercase tracking-wide border border-slate-200">
+                    {order.stage}
+                  </span>
+                )}
               </div>
               <p className="text-muted text-sm mt-1">Placed on {new Date(order.created_at).toLocaleString()}</p>
             </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Product } from "@/types/product";
+import { Product, ProductListItem } from "@/types/product";
 import { Breadcrumb } from "./Breadcrumb";
 import { ProductImageGallery } from "./ProductImageGallery";
 import { ProductInfo } from "./ProductInfo";
@@ -16,9 +16,10 @@ import { useColors } from "@/hooks/use-colors";
 
 interface ProductDetailProps {
   product: Product;
+  similarProducts?: ProductListItem[];
 }
 
-function ProductDetailContent({ product }: ProductDetailProps) {
+function ProductDetailContent({ product, similarProducts }: ProductDetailProps) {
   // Derive default size from product
   const defaultSize = product.size?.name || "";
 
@@ -121,12 +122,12 @@ function ProductDetailContent({ product }: ProductDetailProps) {
       </div>
 
       <ReviewsSection productId={product.id} productSlug={product.slug} />
-      <SimilarProducts currentProduct={product} />
+      <SimilarProducts currentProduct={product} similarProducts={similarProducts} />
     </div>
   );
 }
 
-export const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
+export const ProductDetail: React.FC<ProductDetailProps> = ({ product, similarProducts }) => {
   // Use key to reset component state when product changes
-  return <ProductDetailContent key={product.id} product={product} />;
+  return <ProductDetailContent key={product.id} product={product} similarProducts={similarProducts} />;
 };

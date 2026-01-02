@@ -35,7 +35,13 @@ export async function signupUser(data: SignupData): Promise<SignupResponse> {
 
   if (!response.ok) {
     const errorData = await response.json();
-    throw new Error(errorData.message || "Signup failed");
+    // Create an error that preserves the full response structure
+    const error = new Error(errorData.message || "Signup failed") as Error & {
+      response?: { data: unknown; status: number };
+    };
+    // Attach the full error data to match axios-style error structure
+    error.response = { data: errorData, status: response.status };
+    throw error;
   }
   return response.json();
 }
@@ -51,7 +57,13 @@ export async function loginUser(data: LoginData): Promise<LoginResponse> {
 
   if (!response.ok) {
     const errorData = await response.json();
-    throw new Error(errorData.error || "Login failed");
+    // Create an error that preserves the full response structure
+    const error = new Error(errorData.error || "Login failed") as Error & {
+      response?: { data: unknown; status: number };
+    };
+    // Attach the full error data to match axios-style error structure
+    error.response = { data: errorData, status: response.status };
+    throw error;
   }
   return response.json();
 }

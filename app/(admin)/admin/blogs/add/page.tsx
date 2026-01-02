@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { CreateBlogPost } from '@/types/blog';
 interface BlogFormData extends Omit<CreateBlogPost, 'category_id' | 'thumbnail_image'> {
   category_id: string;
-  thumbnail_image?: FileList; 
+  thumbnail_image?: File | null; 
 }
 
 const AddBlogPage = () => {
@@ -20,7 +20,7 @@ const AddBlogPage = () => {
     const blogData: CreateBlogPost = {
       ...data,
       category_id: Number(data.category_id),
-      thumbnail_image: data.thumbnail_image?.[0] || null,
+      thumbnail_image: data.thumbnail_image || null,
     };
     
     createBlogMutation.mutate(

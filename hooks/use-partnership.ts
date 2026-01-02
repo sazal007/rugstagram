@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { postPartnership, getPartnerships } from "@/services/partnership";
+import { postPartnership } from "@/services/partnership";
 
 export const usePartnership = () => {
   const queryClient = useQueryClient();
@@ -11,7 +11,7 @@ export const usePartnership = () => {
     refetch: fetchPartnerships,
   } = useQuery({
     queryKey: ["partnerships"],
-    queryFn: getPartnerships,
+    queryFn: () => postPartnership,
   });
 
   const mutation = useMutation({

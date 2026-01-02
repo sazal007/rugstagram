@@ -3,7 +3,6 @@
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-// import { useRouter } from "next/navigation"; // Unused
 import { productFormSchema, ProductFormValues } from "@/schemas/product-form";
 import { Button } from "@/components/ui/button";
 import { ProductVariantManager } from "./product-variant-manager";
@@ -162,14 +161,14 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
 
         <div className="flex justify-end gap-4">
           <Link href="/admin/products">
-            <Button type="button" variant="outline">
+            <Button type="button" variant="outline" className="cursor-pointer">
               Cancel
             </Button>
           </Link>
           <Button
             type="submit"
             disabled={isLoading}
-            className="text-white bg-gray-500 hover:bg-gray-600"
+            className="text-white cursor-pointer bg-gray-500 hover:bg-gray-600"
           >
             {isLoading
               ? "Saving..."

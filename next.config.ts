@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "nav-corps-powerseller-episode.trycloudflare.com",
+        hostname: "doing-constitutes-ant-justin.trycloudflare.com",
       },
       {
         protocol: "https",

@@ -4,16 +4,6 @@ import { postSubscriber, getSubscribers } from "@/services/newsletter";
 export const useNewsletter = () => {
   const queryClient = useQueryClient();
 
-  const {
-    data: subscribers = [],
-    isLoading,
-    error,
-    refetch: fetchSubscribers,
-  } = useQuery({
-    queryKey: ["subscribers"],
-    queryFn: getSubscribers,
-  });
-
   const mutation = useMutation({
     mutationFn: postSubscriber,
     onSuccess: () => {
@@ -23,12 +13,9 @@ export const useNewsletter = () => {
   });
 
   return {
-    isLoading,
     isSubmitting: mutation.isPending,
-    error: (error as Error)?.message || (mutation.error as Error)?.message || null,
-    subscribers,
+    error: (mutation.error as Error)?.message || null,
     isSuccess: mutation.isSuccess,
-    fetchSubscribers,
     subscribe: mutation.mutateAsync,
     resetSuccess: mutation.reset,
   };
