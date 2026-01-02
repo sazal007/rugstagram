@@ -226,7 +226,7 @@ export function Navbar() {
 
       {/* Header */}
       <header
-        className={`sticky top-0 z-50 transition-all duration-300 ${
+        className={`sticky top-0 z-100 transition-all duration-300 ${
           isHome
             ? "bg-background/90 backdrop-blur-md"
             : "bg-background border-b border-gray-100"
