@@ -1,6 +1,6 @@
 import React from "react";
 import { RefreshCw } from "lucide-react";
-import { Order, OrderStatus } from "@/types/order";
+import { Order, OrderStage } from "@/types/order";
 import SortIcon from "./sort-icon";
 import OrderDetails from "./order-details";
 import {
@@ -8,6 +8,7 @@ import {
   formatDate,
   getStatusIcon,
   getStatusColor,
+  STAGES,
 } from "./utils";
 
 interface OrdersTableProps {
@@ -17,7 +18,7 @@ interface OrdersTableProps {
   onSort: (column: string) => void;
   expandedOrder: string | null;
   onToggleExpand: (orderNumber: string) => void;
-  onUpdateStatus: (orderNumber: string, status: OrderStatus) => void;
+  onUpdateStage: (orderNumber: string, stage: OrderStage) => void;
   isUpdating: boolean;
   updatingOrderNumber?: string;
 }
@@ -29,11 +30,29 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
   onSort,
   expandedOrder,
   onToggleExpand,
-  onUpdateStatus,
+  onUpdateStage,
   isUpdating,
   updatingOrderNumber,
-}) => (
-  <div className="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
+}) => {
+  const [localStages, setLocalStages] = React.useState<Record<string, OrderStage>>({});
+
+  // Remove local stage entry once the server data has caught up
+  React.useEffect(() => {
+    setLocalStages(prev => {
+      const next = { ...prev };
+      let changed = false;
+      orders.forEach(order => {
+        if (order.stage && next[order.order_number] === order.stage) {
+          delete next[order.order_number];
+          changed = true;
+        }
+      });
+      return changed ? next : prev;
+    });
+  }, [orders]);
+
+  return (
+    <div className="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
     {/* Mobile view - card layout */}
     <div className="p-2 space-y-3 sm:hidden">
       {orders.map((order) => {
@@ -80,34 +99,33 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
               </p>
             </div>
 
-            <div className="flex items-center justify-between mt-2">
-              <select
-                value={order.status}
-                onChange={(e) =>
-                  onUpdateStatus(
-                    order.order_number,
-                    e.target.value as OrderStatus
-                  )
-                }
-                disabled={isCurrentlyUpdating}
-                className="block px-2 py-1 text-xs border border-gray-300 rounded-md shadow-sm focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
-                onClick={(e) => e.stopPropagation()}
-              >
-                {[
-                  "pending",
-                  "processing",
-                  "shipped",
-                  "delivered",
-                  "cancelled",
-                ].map((status) => (
-                  <option key={status} value={status}>
-                    {status.charAt(0).toUpperCase() + status.slice(1)}
-                  </option>
-                ))}
-              </select>
-              {isCurrentlyUpdating && (
-                <RefreshCw className="w-4 h-4 text-gray-500 animate-spin" />
-              )}
+            <div className="flex flex-col mt-2 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-gray-500">Stage:</span>
+                <div className="relative flex items-center">
+                  <select
+                    value={localStages[order.order_number] || order.stage || ""}
+                    onChange={(e) => {
+                      const newStage = e.target.value as OrderStage;
+                      setLocalStages(prev => ({ ...prev, [order.order_number]: newStage }));
+                      onUpdateStage(order.order_number, newStage);
+                    }}
+                    disabled={isCurrentlyUpdating}
+                    className="block px-2 py-1 text-xs border border-gray-300 rounded-md shadow-sm focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed bg-white"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <option value="" disabled>Select Stage</option>
+                    {STAGES.map((stage) => (
+                      <option key={stage} value={stage}>
+                        {stage}
+                      </option>
+                    ))}
+                  </select>
+                  {isCurrentlyUpdating && (
+                    <RefreshCw className="w-4 h-4 ml-2 text-gray-500 animate-spin" />
+                  )}
+                </div>
+              </div>
             </div>
 
             {expandedOrder === order.order_number && (
@@ -160,7 +178,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
               scope="col"
               className="px-4 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
             >
-              Actions
+              Stage
             </th>
           </tr>
         </thead>
@@ -201,26 +219,20 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
                   <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
                     <div className="relative flex items-center">
                       <select
-                        value={order.status}
-                        onChange={(e) =>
-                          onUpdateStatus(
-                            order.order_number,
-                            e.target.value as OrderStatus
-                          )
-                        }
+                        value={localStages[order.order_number] || order.stage || ""}
+                        onChange={(e) => {
+                          const newStage = e.target.value as OrderStage;
+                          setLocalStages(prev => ({ ...prev, [order.order_number]: newStage }));
+                          onUpdateStage(order.order_number, newStage);
+                        }}
                         disabled={isCurrentlyUpdating}
-                        className="block w-full px-2 py-1 text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none  disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="block w-full px-2 py-1 text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed bg-white"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        {[
-                          "pending",
-                          "processing",
-                          "shipped",
-                          "delivered",
-                          "cancelled",
-                        ].map((status) => (
-                          <option key={status} value={status}>
-                            {status.charAt(0).toUpperCase() + status.slice(1)}
+                        <option value="" disabled>Select Stage</option>
+                        {STAGES.map((stage) => (
+                          <option key={stage} value={stage}>
+                            {stage}
                           </option>
                         ))}
                       </select>
@@ -244,6 +256,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
       </table>
     </div>
   </div>
-);
+  );
+};
 
 export default OrdersTable;

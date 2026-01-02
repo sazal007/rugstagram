@@ -17,6 +17,20 @@ export type OrderStatus =
   | "shipped"
   | "delivered"
   | "cancelled";
+
+export type OrderStage =
+  | "Wool Sorting"
+  | "Carding"
+  | "Spinning"
+  | "Pot Dyeing"
+  | "Graph Creation"
+  | "Hand Knotting"
+  | "Trimming"
+  | "Washing"
+  | "Stretching"
+  | "Finishing"
+  | "Shipping"
+  | "Delivered";
 export interface OrderFilters {
   status?: string;
   search?: string;
@@ -65,6 +79,7 @@ export interface Order {
   full_name: string;
   order_number: string;
   status: OrderStatus;
+  stage: OrderStage | null;
   shipping_address: string;
   city: string;
   state: string;
@@ -78,7 +93,8 @@ export interface Order {
   updated_at: string;
 }
 export interface UpdateOrderData {
-  status?: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
+  status?: OrderStatus;
+  stage?: OrderStage;
   shipping_address?: string;
   city?: string;
   state?: string;

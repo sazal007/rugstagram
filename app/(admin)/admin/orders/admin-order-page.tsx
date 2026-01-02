@@ -3,7 +3,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { useDebounce } from '@/hooks/use-debounce';
 import { useOrders, useUpdateOrder } from '@/hooks/use-order';
-import { OrderStatus } from '@/types/order';
+import { OrderStage } from '@/types/order';
 import {
   SearchFilters,
   OrdersTable,
@@ -42,8 +42,8 @@ export default function AdminOrdersPage() {
 
   const { mutate: updateStatus, isPending: isUpdating, variables: updatingVariables } = useUpdateOrder();
 
-  const handleUpdateStatus = useCallback((orderNumber: string, status: OrderStatus) => {
-    updateStatus({ orderNumber, data: { status } });
+  const handleUpdateStage = useCallback((orderNumber: string, stage: OrderStage) => {
+    updateStatus({ orderNumber, data: { stage } });
   }, [updateStatus]);
 
   const handleSort = (column: string) => {
@@ -96,7 +96,7 @@ export default function AdminOrdersPage() {
             onSort={handleSort}
             expandedOrder={expandedOrder}
             onToggleExpand={(orderNumber) => setExpandedOrder(expandedOrder === orderNumber ? null : orderNumber)}
-            onUpdateStatus={handleUpdateStatus}
+            onUpdateStage={handleUpdateStage}
             isUpdating={isUpdating}
             updatingOrderNumber={updatingVariables?.orderNumber}
           />

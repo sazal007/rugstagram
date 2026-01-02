@@ -127,7 +127,6 @@ export function MyOrdersList() {
                     Order ID <ArrowUpDown className="h-3 w-3" />
                   </div>
                 </th>
-                <th className="pb-4 pt-2 font-semibold text-slate-500 text-sm tracking-tight">Item</th>
                 <th className="pb-4 pt-2 font-semibold text-slate-500 text-sm tracking-tight">Delivery date</th>
                 <th className="pb-4 pt-2 font-semibold text-slate-500 text-sm tracking-tight">Price</th>
                 <th className="pb-4 pt-2 font-semibold text-slate-500 text-sm tracking-tight">Status</th>
@@ -166,9 +165,6 @@ export function MyOrdersList() {
                     <td className={cn("font-medium text-slate-900", isDense ? "py-3" : "py-6")}>
                       #{order.order_number}
                     </td>
-                    <td className={cn("text-slate-600 truncate max-w-[200px]", isDense ? "py-3" : "py-6")}>
-                      {order.items[0]?.product_name || "Multiple items"}
-                    </td>
                     <td className={cn("text-slate-600", isDense ? "py-3" : "py-6")}>
                       {new Date(order.created_at).toLocaleDateString("en-GB", {
                         day: "2-digit",
@@ -188,9 +184,7 @@ export function MyOrdersList() {
                       </span>
                     </td>
                     <td className={cn("px-4 text-right", isDense ? "py-3" : "py-6")}>
-                      <button className="text-slate-400 hover:text-slate-900 transition-colors cursor-pointer">
-                        <MoreVertical className="h-4 w-4" />
-                      </button>
+                     
                     </td>
                   </tr>
                 ))

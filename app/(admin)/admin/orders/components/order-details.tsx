@@ -20,6 +20,10 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => (
                   <span className="block text-xs font-medium tracking-wide text-gray-500 uppercase">Order Number</span>
                   <span className="text-xs font-semibold text-gray-900 break-all sm:text-sm">{order.order_number}</span>
                 </div>
+                <div className="p-2 rounded-lg sm:p-3 bg-gray-50 border border-indigo-100">
+                  <span className="block text-xs font-medium tracking-wide text-indigo-500 uppercase">Production Stage</span>
+                  <span className="text-xs font-semibold text-indigo-900 sm:text-sm">{order.stage || 'Not Started'}</span>
+                </div>
                 <div className="p-2 rounded-lg sm:p-3 bg-gray-50">
                   <span className="block text-xs font-medium tracking-wide text-gray-500 uppercase">Delivery Fee</span>
                   <span className="text-xs font-semibold text-gray-600 sm:text-sm">{formatCurrency(order.delivery_fee)}</span>

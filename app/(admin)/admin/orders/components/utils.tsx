@@ -2,7 +2,22 @@
 
 import React from 'react';
 import { CheckCircle, Clock, RefreshCw, Truck, XCircle, Package } from 'lucide-react';
-import { OrderStatus } from '@/types/order';
+import { OrderStatus, OrderStage } from '@/types/order';
+
+export const STAGES: OrderStage[] = [
+  "Wool Sorting",
+  "Carding",
+  "Spinning",
+  "Pot Dyeing",
+  "Graph Creation",
+  "Hand Knotting",
+  "Trimming",
+  "Washing",
+  "Stretching",
+  "Finishing",
+  "Shipping",
+  "Delivered",
+];
 
 export const formatCurrency = (amount: string | number): string => {
   const numericAmount = typeof amount === 'string' ? parseFloat(amount) : amount;

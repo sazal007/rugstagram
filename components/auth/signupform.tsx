@@ -41,9 +41,6 @@ export function SignupForm({
 
     try {
       await signup(formData);
-      toast.success("Account Created", {
-        description: "Your account has been created successfully. Welcome to Rugstagram!",
-      });
     } catch (error: unknown) {
       toast.error("Signup Failed", {
         description: getErrorMessage(error),

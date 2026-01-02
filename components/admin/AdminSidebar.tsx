@@ -47,6 +47,16 @@ const adminNavItems = [
     icon: ShoppingCart,
   },
   {
+    title: "Blogs",
+    href: "/admin/blogs",
+    icon: ShoppingCart,
+  },
+  {
+    title: "Gallery",
+    href: "/admin/gallery",
+    icon: ShoppingCart,
+  },
+  {
     title: "Contact",
     href: "/admin/contacts",
     icon: Phone,

@@ -28,9 +28,6 @@ export function LoginForm({
     e.preventDefault();
     try {
       await login(formData);
-      toast.success("Login Successful", {
-        description: "Welcome back!",
-      });
     } catch (error: unknown) {
       toast.error("Login Failed", {
         description: getErrorMessage(error),
