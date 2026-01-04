@@ -116,7 +116,7 @@ export const useWishlistToggle = (
     accessToken?: string,
     options: { enabled?: boolean } = { enabled: true }
 ) => {
-    const { data: wishlistItems, isFetching } = useWishlist(accessToken, options.enabled);
+    const { data: wishlistItems, isFetching, isFetched } = useWishlist(accessToken, options.enabled);
     const addToWishlistMutation = useAddToWishlist();
     const removeFromWishlistMutation = useRemoveFromWishlist();
 
@@ -128,35 +128,39 @@ export const useWishlistToggle = (
         return Number(itemProductId) === Number(baseProductId);
     });
 
-    const isInWishlist = wishlistItems ? !!wishlistItem : (product as Product & { is_wishlist?: boolean }).is_wishlist;
+    const isInWishlist = (accessToken && options.enabled && isFetched)
+        ? !!wishlistItem
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        : (product as any).is_wishlist;
+
     const isLoading = addToWishlistMutation.isPending || removeFromWishlistMutation.isPending || isFetching;
 
     const toggleWishlist = async () => {
         if (isLoading || !accessToken) return;
-
-        if (isInWishlist) {
-            const itemToRemove = wishlistItems?.find((item) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        let wishlistItemId = (product as any).wishlist_id;
+        
+        if (!wishlistItemId && wishlistItems) {
+            const foundItem = wishlistItems.find((item) => {
                 const itemProduct = item.product as { id?: number } | number;
                 const itemProductId = typeof itemProduct === 'object' ? itemProduct.id : itemProduct;
                 return Number(itemProductId) === Number(baseProductId);
             });
+            wishlistItemId = foundItem?.id;
+        }
 
-            if (itemToRemove) {
-                await removeFromWishlistMutation.mutateAsync({
-                    wishlistItemId: itemToRemove.id,
-                    accessToken,
-                });
-            } else if (!options.enabled) {
-                // If wishlist wasn't fetched, we might not have the itemToRemove.id
-                // In this case, we might need a one-time fetch or a different approach.
-                // For now, let's toast that it needs a refresh or just fetch it.
-                toast.error("Please refresh to remove from wishlist");
-            }
-        } else {
+        if (isInWishlist && wishlistItemId) {
+            await removeFromWishlistMutation.mutateAsync({
+                wishlistItemId,
+                accessToken,
+            });
+        } else if (!isInWishlist) {
             await addToWishlistMutation.mutateAsync({
                 productId: baseProductId,
                 accessToken,
             });
+        } else {
+            toast.error("Please refresh to update wishlist status");
         }
     };
 

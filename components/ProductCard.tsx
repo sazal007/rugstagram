@@ -119,12 +119,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, fetchWishlist
 
         <button
           className={`absolute top-3 right-3 p-2 bg-white/90 rounded-full transition-all duration-300 hover:text-accent disabled:opacity-50 disabled:cursor-not-allowed ${
-            isInWishlist ? "opacity-100 text-red-500" : "opacity-0 group-hover:opacity-100"
+            isInWishlist ? "text-red-500 opacity-100" : "text-gray-400 opacity-60 group-hover:opacity-100"
           }`}
           onClick={handleWishlistToggle}
           disabled={isWishlistLoading}
         >
-          <Heart className={`w-4 h-4 ${isInWishlist ? "fill-current" : ""} ${isWishlistLoading ? "animate-pulse" : ""}`} />
+          <Heart 
+            className={`w-4 h-4 transition-colors cursor-pointer duration-300 ${isInWishlist ? "fill-current" : ""} ${isWishlistLoading ? "animate-pulse" : ""}`} 
+          />
         </button>
       </div>
 

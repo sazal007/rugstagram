@@ -102,7 +102,7 @@ function ProductDetailContent({ product, similarProducts }: ProductDetailProps) 
         <ProductImageGallery product={product} selectedColor={selectedColor} />
 
         <div>
-          <ProductInfo product={product} />
+          <ProductInfo product={product} selectedColor={selectedColor} />
           <ProductSelectors
             product={product}
             colors={availableColors}

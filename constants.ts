@@ -23,7 +23,7 @@ export const NAV_ITEMS: NavItem[] = [
     href: "/bespoke",
     children: [
       {
-        label: "Overview",
+        label: "Customize Existing Design",
         href: "/bespoke",
         image: "/images/nav-images/overview.jpeg",
       },

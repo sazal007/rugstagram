@@ -88,6 +88,7 @@ export interface Product {
     luxury_edition: LuxuryEdition | null;
     affordable_edition: AffordableEdition | null;
     material: Material | null;
+    wishlist_id: number | null;
 }
 
 export interface ProductListItem {
@@ -114,6 +115,7 @@ export interface ProductListItem {
   is_featured: boolean;
   is_active: boolean;
   is_wishlist: boolean;
+  wishlist_id: number | null;
 }
 
 export interface ProductListResponse {
