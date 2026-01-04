@@ -1,7 +1,6 @@
 import { NavItem } from "@/types";
 
 export const NAV_ITEMS: NavItem[] = [
-  { label: "Home", href: "/" },
   {
     label: "Shop",
     href: "/shop",
@@ -34,6 +33,10 @@ export const NAV_ITEMS: NavItem[] = [
         image: "/images/nav-images/design-your-own.jpeg",
       },
     ],
+  },
+  {
+    label: "Blog",
+    href: "/blog",
   },
   {
     label: "About",

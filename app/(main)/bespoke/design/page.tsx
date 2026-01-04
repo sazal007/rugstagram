@@ -1,5 +1,9 @@
-import { CommingSoon } from "@/components/layout/comming-soon";
+import { DesignForm } from "@/components/bespoke/design-form/DesignForm";
 
 export default function BespokeDesignPage() {
-  return <CommingSoon />;
+  return (
+    <div className="pt-24 min-h-screen">
+      <DesignForm />
+    </div>
+  );
 }

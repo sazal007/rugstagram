@@ -37,10 +37,6 @@ export function Footer() {
         <div className="w-full flex justify-center mb-12 relative">
           {/* Subtle glow effect behind the text */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-24 bg-blue-500/5 dark:bg-blue-900/10 blur-[80px] rounded-full pointer-events-none transition-colors duration-300"></div>
-
-          <h1 className="text-[14.2vw] leading-[0.8] font-serif font-medium tracking-tighter text-transparent bg-clip-text bg-linear-to-b from-white via-gray-400 to-[#1a1a1a] select-none text-center transition-all duration-300">
-            RUGSTAGRAM
-          </h1>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">

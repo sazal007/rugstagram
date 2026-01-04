@@ -263,9 +263,9 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-8">
+          <nav className="hidden lg:flex items-center gap-10">
             <NavigationMenu viewport={false}>
-              <NavigationMenuList className="gap-8">
+              <NavigationMenuList className="gap-12">
                 {navItems.map((item) => (
                   <NavigationMenuItem
                     key={item.label}
