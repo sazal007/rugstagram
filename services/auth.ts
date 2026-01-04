@@ -4,7 +4,8 @@ import {
   SignupResponse, 
   UpdateProfileData, 
   ChangePasswordData, 
-  User
+  User,
+  AdminLoginResponse
 } from "@/types/auth";
 
 const API_BASE_URL = siteConfig.backendUrl;
@@ -124,6 +125,28 @@ export async function changePassword(data: ChangePasswordData, token: string): P
   if (!response.ok) {
     const errorData = await response.json();
     throw new Error(errorData.message || "Failed to change password");
+  }
+  return response.json();
+}
+
+export async function adminLogin(data: LoginData): Promise<AdminLoginResponse> {
+  const response = await fetch(`${API_BASE_URL}/api/admin-login/`, { 
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    // Create an error that preserves the full response structure
+    const error = new Error(errorData.error || "Login failed") as Error & {
+      response?: { data: unknown; status: number };
+    };
+    // Attach the full error data to match axios-style error structure
+    error.response = { data: errorData, status: response.status };
+    throw error;
   }
   return response.json();
 }

@@ -45,6 +45,11 @@ export interface LoginResponse {
 
 export interface SignupResponse extends User, AuthTokens {}
 
+export interface AdminLoginResponse {
+  access: string;
+  refresh: string;
+}
+
 export interface DecodedAccessToken {
   exp: number;
   iat: number;

@@ -21,6 +21,7 @@ interface OrdersTableProps {
   onUpdateStage: (orderNumber: string, stage: OrderStage) => void;
   isUpdating: boolean;
   updatingOrderNumber?: string;
+  token?: string;
 }
 
 const OrdersTable: React.FC<OrdersTableProps> = ({
@@ -33,6 +34,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
   onUpdateStage,
   isUpdating,
   updatingOrderNumber,
+  token,
 }) => {
   return (
     <div className="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
@@ -115,7 +117,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
                 <table className="w-full">
                   <tbody>
                     <tr>
-                      <OrderDetails orderNumber={order.order_number} />
+                      <OrderDetails orderNumber={order.order_number} token={token} />
                     </tr>
                   </tbody>
                 </table>
@@ -227,7 +229,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
                 </tr>
                 {expandedOrder === order.order_number && (
                   <tr>
-                    <OrderDetails orderNumber={order.order_number} />
+                    <OrderDetails orderNumber={order.order_number} token={token} />
                   </tr>
                 )}
               </React.Fragment>

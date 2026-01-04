@@ -8,8 +8,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { useAdminAuth } from "@/context/AdminAuthContext";
 
 export function AdminHeader() {
+  const { adminLogout } = useAdminAuth();
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-4 lg:px-6">
       <SidebarTrigger className="-ml-1" />
@@ -46,7 +48,10 @@ export function AdminHeader() {
               <button className="w-full text-left px-3 py-2 text-sm rounded-md hover:bg-gray-100">
                 Settings
               </button>
-              <button className="w-full text-left px-3 py-2 text-sm rounded-md hover:bg-gray-100">
+              <button 
+                onClick={adminLogout}
+                className="w-full text-left px-3 py-2 text-sm rounded-md hover:bg-gray-100"
+              >
                 Logout
               </button>
             </div>

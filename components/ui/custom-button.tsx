@@ -25,7 +25,7 @@ const custombuttonVariants = cva(
           "bg-white text-primary uppercase tracking-widest text-xs font-bold hover:bg-sand hover:text-white transition-colors duration-300",
         "hero-outline":
           "border border-white text-white uppercase tracking-widest text-xs font-bold hover:bg-white hover:text-primary transition-colors duration-300",
-        sand: "bg-sand text-white uppercase tracking-widest text-xs font-bold hover:bg-white hover:text-primary transition-colors",
+        sand: "bg-sand text-white uppercase tracking-widest hover:text-gray-200 text-xs font-bold cursor-pointer transition-colors",
         "outline-primary":
           "border border-primary text-primary uppercase tracking-widest text-xs font-bold hover:bg-primary hover:text-white transition-colors",
       },

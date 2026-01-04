@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Product, ProductListItem } from "@/types/product";
+import { Product, ProductListItem, Size } from "@/types/product";
 import { Breadcrumb } from "./Breadcrumb";
 import { ProductImageGallery } from "./ProductImageGallery";
 import { ProductInfo } from "./ProductInfo";
@@ -21,14 +21,14 @@ interface ProductDetailProps {
 
 function ProductDetailContent({ product, similarProducts }: ProductDetailProps) {
   // Derive default size from product
-  const defaultSize = product.size?.name || "";
+  const defaultSize = product.size;
 
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
   const colorSlug = searchParams.get("color");
 
-  const [selectedSize, setSelectedSize] = useState<string>(defaultSize);
+  const [selectedSize, setSelectedSize] = useState<Size | null>(defaultSize);
   const [quantity, setQuantity] = useState(1);
   const { data: allColors } = useColors();
 
@@ -49,7 +49,6 @@ function ProductDetailContent({ product, similarProducts }: ProductDetailProps) 
           (c) => c.name.toLowerCase() === variant.color_name?.toLowerCase()
         );
         if (matchedColor) {
-           // Ensure it matches the type expected (using cast/merge if needed, but Color interface should match)
            colors.set(matchedColor.name, matchedColor); 
            return;
         }
@@ -57,13 +56,10 @@ function ProductDetailContent({ product, similarProducts }: ProductDetailProps) 
 
       // Priority 3: Fallback if color_name exists but no full color data found
       if (variant.color_name) {
-          // Use a negative ID or some unique generation if we don't have a real ID, 
-          // or just assume we won't show an image.
-          // Note: ID is required by type.
           colors.set(variant.color_name, {
-              id: -variant.id, // Temporary fallback ID
+              id: -variant.id, 
               name: variant.color_name,
-              slug: variant.color_name.toLowerCase().replace(/\s+/g, '-'), // Generate basic slug
+              slug: variant.color_name.toLowerCase().replace(/\s+/g, '-'),
           });
       }
     });
@@ -80,7 +76,6 @@ function ProductDetailContent({ product, similarProducts }: ProductDetailProps) 
     return availableColors.length > 0 ? availableColors[0] : null;
   });
 
-  // Update URL function
   const handleColorChange = (color: Product["variants"][0]["color"]) => {
     setSelectedColor(color);
     if (color && color.slug) {

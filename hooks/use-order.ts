@@ -12,20 +12,22 @@ import { CreateOrderPayload, OrderFilters, UpdateOrderData, OrdersResponse } fro
 
 export const useOrders = (
   filters?: OrderFilters,
+  token?: string,
   options?: { placeholderData?: (previousData: OrdersResponse | undefined) => OrdersResponse | undefined }
 ) => {
   return useQuery({
-    queryKey: ['orders', filters], // Include filters in queryKey
-    queryFn: () => getOrders(filters),
+    queryKey: ['orders', filters, token], // Include token in queryKey for proper cache separation
+    queryFn: () => getOrders(filters, token),
+    enabled: !!token, // Only fetch when token is available
     ...options,
   });
 };
 
-export const useOrder = (id: string) => {
+export const useOrder = (id: string, token?: string) => {
   return useQuery({
-    queryKey: ['orders', id],
-    queryFn: () => getOrder(id),
-    enabled: !!id,
+    queryKey: ['orders', id, token],
+    queryFn: () => getOrder(id, token),
+    enabled: !!id && !!token, // Only fetch when both id and token are available
   });
 };
 
@@ -48,10 +50,12 @@ export const useUpdateOrder = () => {
     mutationFn: ({
       orderNumber,
       data,
+      token,
     }: {
       orderNumber: string;
       data: UpdateOrderData;
-    }) => updateOrder(orderNumber, data),
+      token?: string;
+    }) => updateOrder(orderNumber, data, token),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['orders'] });
       queryClient.invalidateQueries({ queryKey: ['orders', variables.orderNumber] });
@@ -63,9 +67,11 @@ export const useDeleteOrder = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => deleteOrder(id),
+    mutationFn: ({ id, token }: { id: string; token?: string }) => 
+      deleteOrder(id, token),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['orders'] });
     },
   });
 };
+

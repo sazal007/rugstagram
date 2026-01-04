@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "doing-constitutes-ant-justin.trycloudflare.com",
+        hostname: "min-must-than-citizenship.trycloudflare.com",
       },
       {
         protocol: "https",

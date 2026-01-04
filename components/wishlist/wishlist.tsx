@@ -38,7 +38,13 @@ export const Wishlist: React.FC = () => {
       
       // Default to first variant if exists
       const variantId = fullProduct.variants[0]?.id || 0;
-      const size = fullProduct.size?.name || "Standard";
+      
+      // Use the size object from product
+      if (!fullProduct.size) {
+          toast.error("Size information missing for this product");
+          return;
+      }
+
       const color = fullProduct.variants[0]?.color_name 
         ? { 
             name: fullProduct.variants[0].color_name, 
@@ -46,7 +52,7 @@ export const Wishlist: React.FC = () => {
           } 
         : undefined;
 
-      addToCart(fullProduct, size, 1, variantId, color);
+      addToCart(fullProduct, fullProduct.size, 1, variantId, color);
       toast.success(`Added ${productItem.name} to bag`);
     } catch (err) {
       console.error("Failed to add to cart:", err);

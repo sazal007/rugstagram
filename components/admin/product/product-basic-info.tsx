@@ -349,34 +349,6 @@ export const ProductBasicInfo: React.FC<ProductBasicInfoProps> = ({
         />
 
         <FormField
-          name="size_id"
-          control={control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Size</FormLabel>
-              <Select
-                onValueChange={field.onChange}
-                defaultValue={field.value || ""}
-              >
-                <FormControl>
-                  <SelectTrigger className="w-full cursor-pointer [&_svg]:text-gray-500 [&_svg]:opacity-100">
-                    <SelectValue placeholder={isLoadingSizes ? "Loading..." : "Select Size"} />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {sizes?.map((s) => (
-                    <SelectItem key={s.id} value={String(s.id)}>
-                      {s.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
           name="luxury_edition_id"
           control={control}
           render={({ field }) => (

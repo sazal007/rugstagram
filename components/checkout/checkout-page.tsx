@@ -85,6 +85,7 @@ export function CheckoutPage() {
           return {
             variant: item.variantId,
             quantity: item.quantity,
+            size: item.sizeId,
           };
         }),
       };

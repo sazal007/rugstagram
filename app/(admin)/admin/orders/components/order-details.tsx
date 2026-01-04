@@ -7,10 +7,11 @@ import { RefreshCw } from 'lucide-react';
 
 interface OrderDetailsProps {
   orderNumber: string;
+  token?: string;
 }
 
-const OrderDetails: React.FC<OrderDetailsProps> = ({ orderNumber }) => {
-  const { data: order, isLoading, error } = useOrder(orderNumber);
+const OrderDetails: React.FC<OrderDetailsProps> = ({ orderNumber, token }) => {
+  const { data: order, isLoading, error } = useOrder(orderNumber, token);
 
   if (isLoading) {
     return (

@@ -3,6 +3,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { useDebounce } from '@/hooks/use-debounce';
 import { useOrders, useUpdateOrder } from '@/hooks/use-order';
+import { useAdminAuth } from '@/context/AdminAuthContext';
 import { OrderStage } from '@/types/order';
 import {
   SearchFilters,
@@ -20,6 +21,9 @@ interface SortState {
 }
 
 export default function AdminOrdersPage() {
+  // Get admin authentication
+  const { adminTokens } = useAdminAuth();
+  
   // UI State Management
   const [pagination, setPagination] = useState({ page: 1, pageSize: 10 });
   const [searchQuery, setSearchQuery] = useState('');
@@ -36,15 +40,23 @@ export default function AdminOrdersPage() {
     ordering: `${sort.direction === 'desc' ? '-' : ''}${sort.column}`,
   }), [pagination, debouncedSearchQuery, filterStatus, sort]);
 
-  const { data: ordersData, error, isLoading, isFetching, refetch } = useOrders(filters, {
-     placeholderData: (previousData) => previousData, 
-  });
+  const { data: ordersData, error, isLoading, isFetching, refetch } = useOrders(
+    filters,
+    adminTokens?.access_token,
+    {
+      placeholderData: (previousData) => previousData,
+    }
+  );
 
   const { mutate: updateStatus, isPending: isUpdating, variables: updatingVariables } = useUpdateOrder();
 
   const handleUpdateStage = useCallback((orderNumber: string, stage: OrderStage) => {
-    updateStatus({ orderNumber, data: { stage } });
-  }, [updateStatus]);
+    updateStatus({ 
+      orderNumber, 
+      data: { stage }, 
+      token: adminTokens?.access_token 
+    });
+  }, [updateStatus, adminTokens?.access_token]);
 
   const handleSort = (column: string) => {
     setSort(prevSort => ({
@@ -99,6 +111,7 @@ export default function AdminOrdersPage() {
             onUpdateStage={handleUpdateStage}
             isUpdating={isUpdating}
             updatingOrderNumber={updatingVariables?.orderNumber}
+            token={adminTokens?.access_token}
           />
           <Pagination
             count={ordersData?.count || 0}

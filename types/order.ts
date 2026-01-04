@@ -1,6 +1,7 @@
 export interface OrderItemPayload {
   variant: number;
   quantity: number;
+  size?: number;
 }
 
 export interface StatusCounts {

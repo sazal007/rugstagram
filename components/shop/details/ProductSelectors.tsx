@@ -2,15 +2,16 @@
 
 import React, { useState, useEffect } from "react";
 import { Minus, Plus } from "lucide-react";
-import { Product } from "@/types/product";
+import { Product, Size } from "@/types/product";
 import { CustomButton } from "@/components/ui/custom-button";
+import { useSizes } from "@/hooks/use-sizes";
 
 interface ProductSelectorsProps {
   product: Product;
   colors?: Product["variants"][0]["color"][];
   selectedColor?: Product["variants"][0]["color"] | null;
   onColorChange?: (color: Product["variants"][0]["color"]) => void;
-  onSizeChange?: (size: string) => void;
+  onSizeChange?: (size: Size) => void;
   onQuantityChange?: (quantity: number) => void;
 }
 
@@ -22,19 +23,21 @@ export const ProductSelectors: React.FC<ProductSelectorsProps> = ({
   onSizeChange,
   onQuantityChange,
 }) => {
-  // Use real size from product (it's a single size, not an array)
-  const sizes = product.size ? [product.size.name] : [];
-
-  const [selectedSize, setSelectedSize] = useState<string>(sizes[0] || "");
+  const { data: allSizes, isLoading: isLoadingSizes } = useSizes();
+  const [selectedSizeId, setSelectedSizeId] = useState<number | null>(product.size?.id || null);
   const [quantity, setQuantity] = useState(1);
 
-  // Notify parent of initial selection
+  // Notify parent of initial selection or when sizes are loaded
   useEffect(() => {
-    if (sizes.length > 0) {
-      onSizeChange?.(sizes[0]);
+    if (allSizes && allSizes.length > 0) {
+      const initialSize = allSizes.find(s => s.id === product.size?.id) || allSizes[0];
+      if (initialSize) {
+        setSelectedSizeId(initialSize.id);
+        onSizeChange?.(initialSize);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Run once on mount
+  }, [allSizes, product.size?.id]);
 
   useEffect(() => {
     onQuantityChange?.(quantity);
@@ -49,8 +52,8 @@ export const ProductSelectors: React.FC<ProductSelectorsProps> = ({
     }
   };
 
-  const handleSizeSelect = (size: string) => {
-    setSelectedSize(size);
+  const handleSizeSelect = (size: Size) => {
+    setSelectedSizeId(size.id);
     onSizeChange?.(size);
   };
 
@@ -106,21 +109,29 @@ export const ProductSelectors: React.FC<ProductSelectorsProps> = ({
           </label>
         </div>
         <div className="flex flex-wrap gap-2 sm:gap-3">
-          {sizes.map((size) => (
-            <CustomButton
-              key={size}
-              onClick={() => handleSizeSelect(size)}
-              variant={selectedSize === size ? "default" : "outline"}
-              size="sm"
-              className={`px-3 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm transition-all ${
-                selectedSize === size
-                  ? "border-primary bg-primary text-white"
-                  : "border-gray-200 hover:border-primary text-gray-600"
-              }`}
-            >
-              {size} cm
-            </CustomButton>
-          ))}
+          {isLoadingSizes ? (
+            <div className="flex gap-2">
+              {[1, 2, 3].map(i => (
+                <div key={i} className="w-20 h-10 bg-gray-100 animate-pulse rounded-md" />
+              ))}
+            </div>
+          ) : (
+            allSizes?.map((size) => (
+              <CustomButton
+                key={size.id}
+                onClick={() => handleSizeSelect(size)}
+                variant={selectedSizeId === size.id ? "default" : "outline"}
+                size="sm"
+                className={`px-3 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm transition-all ${
+                  selectedSizeId === size.id
+                    ? "border-primary bg-primary text-white"
+                    : "border-gray-200 hover:border-primary text-gray-600"
+                }`}
+              >
+                {size.name} cm
+              </CustomButton>
+            ))
+          )}
         </div>
       </div>
 

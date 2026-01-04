@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAdminAuth } from "@/context/AdminAuthContext";
+import { useAdminLogin } from "@/hooks/use-admin-auth";
 import { CustomButton } from "@/components/ui/custom-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,28 +13,23 @@ import Image from "next/image";
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const { adminLogin } = useAdminAuth();
+  const { isAdminAuthenticated } = useAdminAuth();
   const router = useRouter();
+  const adminLoginMutation = useAdminLogin();
+
+  useEffect(() => {
+    if (isAdminAuthenticated) {
+      router.push("/admin");
+    }
+  }, [isAdminAuthenticated, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-    setIsLoading(true);
-
-    // Simulate a brief loading state for better UX
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    const success = adminLogin(email, password);
-
-    if (success) {
-      router.push("/admin");
-    } else {
-      setError("Invalid admin credentials. Please try again.");
-      setIsLoading(false);
-    }
+    adminLoginMutation.mutate({ email, password });
   };
+
+  const isLoading = adminLoginMutation.isPending;
+  const error = adminLoginMutation.error ? (adminLoginMutation.error as { message: string }).message : "";
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-gray-50 via-gray-100 to-gray-200 p-4">
