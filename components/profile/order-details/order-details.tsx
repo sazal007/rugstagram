@@ -7,12 +7,17 @@ import {
   Home, 
   MessageSquare, 
   Info, 
-  X, 
   CheckCircle2, 
   HelpCircle,
 } from 'lucide-react';
 import { MyOrder, OrderItem as OrderItemType } from "@/types/my-order";
 import { getImageUrl } from '@/utils/image';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const ShippingAddress = ({ order }: { order: MyOrder }) => {
   return (
@@ -77,11 +82,11 @@ const OrderItem = ({ item }: { item: OrderItemType }) => {
             Qty: {item.quantity}
           </p>
           <div className="flex items-center gap-2 w-full sm:w-auto">
-            <button className="flex-1 sm:flex-none py-1.5 px-3 rounded-full border border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-xs font-semibold flex items-center justify-center gap-1.5">
+            <button className="flex-1 sm:flex-none py-1.5 px-3 rounded-full border border-primary text-primary hover:bg-primary hover:text-primary-foreground cursor-pointer transition-colors text-xs font-semibold flex items-center justify-center gap-1.5">
               <MessageSquare className="w-3.5 h-3.5" />
               Review
             </button>
-            <button className="text-muted hover:text-accent text-xs font-semibold hover:underline px-2 transition-colors">
+            <button className="text-muted hover:text-accent text-xs font-semibold hover:underline px-2 cursor-pointer transition-colors">
               Return
             </button>
           </div>
@@ -98,7 +103,7 @@ interface OrderDetailsProps {
 }
 
 export default function OrderDetails({ isOpen, onClose, order }: OrderDetailsProps) {
-  if (!isOpen || !order) return null;
+  if (!order) return null;
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString(undefined, {
@@ -119,29 +124,21 @@ export default function OrderDetails({ isOpen, onClose, order }: OrderDetailsPro
   const isDelivered = order.status === 'delivered';
   const isCancelled = order.status === 'cancelled';
 
-  console.log("Order Data Debug:", order);
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
-      <div className="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onClick={onClose}></div>
-      
-      <div className="relative w-full max-w-5xl bg-card rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-300 ring-1 ring-border">
-        
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="max-w-6xl! z-100 p-0 overflow-hidden border-none rounded-3xl shadow-2xl bg-card max-h-[95vh] scale-80 flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-card shrink-0">
-          <h2 className="text-lg font-bold">Order Details</h2>
-          <button onClick={onClose} className="p-1.5 rounded-full hover:bg-secondary text-muted hover:text-foreground transition-colors">
-            <X className="w-5 h-5" />
-          </button>
-        </div>
+        <DialogHeader className="px-6 py-4 border-b border-border bg-card shrink-0 flex-row items-center justify-between">
+          <DialogTitle className="text-lg font-bold">Order Details</DialogTitle>
+        </DialogHeader>
 
         {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto p-6 bg-secondary/30 custom-scrollbar">
+        <div className="flex-1 overflow-y-auto p-6 bg-secondary/10 custom-scrollbar">
           
           {/* Order Info Bar */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
             <div>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3">
                 <h1 className="text-2xl font-extrabold tracking-tight">Order #{order.order_number}</h1>
                 <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wide ${
                   isDelivered ? 'bg-green-100 text-green-700' : 
@@ -250,7 +247,7 @@ export default function OrderDetails({ isOpen, onClose, order }: OrderDetailsPro
                 </div>
                 
                 <div className="mt-6 space-y-3">
-                  <button className="w-full py-2.5 rounded-full bg-secondary text-foreground font-semibold hover:bg-border transition-colors flex justify-center items-center gap-2 text-sm">
+                  <button className="w-full py-2.5 rounded-full bg-secondary text-foreground font-semibold hover:bg-border cursor-pointer transition-colors flex justify-center items-center gap-2 text-sm">
                     <HelpCircle className="w-4 h-4" />
                     Need Help?
                   </button>
@@ -263,7 +260,7 @@ export default function OrderDetails({ isOpen, onClose, order }: OrderDetailsPro
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }

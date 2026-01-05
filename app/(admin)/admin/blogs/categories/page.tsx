@@ -59,7 +59,7 @@ const CategoryManagementPage = () => {
 
     if (editingCategory) {
       updateMutation.mutate(
-        { id: editingCategory.id, title: categoryName },
+        { slug: editingCategory.slug, title: categoryName },
         {
           onSuccess: () => {
             toast({ title: "Success", description: "Category updated successfully" });
@@ -106,7 +106,7 @@ const CategoryManagementPage = () => {
 
   const confirmDelete = () => {
     if (!deleteDialog.category) return;
-    deleteMutation.mutate(deleteDialog.category.id, {
+    deleteMutation.mutate(deleteDialog.category.slug, {
       onSuccess: () => {
         toast({ title: "Success", description: "Category deleted successfully" });
         setDeleteDialog({ isOpen: false, category: null });

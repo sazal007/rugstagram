@@ -159,9 +159,9 @@ export function useUpdateBlogCategory() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({
-      id,
+      slug,
       ...categoryData
-    }: UpdateBlogCategory) => blogApi.updateCategory(id, categoryData),
+    }: UpdateBlogCategory) => blogApi.updateCategory(slug, categoryData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: blogKeys.categories() });
       queryClient.invalidateQueries({ queryKey: blogKeys.lists() });
@@ -172,7 +172,7 @@ export function useUpdateBlogCategory() {
 export function useDeleteBlogCategory() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id: number) => blogApi.deleteCategory(id),
+    mutationFn: (slug: string) => blogApi.deleteCategory(slug),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: blogKeys.categories() });
       queryClient.invalidateQueries({ queryKey: blogKeys.lists() });

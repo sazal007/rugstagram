@@ -114,10 +114,10 @@ class BlogApi {
   }
 
   async updateCategory(
-    id: number,
+    slug: string,
     categoryData: Partial<CreateBlogCategory>
   ): Promise<BlogCategory> {
-    const response = await fetch(`${API_BASE_URL}/api/blog/categories/${id}/`, {
+    const response = await fetch(`${API_BASE_URL}/api/blog/categories/${slug}/`, {
       method: "PATCH",
       headers: {
         ...this.getAuthHeaders(),
@@ -135,8 +135,8 @@ class BlogApi {
     return response.json();
   }
 
-  async deleteCategory(id: number): Promise<void> {
-    const response = await fetch(`${API_BASE_URL}/api/blog/categories/${id}/`, {
+  async deleteCategory(slug: string): Promise<void> {
+    const response = await fetch(`${API_BASE_URL}/api/blog/categories/${slug}/`, {
       method: "DELETE",
       headers: this.getAuthHeaders(),
     });

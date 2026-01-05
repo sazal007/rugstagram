@@ -97,12 +97,14 @@ function ProductDetailContent({ product, similarProducts }: ProductDetailProps) 
         <ProductImageGallery product={product} selectedColor={selectedColor} />
 
         <div>
-          <ProductInfo product={product} selectedColor={selectedColor} />
+          <ProductInfo 
+            product={product} 
+            colors={availableColors}
+            selectedColor={selectedColor} 
+            onColorChange={handleColorChange}
+          />
           <ProductSelectors
             product={product}
-            colors={availableColors}
-            selectedColor={selectedColor}
-            onColorChange={handleColorChange}
             onSizeChange={setSelectedSize}
             onQuantityChange={setQuantity}
           />

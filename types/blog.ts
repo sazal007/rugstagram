@@ -16,7 +16,7 @@ export interface CreateBlogCategory {
 }
 
 export interface UpdateBlogCategory extends Partial<CreateBlogCategory> {
-  id: number;
+  slug: string;
 }
 export interface BlogAuthor {
   id: number;

@@ -2,15 +2,22 @@
 
 import React from "react";
 import { motion } from "motion/react";
-import { Product, Color } from "@/types/product";
+import { Product } from "@/types/product";
 import { StarRating } from "./StarRating";
 
 interface ProductInfoProps {
   product: Product;
-  selectedColor: Color | null | undefined;
+  colors?: Product["variants"][0]["color"][];
+  selectedColor: Product["variants"][0]["color"] | null | undefined;
+  onColorChange?: (color: Product["variants"][0]["color"]) => void;
 }
 
-export const ProductInfo: React.FC<ProductInfoProps> = ({ product, selectedColor }) => {
+export const ProductInfo: React.FC<ProductInfoProps> = ({ 
+  product, 
+  colors = [], 
+  selectedColor,
+  onColorChange
+}) => {
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -94,11 +101,41 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product, selectedColor
         </div>
         <div>
           <span className="block text-[10px] sm:text-xs font-bold uppercase tracking-widest text-muted mb-1.5 sm:mb-2">
-            Color
+            Color: <span className="text-gray-500 font-normal normal-case ml-1">{selectedColor?.name}</span>
           </span>
-          <span className="text-xs sm:text-sm font-medium">
-            {selectedColor?.name || "N/A"}
-          </span>
+          <div className="flex flex-wrap gap-2.5">
+            {colors.map((color) => {
+              if (!color) return null;
+              const isSelected = selectedColor?.id === color.id;
+              
+              return (
+                <button
+                  key={color.id}
+                  onClick={() => onColorChange?.(color)}
+                  className={`relative w-7 h-7 sm:w-8 sm:h-8 rounded-sm overflow-hidden transition-all duration-200 border-2 ${
+                    isSelected
+                      ? "border-primary ring-1 ring-primary ring-offset-2"
+                      : "border-transparent hover:border-gray-300"
+                  }`}
+                  title={color.name}
+                  aria-label={`Select color ${color.name}`}
+                >
+                  {color.image ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img 
+                      src={color.image} 
+                      alt={color.name} 
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-200 flex items-center justify-center text-[8px]">
+                      {color.name.slice(0, 2)}
+                    </div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
     </motion.div>

@@ -94,15 +94,29 @@ export const ProductCTAs: React.FC<ProductCTAsProps> = ({
           Need Help? Speak to our stylists
         </p>
         <div className="flex justify-center items-center gap-5 sm:gap-8">
-          <button className="text-primary hover:text-accent transition-colors" aria-label="Email us">
+          <a 
+            href="mailto:hello@rugstagram.com" 
+            className="text-primary hover:text-accent transition-colors" 
+            aria-label="Email us"
+          >
             <Mail className="w-4 h-4 sm:w-5 sm:h-5 cursor-pointer stroke-[1.5]" />
-          </button>
-          <button className="text-primary hover:text-accent transition-colors" aria-label="Call us">
+          </a>
+          <a 
+            href="tel:+9779843199444" 
+            className="text-primary hover:text-accent transition-colors" 
+            aria-label="Call us"
+          >
             <Phone className="w-4 h-4 sm:w-5 sm:h-5 cursor-pointer stroke-[1.5]" />
-          </button>
-          <button className="text-[#25D366] hover:opacity-80 transition-opacity" aria-label="WhatsApp us">
+          </a>
+          <a 
+            href="https://wa.me/9779813671117" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-[#25D366] hover:opacity-80 transition-opacity" 
+            aria-label="WhatsApp us"
+          >
             <WhatsAppIcon className="w-5 h-5 sm:w-6 sm:h-6 cursor-pointer" />
-          </button>
+          </a>
           <button className="text-primary hover:text-accent transition-colors" aria-label="Book a consultation">
             <Calendar className="w-4 h-4 sm:w-5 sm:h-5 cursor-pointer stroke-[1.5]" />
           </button>

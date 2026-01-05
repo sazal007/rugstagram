@@ -8,18 +8,12 @@ import { useSizes } from "@/hooks/use-sizes";
 
 interface ProductSelectorsProps {
   product: Product;
-  colors?: Product["variants"][0]["color"][];
-  selectedColor?: Product["variants"][0]["color"] | null;
-  onColorChange?: (color: Product["variants"][0]["color"]) => void;
   onSizeChange?: (size: Size) => void;
   onQuantityChange?: (quantity: number) => void;
 }
 
 export const ProductSelectors: React.FC<ProductSelectorsProps> = ({
   product,
-  colors = [],
-  selectedColor,
-  onColorChange,
   onSizeChange,
   onQuantityChange,
 }) => {
@@ -59,48 +53,6 @@ export const ProductSelectors: React.FC<ProductSelectorsProps> = ({
 
   return (
     <div className="space-y-6 sm:space-y-8 mb-8 sm:mb-10">
-      {/* Color Selector */}
-      {colors.length > 0 && (
-        <div>
-          <label className="block text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-2 sm:mb-3">
-            Select Color: <span className="text-gray-500 font-normal normal-case ml-1">{selectedColor?.name}</span>
-          </label>
-          <div className="flex flex-wrap gap-3">
-            {colors.map((color) => {
-              if (!color) return null;
-              const isSelected = selectedColor?.id === color.id;
-              
-              return (
-                <button
-                  key={color.id}
-                  onClick={() => onColorChange?.(color)}
-                  className={`relative w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden transition-all duration-200 border-2 ${
-                    isSelected
-                      ? "border-primary ring-1 ring-primary ring-offset-2"
-                      : "border-transparent hover:border-gray-300"
-                  }`}
-                  title={color.name}
-                  aria-label={`Select color ${color.name}`}
-                >
-                  {color.image ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img 
-                      src={color.image} 
-                      alt={color.name} 
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gray-200 flex items-center justify-center text-[8px]">
-                      {color.name.slice(0, 2)}
-                    </div>
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
       {/* Size Selector */}
       <div>
         <div className="flex justify-between items-center mb-2 sm:mb-3">
