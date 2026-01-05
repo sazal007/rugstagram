@@ -9,10 +9,8 @@ import {
   ArrowLeft,
   Mail,
   ListTodo,
-  Phone,
   FileText,
   Briefcase,
-  Image as ImageIcon,
   LogOut,
 } from "lucide-react";
 import {
@@ -52,6 +50,11 @@ const adminNavItems = [
     icon: ShoppingCart,
   },
   {
+    title: "Inquiries",
+    href: "/admin/inquiries",
+    icon: Mail,
+  },
+  {
     title: "Blogs",
     href: "/admin/blogs",
     icon: FileText,
@@ -61,21 +64,7 @@ const adminNavItems = [
     href: "/admin/portfolio",
     icon: Briefcase,
   },
-  {
-    title: "Bespoke",
-    href: "/admin/bespoke",
-    icon: ImageIcon,
-  },
-  {
-    title: "Contact",
-    href: "/admin/contacts",
-    icon: Phone,
-  },
-  {
-    title: "Newsletter",
-    href: "/admin/newsletter",
-    icon: Mail,
-  },
+
   {
     title: "Logout",
     href: "#",
