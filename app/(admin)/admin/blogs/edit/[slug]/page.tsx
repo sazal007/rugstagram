@@ -104,7 +104,7 @@ const EditBlogPage = () => {
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <Button onClick={handleCancel} variant="outline">Back to Blogs</Button>
+              <Button onClick={handleCancel} className='cursor-pointer' variant="outline">Back to Blogs</Button>
             </div>
           </div>
         </div>

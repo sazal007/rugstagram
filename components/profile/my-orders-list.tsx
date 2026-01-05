@@ -119,9 +119,7 @@ export function MyOrdersList() {
           <table className="w-full text-left">
             <thead>
               <tr className="border-b border-slate-50">
-                <th className="pb-4 pt-2 px-1 w-10">
-                  <input type="checkbox" className="rounded-md border-slate-200" />
-                </th>
+
                 <th className="pb-4 pt-2 font-semibold text-slate-500 text-sm tracking-tight">
                   <div className="flex items-center gap-1 cursor-pointer hover:text-slate-900 transition-colors">
                     Order ID <ArrowUpDown className="h-3 w-3" />
@@ -160,9 +158,6 @@ export function MyOrdersList() {
                     className={cn("hover:bg-slate-50/50 transition-colors group cursor-pointer", isDense ? "py-2" : "py-6")}
                     onClick={() => setSelectedOrder(order)}
                   >
-                    <td className={cn("px-1", isDense ? "py-3" : "py-6")}>
-                      <input type="checkbox" className="rounded-md border-slate-200" />
-                    </td>
                     <td className={cn("font-medium text-slate-900", isDense ? "py-3" : "py-6")}>
                       #{order.order_number}
                     </td>

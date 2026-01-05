@@ -12,6 +12,7 @@ import {
   HelpCircle,
 } from 'lucide-react';
 import { MyOrder, OrderItem as OrderItemType } from "@/types/my-order";
+import { getImageUrl } from '@/utils/image';
 
 const ShippingAddress = ({ order }: { order: MyOrder }) => {
   return (
@@ -56,7 +57,7 @@ const OrderItem = ({ item }: { item: OrderItemType }) => {
     <div className="flex flex-col sm:flex-row gap-4 pb-4 border-b border-border last:border-0 last:pb-0 group">
       <div className="w-full sm:w-20 h-20 rounded-xl bg-background overflow-hidden shrink-0 border border-border relative">
         <Image
-          src={item.product_thumbnail_image || "/placeholder.jpg"} 
+          src={getImageUrl(item.product_thumbnail_image) || "/placeholder.jpg"} 
           alt={item.product_name} 
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
