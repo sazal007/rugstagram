@@ -257,13 +257,13 @@ const PortfolioForm: React.FC<PortfolioFormProps> = ({ portfolio = null, onSubmi
           </div>
 
           <div className="flex justify-end pt-6 space-x-4 border-t">
-            <Button type="button" variant="outline" onClick={onCancel} disabled={isLoading}>
+            <Button type="button" className='cursor-pointer' variant="outline" onClick={onCancel} disabled={isLoading}>
               Cancel
             </Button>
             <Button 
               type="submit" 
               disabled={isLoading} 
-              className="bg-gray-900 text-white hover:bg-gray-800"
+              className="bg-gray-900 text-white cursor-pointer hover:bg-gray-800"
             >
               {isLoading ? 'Saving...' : `${isEditMode ? 'Update' : 'Create'} Portfolio`}
             </Button>

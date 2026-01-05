@@ -51,7 +51,7 @@ const DownloadTemplateButton = () => {
       onClick={handleDownload}
       disabled={isDownloading}
       size="sm"
-      className="text-white bg-gray-500 hover:bg-gray-600 hover:text-white"
+      className="text-white cursor-pointer bg-gray-500 hover:bg-gray-600 hover:text-white"
     >
       <Download className={`h-4 w-4 sm:mr-2 ${isDownloading ? 'animate-pulse' : ''}`} />
       <span className="hidden sm:inline">

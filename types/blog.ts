@@ -7,6 +7,16 @@ export interface BlogCategory {
   id: number;
   title: string;
   slug: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CreateBlogCategory {
+  title: string;
+}
+
+export interface UpdateBlogCategory extends Partial<CreateBlogCategory> {
+  id: number;
 }
 export interface BlogAuthor {
   id: number;

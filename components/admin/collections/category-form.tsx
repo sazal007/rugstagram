@@ -195,10 +195,11 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
                 type="button"
                 variant="outline"
                 onClick={onClose}
+                className="cursor-pointer"
               >
                 Cancel
               </Button>
-              <Button disabled={isLoading} type="submit">
+              <Button disabled={isLoading} className="cursor-pointer" type="submit">
                 {initialData ? "Save changes" : "Create"}
               </Button>
             </DialogFooter>

@@ -42,9 +42,9 @@ export default function StatCard({
 }: StatCardProps) {
 
   const formattedValue = isCurrency 
-  ? new Intl.NumberFormat('en-IN', { 
+  ? new Intl.NumberFormat('en-US', { 
       style: 'currency', 
-      currency: 'INR',
+      currency: 'USD',
     }).format(value || 0)
   : (value || 0).toLocaleString();
 

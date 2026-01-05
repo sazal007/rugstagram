@@ -203,25 +203,25 @@ export function ProfilePage() {
  
                     <div className="md:col-span-1 space-y-2">
                         <Label htmlFor="address" className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Street address</Label>
-                        <Input id="address" value={profileData.street_address_1} onChange={handleProfileInputChange} placeholder="Street address" className="bg-slate-50/50 border-none h-12 focus-visible:ring-1 focus-visible:ring-slate-200" />
+                        <Input id="address" value={profileData.street_address_1} onChange={handleProfileInputChange} className="bg-slate-50/50 border-none h-12 focus-visible:ring-1 focus-visible:ring-slate-200" />
                     </div>
                     <div className="md:col-span-1 space-y-2">
                         <Label htmlFor="address2" className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Street address 2 (Optional)</Label>
-                        <Input id="address2" value={profileData.street_address_2} onChange={handleProfileInputChange} placeholder="Apartment, suite, etc." className="bg-slate-50/50 border-none h-12 focus-visible:ring-1 focus-visible:ring-slate-200" />
+                        <Input id="address2" value={profileData.street_address_2} onChange={handleProfileInputChange} className="bg-slate-50/50 border-none h-12 focus-visible:ring-1 focus-visible:ring-slate-200" />
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="zip" className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Zip/code</Label>
-                        <Input id="zip" value={profileData.postcode} onChange={handleProfileInputChange} placeholder="Zip/code" className="bg-slate-50/50 border-none h-12 focus-visible:ring-1 focus-visible:ring-slate-200" />
+                        <Input id="zip" value={profileData.postcode} onChange={handleProfileInputChange} className="bg-slate-50/50 border-none h-12 focus-visible:ring-1 focus-visible:ring-slate-200" />
                     </div>
  
                     <div className="space-y-2">
                         <Label htmlFor="city" className="text-xs font-semibold text-slate-500 uppercase tracking-wider">City</Label>
-                        <Input id="city" value={profileData.city} onChange={handleProfileInputChange} placeholder="City" className="bg-slate-50/50 border-none h-12 focus-visible:ring-1 focus-visible:ring-slate-200" />
+                        <Input id="city" value={profileData.city} onChange={handleProfileInputChange} className="bg-slate-50/50 border-none h-12 focus-visible:ring-1 focus-visible:ring-slate-200" />
                     </div>
 
                     <div className="space-y-2">
                         <Label htmlFor="country" className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Country</Label>
-                        <Input id="country" value={profileData.country} onChange={handleProfileInputChange} placeholder="Country" className="bg-slate-50/50 border-none h-12 focus-visible:ring-1 focus-visible:ring-slate-200" />
+                        <Input id="country" value={profileData.country} onChange={handleProfileInputChange} className="bg-slate-50/50 border-none h-12 focus-visible:ring-1 focus-visible:ring-slate-200" />
                     </div>
                       </div>
 
@@ -229,7 +229,7 @@ export function ProfilePage() {
                         <Button 
                           onClick={handleProfileUpdate} 
                           disabled={isUpdatingProfile}
-                          className="bg-[#1a202c] hover:bg-slate-800 cursor-pointer text-white rounded-xl px-8 h-12 cursor-pointer font-semibold min-w-[140px]"
+                          className="bg-[#1a202c] hover:bg-slate-800 cursor-pointer text-white rounded-xl px-8 h-12  font-semibold min-w-[140px]"
                         >
                           {isUpdatingProfile ? "Saving..." : "Save changes"}
                         </Button>

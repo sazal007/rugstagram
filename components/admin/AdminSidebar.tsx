@@ -13,6 +13,7 @@ import {
   FileText,
   Briefcase,
   Image as ImageIcon,
+  LogOut,
 } from "lucide-react";
 import {
   Sidebar,
@@ -27,6 +28,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { useAdminAuth } from "@/context/AdminAuthContext";
 
 const adminNavItems = [
   {
@@ -74,11 +76,17 @@ const adminNavItems = [
     href: "/admin/newsletter",
     icon: Mail,
   },
-  
+  {
+    title: "Logout",
+    href: "#",
+    icon: LogOut,
+    action: "logout",
+  },
 ];
 
 export function AdminSidebar() {
   const pathname = usePathname();
+  const { adminLogout } = useAdminAuth();
 
   return (
     <Sidebar collapsible="icon">
@@ -108,8 +116,22 @@ export function AdminSidebar() {
               {adminNavItems.map((item) => {
                 const Icon = item.icon;
                 const isActive =
-                  pathname === item.href ||
-                  pathname.startsWith(item.href + "/");
+                  item.href !== "#" && (pathname === item.href || pathname.startsWith(item.href + "/"));
+
+                if (item.action === "logout") {
+                  return (
+                    <SidebarMenuItem key="logout">
+                      <SidebarMenuButton
+                        onClick={adminLogout}
+                        tooltip={item.title}
+                        className="text-red-500 hover:text-red-600 hover:bg-red-50 cursor-pointer"
+                      >
+                        <Icon className="text-red-500" />
+                        <span>{item.title}</span>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                }
 
                 return (
                   <SidebarMenuItem key={item.href}>

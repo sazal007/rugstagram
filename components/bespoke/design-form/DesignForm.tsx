@@ -10,6 +10,8 @@ import { PhoneInput } from "@/components/ui/phone-input";
 import type * as RPNInput from "react-phone-number-input";
 import { X, Upload } from "lucide-react";
 import Image from "next/image";
+import { useCreateBespoke } from "@/hooks/use-bespoke";
+import { useToast } from "@/hooks/use-toast";
 
 // Define Zod schema
 const designSchema = z.object({
@@ -32,7 +34,7 @@ export const DesignForm: React.FC = () => {
     handleSubmit,
     control,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<DesignFormValues>({
     resolver: zodResolver(designSchema),
     defaultValues: {
@@ -42,6 +44,9 @@ export const DesignForm: React.FC = () => {
       description: "",
     },
   });
+
+  const { createBespoke, isSubmitting } = useCreateBespoke();
+  const { toast } = useToast();
 
   const [focusedFields, setFocusedFields] = useState<Set<string>>(new Set());
   const watchedValues = useWatch({ control });
@@ -84,16 +89,38 @@ export const DesignForm: React.FC = () => {
 
   const onSubmit = async (data: DesignFormValues) => {
     try {
-      // Simulate submission
-      console.log("Form Data:", data);
-      console.log("Attached Photos:", photos);
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      alert("Design submitted successfully!");
+      if (photos.length === 0) {
+        toast({
+          title: "Error",
+          description: "Please upload at least one image.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      await createBespoke({
+        full_name: data.fullName,
+        email: data.email,
+        phone_number: data.phone,
+        message: data.description,
+        image: photos[0],
+      });
+
+      toast({
+        title: "Success",
+        description: "Your design has been submitted successfully!",
+      });
+      
       reset();
       setPhotos([]);
       setPhotoPreviews([]);
     } catch (err) {
       console.error("Submission failed:", err);
+      toast({
+        title: "Error",
+        description: (err as Error).message || "Something went wrong. Please try again later.",
+        variant: "destructive",
+      });
     }
   };
 

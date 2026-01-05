@@ -19,7 +19,7 @@ const PortfolioHeader: React.FC<PortfolioHeaderProps> = ({ title, showAddButton 
       </div>
       {showAddButton && (
         <Link href="/admin/portfolio/add">
-          <Button className="w-full sm:w-auto bg-gray-900 text-white hover:bg-gray-800">
+          <Button className="w-full sm:w-auto cursor-pointer bg-gray-900 text-white hover:bg-gray-800">
             <Plus className="w-4 h-4 mr-2" />
             Add Portfolio
           </Button>

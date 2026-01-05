@@ -38,7 +38,7 @@ const formatPeriodLabel = (period: string, type: RevenueFilterType): string => {
 };
 
 const formatCurrency = (value: number): string => {
-  return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(value);
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
 };
 const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
   if (active && payload && payload.length) {
@@ -67,7 +67,7 @@ export default function RevenueChart() {
     })) ?? [];
   }, [response, filterType]);
 
-  const yAxisTickFormatter = (value: number) => `₹${(value / 1000).toFixed(0)}k`;
+  const yAxisTickFormatter = (value: number) => `$${(value / 1000).toFixed(0)}k`;
 
   if (isLoading) {
     return (

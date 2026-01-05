@@ -3,8 +3,7 @@
 import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
-import { AdminHeader } from "@/components/admin/AdminHeader";
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 import { useAdminAuth } from "@/context/AdminAuthContext";
 
 export default function AdminLayout({
@@ -32,7 +31,9 @@ export default function AdminLayout({
     <SidebarProvider>
       <AdminSidebar />
       <SidebarInset>
-        <AdminHeader />
+        <div className="flex h-16 items-center px-4 border-b">
+          <SidebarTrigger />
+        </div>
         <main className="p-4 lg:p-6">{children}</main>
       </SidebarInset>
     </SidebarProvider>

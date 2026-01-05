@@ -9,7 +9,7 @@ import {
   useDeleteBlog,
   useUpdateBlog,
 } from "@/hooks/use-blogs";
-import { BlogsTable, BlogsHeader, BlogsSearch } from "@/components/admin/blogs";
+import { BlogsTable, BlogsSearch } from "@/components/admin/blogs";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -54,7 +54,6 @@ const BlogsManagement = () => {
     data: blogData,
     isLoading: isLoadingBlogs,
     error,
-    refetch,
   } = useBlogs(queryFilters);
   const { data: categories, isLoading: isLoadingCategories } =
     useBlogCategories();
@@ -65,10 +64,6 @@ const BlogsManagement = () => {
   const handleCreateNew = () => router.push("/admin/blogs/add");
   const handleEditBlog = (blog: BlogPost) =>
     router.push(`/admin/blogs/edit/${blog.slug}`);
-
-  const handleRefresh = () => {
-    refetch();
-  };
 
   const handleDeleteBlog = (blog: BlogPost) => {
     setDeleteDialog({ isOpen: true, blog });
@@ -156,14 +151,13 @@ const BlogsManagement = () => {
   return (
     <div className="min-h-screen py-8 bg-gray-50">
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <BlogsHeader
-          onCreateNew={handleCreateNew}
-          onRefresh={handleRefresh}
-          blogsCount={totalBlogs}
-        />
         <BlogsSearch
-          onSearch={handleSearch}
-          onFilter={handleFilter}
+          searchQuery={filters.search}
+          selectedCategory={filters.category}
+          onSearchChange={handleSearch}
+          onFilterChange={(category) => handleFilter({ category })}
+          onCreateNew={handleCreateNew}
+          onManageCategories={() => router.push("/admin/blogs/categories")}
           categories={categories || []}
         />
         <BlogsTable
@@ -194,7 +188,7 @@ const BlogsManagement = () => {
       {/* Delete Confirmation Dialog */}
       <AlertDialog
         open={deleteDialog.isOpen}
-        onOpenChange={(open) => !open && cancelDelete()}
+        onOpenChange={(open: boolean) => !open && cancelDelete()}
       >
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -205,10 +199,10 @@ const BlogsManagement = () => {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={cancelDelete}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel onClick={cancelDelete} className="cursor-pointer">Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={confirmDelete}
-              className="bg-red-600 hover:bg-red-700"
+              className="bg-red-600 hover:bg-red-700 cursor-pointer"
             >
               Delete
             </AlertDialogAction>

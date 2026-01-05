@@ -8,7 +8,9 @@ import {
   BlogFilters,
   CreateBlogPost,
   UpdateBlogPost,
-  BlogTag
+  BlogTag,
+  CreateBlogCategory,
+  UpdateBlogCategory
 } from "@/types/blog";
 import {
   useQuery,
@@ -138,6 +140,42 @@ export function useDeleteBlog() {
     mutationFn: ({ slug }: { slug: string }) => blogApi.delete(slug),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: blogKeys.all });
+    },
+  });
+}
+
+export function useCreateBlogCategory() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (categoryData: CreateBlogCategory) =>
+      blogApi.createCategory(categoryData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: blogKeys.categories() });
+    },
+  });
+}
+
+export function useUpdateBlogCategory() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      id,
+      ...categoryData
+    }: UpdateBlogCategory) => blogApi.updateCategory(id, categoryData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: blogKeys.categories() });
+      queryClient.invalidateQueries({ queryKey: blogKeys.lists() });
+    },
+  });
+}
+
+export function useDeleteBlogCategory() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) => blogApi.deleteCategory(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: blogKeys.categories() });
+      queryClient.invalidateQueries({ queryKey: blogKeys.lists() });
     },
   });
 }

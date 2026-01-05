@@ -31,10 +31,10 @@ export default function AdminDashboard() {
           <h1 className="text-3xl font-bold text-gray-800">Dashboard</h1>
           <button
             onClick={handleRefresh}
-            className="flex items-center px-4 py-2 font-semibold text-gray-800 bg-white border border-gray-200 rounded shadow-sm hover:bg-gray-100 disabled:opacity-50"
+            className="flex items-center cursor-pointer px-4 py-2 font-semibold text-gray-800 bg-white border border-gray-200 rounded shadow-sm hover:bg-gray-100 disabled:opacity-50"
             disabled={isLoading}
           >
-            <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`w-4 h-4 mr-2  ${isLoading ? 'animate-spin' : ''}`} />
             Refresh
           </button>
         </div>

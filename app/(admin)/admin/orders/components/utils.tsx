@@ -21,8 +21,8 @@ export const STAGES: OrderStage[] = [
 
 export const formatCurrency = (amount: string | number): string => {
   const numericAmount = typeof amount === 'string' ? parseFloat(amount) : amount;
-  if (isNaN(numericAmount)) return '₹0.00';
-  return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(numericAmount);
+  if (isNaN(numericAmount)) return '$0.00';
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(numericAmount);
 };
 
 

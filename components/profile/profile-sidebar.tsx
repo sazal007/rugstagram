@@ -4,7 +4,6 @@ import { User } from "@/types/auth";
 import { ProfileHeader } from "./profile-header";
 import { 
   User as UserIcon, 
-  Heart, 
   Package, 
   LogOut 
 } from "lucide-react";
@@ -25,7 +24,6 @@ export function ProfileSidebar({
 }: ProfileSidebarProps) {
   const menuItems = [
     { id: "personal", label: "Personal", icon: UserIcon },
-    { id: "wishlist", label: "Wishlist", icon: Heart },
     { id: "orders", label: "Orders", icon: Package },
   ];
 

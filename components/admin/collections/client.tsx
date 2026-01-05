@@ -134,8 +134,8 @@ export const CategoryClient = () => {
           <h2 className="text-3xl font-bold tracking-tight">Collections ({categories.length})</h2>
           <p className="text-sm text-muted-foreground">Manage collections (categories) for your store</p>
         </div>
-        <Button onClick={() => onOpen(null)}>
-          <Plus className="mr-2 h-4 w-4" />
+        <Button onClick={() => onOpen(null)} className="cursor-pointer">
+          <Plus className="mr-2 h-4 w-4 " />
           Add New
         </Button>
       </div>

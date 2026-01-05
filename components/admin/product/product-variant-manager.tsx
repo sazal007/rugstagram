@@ -161,7 +161,7 @@ export const ProductVariantManager: React.FC<ProductVariantManagerProps> = ({
               {fields.length} {fields.length === 1 ? "variant" : "variants"}
             </Badge>
           </div>
-          <Button onClick={addVariant} type="button" className="gap-2">
+          <Button onClick={addVariant}  type="button" className="gap-2 cursor-pointer">
             <Plus size={16} /> Add Variant
           </Button>
         </CardTitle>
@@ -242,7 +242,7 @@ export const ProductVariantManager: React.FC<ProductVariantManagerProps> = ({
                <ImageIcon className="h-10 w-10 text-muted-foreground mb-3" />
                <h3 className="text-lg font-medium">No Variants Added</h3>
                <p className="text-sm text-muted-foreground mb-4">Add variants to manage stock and images.</p>
-               <Button onClick={addVariant} type="button">Add First Variant</Button>
+               <Button onClick={addVariant} className="cursor-pointer" type="button">Add First Variant</Button>
              </div>
           </div>
         )}

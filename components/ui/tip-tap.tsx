@@ -149,7 +149,7 @@ const extensions = useMemo(() => [
     editorProps: {
       attributes: {
         class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none',
-        style: `min-height: ${typeof minHeight === 'string' ? minHeight : `${minHeight}px`}; ${height ? `height: ${typeof height === 'string' ? height : `${height}px`};` : ''}`,
+        style: `min-height: ${typeof minHeight === 'string' ? minHeight : `${minHeight}px`};`,
       },
     },
   });
@@ -588,15 +588,12 @@ const extensions = useMemo(() => [
   };
 
   return (
-    <div className={`bg-white rounded-md border border-input overflow-hidden ${className}`} style={combinedStyle}>
+    <div className={`bg-white rounded-md border border-input overflow-hidden flex flex-col ${className}`} style={combinedStyle}>
       {renderToolbar()}
-      <div className="relative">
+      <div className="relative flex-1 overflow-y-auto custom-scrollbar">
         <EditorContent 
           editor={editor} 
           className="p-3 focus-within:outline-none"
-          style={{ 
-            minHeight: typeof minHeight === 'string' ? minHeight : `${minHeight}px`
-          }}
         />
         {editor && editor.isEmpty && (
           <div className="absolute top-3 left-3 text-gray-400 pointer-events-none">

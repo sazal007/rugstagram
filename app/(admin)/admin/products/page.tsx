@@ -70,7 +70,7 @@ export default function AdminProductsPage() {
 
             <Dialog open={bulkUploadOpen} onOpenChange={setBulkUploadOpen}>
               <DialogTrigger asChild>
-                <Button variant="outline" className=" text-white bg-gray-500 hover:bg-gray-600 hover:text-white">
+                <Button variant="outline" className=" text-white cursor-pointer bg-gray-500 hover:bg-gray-600 hover:text-white">
                   <Upload className="mr-2 h-4 w-4" />
                   Bulk Upload
                 </Button>

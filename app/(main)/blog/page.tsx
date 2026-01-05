@@ -39,8 +39,8 @@ function BlogList() {
 
   if (!data?.results || data.results.length === 0) {
     return (
-      <div className="text-center py-20 bg-gray-50 rounded-2xl">
-        <p className="text-lg text-muted-foreground font-serif">No articles found matching your criteria.</p>
+      <div className="text-center py-2 rounded-2xl">
+        <p className="text-lg text-muted font-serif">No articles found matching your criteria.</p>
       </div>
     );
   }

@@ -56,7 +56,7 @@ export function OrderSummary({
                 <div className="space-y-1">
                   <h3 className="text-sm font-medium text-gray-900 dark:text-white truncate">{item.name}</h3>
                   <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                    Rs.{(item.price * item.quantity).toFixed(2)}
+                    ${(item.price * item.quantity).toFixed(2)}
                   </div>
                 </div>
 
@@ -128,11 +128,11 @@ export function OrderSummary({
         <div className="space-y-3">
           <div className="flex justify-between text-sm">
             <span className="text-gray-600 dark:text-gray-400">Subtotal</span>
-            <span className="font-medium text-gray-900 dark:text-white">Rs.{subtotal.toFixed(2)}</span>
+            <span className="font-medium text-gray-900 dark:text-white">${subtotal.toFixed(2)}</span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-gray-600 dark:text-gray-400">Shipping</span>
-            <span className="font-medium text-gray-900 dark:text-white">{shipping === 0 ? "Free" : `Rs.${shipping.toFixed(2)}`}</span>
+            <span className="font-medium text-gray-900 dark:text-white">{shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`}</span>
           </div>
         </div>
 
@@ -140,7 +140,7 @@ export function OrderSummary({
 
         <div className="flex justify-between items-center mb-6">
           <span className="text-lg font-semibold text-gray-900 dark:text-white">Total</span>
-          <span className="text-xl font-bold text-gray-900 dark:text-white">Rs.{total.toFixed(2)}</span>
+          <span className="text-xl font-bold text-gray-900 dark:text-white">${total.toFixed(2)}</span>
         </div>
       </CardContent>
       <CardFooter>

@@ -6,7 +6,8 @@ import {
   CreateBlogPost,
   UpdateBlogPost,
   BlogTag,
-  BlogFilters
+  BlogFilters,
+  CreateBlogCategory
 } from "@/types/blog";
 
 const API_BASE_URL = siteConfig.backendUrl;
@@ -91,6 +92,61 @@ class BlogApi {
       throw new Error("Failed to fetch categories");
     }
     return response.json();
+  }
+
+  async createCategory(categoryData: CreateBlogCategory): Promise<BlogCategory> {
+    const response = await fetch(`${API_BASE_URL}/api/blog/categories/`, {
+      method: "POST",
+      headers: {
+        ...this.getAuthHeaders(),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(categoryData),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        errorData.detail || `Failed to create category: ${response.statusText}`
+      );
+    }
+    return response.json();
+  }
+
+  async updateCategory(
+    id: number,
+    categoryData: Partial<CreateBlogCategory>
+  ): Promise<BlogCategory> {
+    const response = await fetch(`${API_BASE_URL}/api/blog/categories/${id}/`, {
+      method: "PATCH",
+      headers: {
+        ...this.getAuthHeaders(),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(categoryData),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        errorData.detail || `Failed to update category: ${response.statusText}`
+      );
+    }
+    return response.json();
+  }
+
+  async deleteCategory(id: number): Promise<void> {
+    const response = await fetch(`${API_BASE_URL}/api/blog/categories/${id}/`, {
+      method: "DELETE",
+      headers: this.getAuthHeaders(),
+    });
+
+    if (!response.ok && response.status !== 204) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(
+        errorData.detail || `Failed to delete category: ${response.statusText}`
+      );
+    }
   }
 
 
