@@ -333,7 +333,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ blog = null, onSubmit, onCancel, is
             <Button type="button" variant="outline" onClick={onCancel} disabled={isLoading}>
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading} className="bg-gray-600 text-white hover:bg-gray-700">
+            <Button type="submit" disabled={isLoading} className="bg-gray-600 cursor-pointer text-white hover:bg-gray-700">
               {isLoading ? 'Saving...' : `${isEditMode ? 'Update' : 'Create'} Blog`}
             </Button>
           </div>

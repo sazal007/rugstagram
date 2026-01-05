@@ -292,11 +292,11 @@ export function Navbar() {
                     ) : (
                       <NavigationMenuLink
                         asChild
-                        className="h-full cursor-pointer flex items-center bg-transparent! hover:bg-transparent! hover:text-accent! focus:bg-transparent! focus:text-accent!"
+                        className="h-full cursor-pointer flex items-center bg-transparent! hover:bg-transparent! hover:text-accent! focus:bg-transparent! focus:text-accent! p-0!"
                       >
                         <Link
                           href={item.href}
-                          className={`h-full flex items-center justify-center text-sm uppercase tracking-wide hover:text-accent transition-colors duration-200 py-0 px-0 focus-visible:ring-0 ${
+                          className={`h-full flex items-center justify-center text-sm font-medium uppercase tracking-wide hover:text-accent transition-colors duration-200 py-0 px-0 focus-visible:ring-0 ${
                             isActive(item.href)
                               ? "text-accent"
                               : "text-foreground"
