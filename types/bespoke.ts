@@ -9,7 +9,14 @@ export interface Bespoke {
   updated_at: string;
 }
 
-export type BespokeResponse = Bespoke[];
+export interface PaginatedBespokeResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Bespoke[];
+}
+
+export type BespokeResponse = Bespoke[] | PaginatedBespokeResponse;
 
 export interface CreateBespokePayload {
   message: string;

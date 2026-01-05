@@ -8,4 +8,11 @@ export type Contact = {
   updated_at: string; // ISO datetime string
 };
 
-export type ContactResponse = Contact[];
+export interface PaginatedContactResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Contact[];
+}
+
+export type ContactResponse = Contact[] | PaginatedContactResponse;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { RefreshCw, Search, Users } from 'lucide-react';
+import { RefreshCw, Search, LucideIcon } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 interface SearchFiltersProps {
@@ -7,7 +7,11 @@ interface SearchFiltersProps {
   onSearchChange: (query: string) => void;
   onRefresh: () => void;
   isLoading: boolean;
-  totalSubscribers: number;
+  totalItems: number;
+  title: string;
+  placeholder: string;
+  Icon: LucideIcon;
+  badgeLabel: string;
 }
 
 const SearchFilters: React.FC<SearchFiltersProps> = ({
@@ -15,21 +19,25 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({
   onSearchChange,
   onRefresh,
   isLoading,
-  totalSubscribers,
+  totalItems,
+  title,
+  placeholder,
+  Icon,
+  badgeLabel,
 }) => (
     <div className="mb-6 sm:flex sm:items-center sm:justify-between">
     <div className="flex items-center gap-4">
-      <h2 className="text-2xl font-bold text-gray-900">Newsletter Management</h2>
+      <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
       <Badge className="bg-gray-500 text-white hover:bg-gray-600">
-        <Users className="w-3 h-3 mr-1" />
-        {totalSubscribers} Subscribers
+        <Icon className="w-3 h-3 mr-1" />
+        {totalItems} {badgeLabel}
       </Badge>
     </div>
     <div className="flex flex-col gap-3 mt-3 sm:mt-0 sm:flex-row">
       <div className="relative">
         <input
           type="text"
-          placeholder="Search by email..."
+          placeholder={placeholder}
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
           className="block w-full py-2 pl-10 pr-3 text-base border border-gray-300 rounded-md focus:outline-none sm:text-sm"

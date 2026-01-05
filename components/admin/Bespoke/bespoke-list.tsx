@@ -2,11 +2,12 @@
 
 import React from 'react';
 import { Mail, Calendar, User, Phone, MessageSquare } from 'lucide-react';
-import { Contact } from "@/types/contact";
+import { Bespoke } from "@/types/bespoke";
+import Image from "next/image";
 
-interface ContactListProps {
-  data: Contact[];
-  onContactClick: (id: number) => void;
+interface BespokeListProps {
+  data: Bespoke[];
+  onBespokeClick: (id: number) => void;
 }
 
 const formatDate = (dateString: string) => {
@@ -28,7 +29,7 @@ const formatDateMobile = (dateString: string) => {
   });
 };
 
-export const ContactList: React.FC<ContactListProps> = ({ data, onContactClick }) => {
+export const BespokeList: React.FC<BespokeListProps> = ({ data, onBespokeClick }) => {
   return (
     <div className="overflow-hidden border border-gray-200 shadow sm:rounded-lg">
       {/* Mobile view - card layout */}
@@ -36,10 +37,24 @@ export const ContactList: React.FC<ContactListProps> = ({ data, onContactClick }
         {data.map((item) => (
           <div
             key={item.id}
-            onClick={() => onContactClick(item.id)}
-            className="p-3 border rounded-lg border-gray-200 bg-white hover:border-indigo-300 transition-colors cursor-pointer active:bg-gray-50"
+            onClick={() => onBespokeClick(item.id)}
+            className="p-3 border rounded-lg border-gray-200 bg-white  transition-colors cursor-pointer active:bg-gray-50"
           >
-            <div className="flex items-start justify-between">
+            <div className="flex items-start gap-3">
+              <div className="relative h-16 w-16 overflow-hidden rounded-md  shrink-0">
+                {item.image && typeof item.image === "string" ? (
+                  <Image
+                    src={item.image}
+                    alt={item.full_name}
+                    fill
+                    className="object-cover"
+                  />
+                ) : (
+                  <div className="h-full w-full bg-muted flex items-center justify-center text-[10px] text-muted-foreground">
+                    No image
+                  </div>
+                )}
+              </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                   <User className="h-4 w-4 text-gray-400 shrink-0" />
@@ -78,7 +93,7 @@ export const ContactList: React.FC<ContactListProps> = ({ data, onContactClick }
           <thead className="bg-gray-50">
             <tr>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Name
+                Request
               </th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Contact
@@ -95,13 +110,28 @@ export const ContactList: React.FC<ContactListProps> = ({ data, onContactClick }
             {data.map((item) => (
               <tr 
                 key={item.id} 
-                onClick={() => onContactClick(item.id)}
+                onClick={() => onBespokeClick(item.id)}
                 className="hover:bg-gray-50 transition-colors cursor-pointer group"
               >
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
-                    <User className="h-4 w-4 text-gray-400 mr-3 group-hover:text-indigo-500 transition-colors" />
-                    <div className="text-sm font-medium text-gray-900">{item.full_name}</div>
+                    <div className="relative h-10 w-10 overflow-hidden rounded-md border shrink-0  transition-colors">
+                      {item.image && typeof item.image === "string" ? (
+                        <Image
+                          src={item.image}
+                          alt={item.full_name}
+                          fill
+                          className="object-cover"
+                        />
+                      ) : (
+                        <div className="h-full w-full bg-muted flex items-center justify-center text-[10px] text-muted-foreground">
+                          No image
+                        </div>
+                      )}
+                    </div>
+                    <div className="ml-4">
+                      <div className="text-sm font-medium text-gray-900">{item.full_name}</div>
+                    </div>
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">

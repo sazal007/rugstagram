@@ -34,3 +34,12 @@ export const getContacts = async (): Promise<ContactResponse> => {
 
   return response.json();
 };
+export const getContactById = async (id: string | number): Promise<Contact> => {
+  const response = await fetch(`${siteConfig.backendUrl}/api/contact/${id}/`);
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch contact details");
+  }
+
+  return response.json();
+};

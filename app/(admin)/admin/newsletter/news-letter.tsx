@@ -3,13 +3,12 @@
 import React, { useState, useMemo } from 'react';
 import { useNewsletterSubscriptions } from '@/hooks/use-newsletter';
 import { Subscriber } from '@/types/newsletter';
-import {
-  SearchFilters,
-  NewsletterTable,
-  ErrorAlert,
-  EmptyState,
-  LoadingSpinner
-} from './components';
+import { NewsletterTable } from './components';
+import SearchFilters from "@/components/admin/shared/search-filters";
+import LoadingSpinner from "@/components/admin/shared/loading-spinner";
+import ErrorAlert from "@/components/admin/shared/error-alert";
+import EmptyState from "@/components/admin/shared/empty-state";
+import { Users, Mail } from 'lucide-react';
 
 export const AdminNewsletterComponent = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -40,7 +39,11 @@ export const AdminNewsletterComponent = () => {
         onSearchChange={setSearchQuery}
         onRefresh={() => refetch()}
         isLoading={isDataLoading}
-        totalSubscribers={totalSubscribers}
+        totalItems={totalSubscribers}
+        title="Newsletter Management"
+        placeholder="Search by email..."
+        Icon={Users}
+        badgeLabel="Subscribers"
       />
 
       {error ? (
@@ -48,7 +51,11 @@ export const AdminNewsletterComponent = () => {
       ) : isLoading ? (
         <LoadingSpinner />
       ) : filteredSubscriptions.length === 0 ? (
-        <EmptyState searchQuery={searchQuery} />
+        <EmptyState 
+          title="No Subscribers Found"
+          message={searchQuery ? `No subscribers found matching "${searchQuery}".` : "Newsletter subscriptions will appear here once users start subscribing."}
+          Icon={Mail}
+        />
       ) : (
         <NewsletterTable subscriptions={filteredSubscriptions} />
       )}

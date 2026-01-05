@@ -40,3 +40,12 @@ export const getBespokes = async (): Promise<BespokeResponse> => {
 
   return response.json();
 };
+export const getBespokeById = async (id: string | number): Promise<Bespoke> => {
+  const response = await fetch(`${siteConfig.backendUrl}/api/bespoke/${id}/`);
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch bespoke design details");
+  }
+
+  return response.json();
+};

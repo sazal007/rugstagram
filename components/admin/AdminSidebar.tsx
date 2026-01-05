@@ -62,8 +62,8 @@ const adminNavItems = [
     icon: Briefcase,
   },
   {
-    title: "Gallery",
-    href: "/admin/gallery",
+    title: "Bespoke",
+    href: "/admin/bespoke",
     icon: ImageIcon,
   },
   {
