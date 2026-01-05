@@ -1,11 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import { CheckoutCartItem } from "./types";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
-import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 import { Trash2, Plus, Minus } from "lucide-react";
 import { useCart } from "@/context/CartContext";
@@ -28,10 +26,6 @@ export function OrderSummary({
   isSubmitting,
 }: OrderSummaryProps) {
   const { updateQuantity, removeFromCart } = useCart();
-  const [discountCode, setDiscountCode] = useState("");
-  const [isFocused, setIsFocused] = useState(false);
-
-  const isLabelFloating = discountCode !== "" || isFocused;
 
   return (
     <Card className="sticky border-transparent dark:border-border-dark shadow-soft">
