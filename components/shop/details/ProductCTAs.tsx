@@ -109,7 +109,7 @@ export const ProductCTAs: React.FC<ProductCTAsProps> = ({
             <Phone className="w-4 h-4 sm:w-5 sm:h-5 cursor-pointer stroke-[1.5]" />
           </a>
           <a 
-            href="https://wa.me/9779813671117" 
+            href="https://wa.me/9779843199444" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="text-[#25D366] hover:opacity-80 transition-opacity" 

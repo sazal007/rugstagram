@@ -7,13 +7,16 @@ import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 
-import { ShippingAddress } from "./shipping-address";
 import { ShippingMethod } from "./shipping-method";
 import { OrderSummary } from "./order-summary";
 import { CheckoutFormData, CheckoutCartItem } from "./types";
 import { useCreateOrder } from "@/hooks/use-order";
 import { CreateOrderPayload } from "@/types/order";
 import { toast } from "sonner";
+import { getUserProfile } from "@/services/auth";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { PhoneInput } from "@/components/ui/phone-input";
 
 export function CheckoutPage() {
   const { user, tokens, isLoading: isAuthLoading } = useAuth();
@@ -22,14 +25,14 @@ export function CheckoutPage() {
   const createOrderMutation = useCreateOrder();
 
   const [formData, setFormData] = useState<CheckoutFormData>({
-    email: "",
-    firstName: "",
-    lastName: "",
-    address: "",
-    city: "",
-    state: "",
-    zipCode: "",
-    phone: "",
+    email: user?.email || "",
+    firstName: user?.first_name || "",
+    lastName: user?.last_name || "",
+    address: user?.street_address_1 || "",
+    city: user?.city || "",
+    state: "", // State isn't in profile, keep empty if not present
+    zipCode: user?.postcode || "",
+    phone: user?.phone || "",
     shippingMethod: "standard",
   });
 
@@ -43,6 +46,31 @@ export function CheckoutPage() {
       router.push("/login");
     }
   }, [user, isAuthLoading, router]);
+
+  // Fetch up-to-date user profile like in profile-page.tsx
+  useEffect(() => {
+    async function fetchProfile() {
+      if (!tokens?.access_token) return;
+      try {
+        const upToDateUser = await getUserProfile(tokens.access_token);
+        if (upToDateUser) {
+          setFormData(prev => ({
+            ...prev,
+            firstName: upToDateUser.first_name || prev.firstName,
+            lastName: upToDateUser.last_name || prev.lastName,
+            email: upToDateUser.email || prev.email,
+            phone: upToDateUser.phone || prev.phone,
+            address: upToDateUser.street_address_1 || prev.address,
+            city: upToDateUser.city || prev.city,
+            zipCode: upToDateUser.postcode || prev.zipCode,
+          }));
+        }
+      } catch (error) {
+        console.error("Failed to fetch up-to-date profile in checkout:", error);
+      }
+    }
+    fetchProfile();
+  }, [tokens?.access_token]);
 
   if (isAuthLoading) {
     return (
@@ -140,10 +168,97 @@ export function CheckoutPage() {
             <div className="lg:col-span-7 space-y-8">
 
               {/* Shipping Address Form */}
-              <ShippingAddress
-                formData={formData}
-                onChange={handleFieldChange}
-              />
+              <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6 sm:p-8 border border-slate-100">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-8">
+                  Shipping Address
+                </h2>
+                
+                <div className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="firstName" className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">First name</Label>
+                      <Input 
+                        id="firstName" 
+                        value={formData.firstName} 
+                        onChange={(e) => handleFieldChange("firstName", e.target.value)} 
+                        className="bg-slate-50/50 border-none h-12 focus-visible:ring-1 focus-visible:ring-slate-200" 
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="lastName" className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Last name</Label>
+                      <Input 
+                        id="lastName" 
+                        value={formData.lastName} 
+                        onChange={(e) => handleFieldChange("lastName", e.target.value)} 
+                        className="bg-slate-50/50 border-none h-12 focus-visible:ring-1 focus-visible:ring-slate-200" 
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="email" className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Email address</Label>
+                      <Input 
+                        id="email" 
+                        type="email"
+                        value={formData.email} 
+                        onChange={(e) => handleFieldChange("email", e.target.value)} 
+                        className="bg-slate-50/50 border-none h-12 focus-visible:ring-1 focus-visible:ring-slate-200" 
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="phone" className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Phone number</Label>
+                      <PhoneInput
+                        id="phone"
+                        value={formData.phone}
+                        onChange={(value) => handleFieldChange("phone", value || "")}
+                        defaultCountry="NP"
+                        className="w-full"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="address" className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Street address</Label>
+                    <Input 
+                      id="address" 
+                      value={formData.address} 
+                      onChange={(e) => handleFieldChange("address", e.target.value)} 
+                      className="bg-slate-50/50 border-none h-12 focus-visible:ring-1 focus-visible:ring-slate-200" 
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="city" className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">City</Label>
+                      <Input 
+                        id="city" 
+                        value={formData.city} 
+                        onChange={(e) => handleFieldChange("city", e.target.value)} 
+                        className="bg-slate-50/50 border-none h-12 focus-visible:ring-1 focus-visible:ring-slate-200" 
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="state" className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">State</Label>
+                      <Input 
+                        id="state" 
+                        value={formData.state} 
+                        onChange={(e) => handleFieldChange("state", e.target.value)} 
+                        className="bg-slate-50/50 border-none h-12 focus-visible:ring-1 focus-visible:ring-slate-200" 
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="zipCode" className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Zip code</Label>
+                      <Input 
+                        id="zipCode" 
+                        value={formData.zipCode} 
+                        onChange={(e) => handleFieldChange("zipCode", e.target.value)} 
+                        className="bg-slate-50/50 border-none h-12 focus-visible:ring-1 focus-visible:ring-slate-200" 
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               {/* Shipping Method */}
               <ShippingMethod

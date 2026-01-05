@@ -22,6 +22,7 @@ import {
   CreditCard,
 } from "lucide-react";
 import Image from "next/image";
+import { getImageUrl } from "@/utils/image";
 
 export function CartPageClient() {
   const { cartItems, updateQuantity, removeFromCart, subtotal } = useCart();
@@ -91,7 +92,7 @@ export function CartPageClient() {
                       {/* Product Image */}
                       <div className="relative h-40 w-full sm:w-40 shrink-0 overflow-hidden rounded-sm bg-muted">
                         <Image
-                          src={item.image || "/placeholder.svg"}
+                          src={getImageUrl(item.image) || "/placeholder.svg"}
                           alt={item.name}
                           fill
                           className="object-cover"
@@ -226,27 +227,6 @@ export function CartPageClient() {
                   <div className="font-semibold text-sm text-foreground">
                     ${shipping.toFixed(2)}
                   </div>
-                </div>
-              </div>
-
-              {/* Promo Code */}
-              <div className="mb-6">
-                <h3 className="font-semibold text-sm uppercase tracking-wider mb-3 text-foreground">
-                  Promo Code
-                </h3>
-                <div className="flex gap-2">
-                  <Input
-                    placeholder="Enter promo code"
-                    className="flex-1 rounded-sm border-gray-200"
-                    value={promoCode}
-                    onChange={(e) => setPromoCode(e.target.value)}
-                  />
-                  <CustomButton
-                    variant="outline"
-                    className="px-6 bg-transparent rounded-sm border-gray-200 hover:bg-accent/5"
-                  >
-                    Apply
-                  </CustomButton>
                 </div>
               </div>
 

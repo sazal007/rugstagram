@@ -76,7 +76,7 @@ export const BespokeHeader: React.FC = () => {
                 variant="outline"
                 size="hero-lg"
                 className="px-12 py-5 rounded-full border-black/10 hover:bg-black hover:text-white hover:border-black transition-all"
-                href="/assistance"
+                href="/bespoke/design"
               >
                 Design Your Own
               </CustomButton>

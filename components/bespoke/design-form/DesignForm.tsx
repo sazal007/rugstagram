@@ -11,9 +11,10 @@ import type * as RPNInput from "react-phone-number-input";
 import { X, Upload } from "lucide-react";
 import Image from "next/image";
 import { useCreateBespoke } from "@/hooks/use-bespoke";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 // Define Zod schema
+// ... (rest of schema)
 const designSchema = z.object({
   fullName: z.string().min(1, "Full name is required"),
   email: z.string().email("Invalid email address"),
@@ -46,7 +47,6 @@ export const DesignForm: React.FC = () => {
   });
 
   const { createBespoke, isSubmitting } = useCreateBespoke();
-  const { toast } = useToast();
 
   const [focusedFields, setFocusedFields] = useState<Set<string>>(new Set());
   const watchedValues = useWatch({ control });
@@ -63,20 +63,17 @@ export const DesignForm: React.FC = () => {
     });
   };
 
-  const isLabelFloating = (field: keyof Omit<DesignFormValues, 'photos'>) => {
+  const isLabelFloating = (field: keyof Omit<DesignFormValues, "photos">) => {
     const value = watchedValues[field];
-    return (
-      (value !== "" && value !== undefined) ||
-      focusedFields.has(field)
-    );
+    return (value !== "" && value !== undefined) || focusedFields.has(field);
   };
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const newFiles = Array.from(e.target.files);
       setPhotos((prev) => [...prev, ...newFiles]);
-      
-      const newPreviews = newFiles.map(file => URL.createObjectURL(file));
+
+      const newPreviews = newFiles.map((file) => URL.createObjectURL(file));
       setPhotoPreviews((prev) => [...prev, ...newPreviews]);
     }
   };
@@ -88,40 +85,30 @@ export const DesignForm: React.FC = () => {
   };
 
   const onSubmit = async (data: DesignFormValues) => {
-    try {
-      if (photos.length === 0) {
-        toast({
-          title: "Error",
-          description: "Please upload at least one image.",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      await createBespoke({
-        full_name: data.fullName,
-        email: data.email,
-        phone_number: data.phone,
-        message: data.description,
-        image: photos[0],
-      });
-
-      toast({
-        title: "Success",
-        description: "Your design has been submitted successfully!",
-      });
-      
-      reset();
-      setPhotos([]);
-      setPhotoPreviews([]);
-    } catch (err) {
-      console.error("Submission failed:", err);
-      toast({
-        title: "Error",
-        description: (err as Error).message || "Something went wrong. Please try again later.",
-        variant: "destructive",
-      });
+    if (photos.length === 0) {
+      toast.error("Please upload at least one image.");
+      return;
     }
+
+    const promise = createBespoke({
+      full_name: data.fullName,
+      email: data.email,
+      phone_number: data.phone,
+      message: data.description,
+      image: photos[0],
+    });
+
+    toast.promise(promise, {
+      loading: "Sending your design...",
+      success: () => {
+        reset();
+        setPhotos([]);
+        setPhotoPreviews([]);
+        return "Your design has been submitted successfully!";
+      },
+      error: (err) =>
+        err.message || "Something went wrong. Please try again later.",
+    });
   };
 
   return (

@@ -151,8 +151,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             ? parseFloat(product.sale_price)
             : undefined;
 
-          // Use color image if available, otherwise fallback to product thumbnail
-          const image = color?.image || product.thumbnail_image || "";
+          // Use variant image if available, then color image, then product thumbnail
+          const selectedVariant = product.variants?.find(v => v.id === variantId);
+          const variantImage = selectedVariant?.product_images?.[0]?.image;
+          const image = variantImage || color?.image || product.thumbnail_image || "";
 
           const newItem: CartItem = {
             id: cartItemId,

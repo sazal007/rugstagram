@@ -93,35 +93,6 @@ export function OrderSummary({
           ))}
         </div>
 
-        <div className="mb-8">
-          <div className="flex gap-2">
-            <div className="relative flex-1">
-              <Input
-                id="discount-code"
-                type="text"
-                value={discountCode}
-                onChange={(e) => setDiscountCode(e.target.value)}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
-                className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border border-border appearance-none focus:outline-none focus:ring-0 focus:border-primary h-11"
-                placeholder=" "
-              />
-              <label
-                htmlFor="discount-code"
-                className={`absolute text-sm duration-300 transform origin-left bg-background px-2 start-1 z-10 ${
-                  isLabelFloating
-                    ? "-translate-y-4 scale-75 top-2 text-primary"
-                    : "scale-100 -translate-y-1/2 top-1/2 text-gray-500"
-                }`}
-              >
-                Discount code
-              </label>
-            </div>
-            <Button variant="secondary">
-              Apply
-            </Button>
-          </div>
-        </div>
 
         <Separator className="my-6" />
 

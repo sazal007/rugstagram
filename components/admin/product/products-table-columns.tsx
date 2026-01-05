@@ -256,7 +256,7 @@ export const columns: ColumnDef<ProductListItem>[] = [
       const formatCurrency = (amount: number) =>
         new Intl.NumberFormat("en-IN", {
           style: "currency",
-          currency: "NPR",
+          currency: "USD",
         }).format(amount);
 
       if (!row.original.price && !row.original.sale_price) {
