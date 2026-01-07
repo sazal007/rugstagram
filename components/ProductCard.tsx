@@ -132,7 +132,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, fetchWishlist
 
       <div className="space-y-1">
         <div className="flex justify-between items-start">
-          <h3 className="font-serif text-lg leading-none group-hover:text-accent transition-colors">
+          <h3 className=" text-lg leading-none group-hover:text-accent transition-colors">
             {product.name}
           </h3>
           <div className="flex flex-col items-end">

@@ -43,11 +43,11 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
     return {
       title: product.meta_title || product.name,
-      description: product.meta_description || `Discover ${product.name}${product.collection?.name ? ` - A handcrafted ${product.collection.name} rug` : ''}. Made with ${product.material?.name || 'premium materials'}.`,
+      description: product.meta_description || product.description || undefined,
       keywords,
       openGraph: {
         title: product.meta_title || product.name,
-        description: product.meta_description || `Discover ${product.name}${product.collection?.name ? ` - A handcrafted ${product.collection.name} rug` : ''}.`,
+        description: product.meta_description || product.description || undefined,
         images: images,
         type: 'website',
       },

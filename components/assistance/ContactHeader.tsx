@@ -76,7 +76,7 @@ export const ContactHeader: React.FC = () => {
       await createContact({
         full_name: data.fullName,
         email: data.email,
-        phone_number: formattedPhone,
+        phone: formattedPhone,
         message: data.message,
       });
 

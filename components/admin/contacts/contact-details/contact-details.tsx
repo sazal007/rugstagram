@@ -64,7 +64,7 @@ const DetailView: React.FC<DetailViewProps> = ({ contact }) => {
            {/* Number Card */}
            <div 
              className="group relative p-5 bg-white border border-gray-200 rounded-xl flex items-start gap-4 hover:border-indigo-300 hover:shadow-sm transition-all duration-300 cursor-pointer"
-             onClick={() => contact.phone_number && copyToClipboard(contact.phone_number, 'phone')}
+             onClick={() => contact.phone && copyToClipboard(contact.phone, 'phone')}
            >
               <div className="p-3 bg-indigo-50 rounded-xl text-indigo-600 shrink-0">
                 <Phone className="w-5 h-5" strokeWidth={1.5} />
@@ -72,10 +72,10 @@ const DetailView: React.FC<DetailViewProps> = ({ contact }) => {
               <div className="flex-1 min-w-0 pt-0.5">
                 <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Phone Number</p>
                 <p className="text-sm font-semibold text-gray-900">
-                  {contact.phone_number || <span className="text-gray-400 font-normal italic lowercase">Not provided</span>}
+                  {contact.phone   || <span className="text-gray-400 font-normal italic lowercase">Not provided</span>}
                 </p>
               </div>
-              {contact.phone_number && (
+              {contact.phone && (
                 <div className="absolute top-5 right-5 opacity-0 group-hover:opacity-100 transition-opacity text-gray-400">
                   {copiedField === 'phone' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                 </div>

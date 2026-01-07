@@ -39,10 +39,10 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({
           </div>
         </div>
         <div className="text-left sm:text-right">
-          <p className="text-xl sm:text-2xl font-serif">
+          <p className="text-xl sm:text-2xl">
             ${product.price ? parseFloat(product.price).toLocaleString() : "N/A"}
           </p>
-          {product.sale_price && (
+          {product.sale_price && parseFloat(product.sale_price) > 0 && (
             <p className="text-xs sm:text-sm text-muted line-through">
               ${parseFloat(product.sale_price).toLocaleString()}
             </p>

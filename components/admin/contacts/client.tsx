@@ -29,7 +29,7 @@ export const ContactClient = () => {
     return contacts.filter((item: Contact) => 
       item.full_name.toLowerCase().includes(query) || 
       item.email.toLowerCase().includes(query) ||
-      (item.phone_number && item.phone_number.toLowerCase().includes(query))
+      (item.phone && item.phone.toLowerCase().includes(query))
     );
   }, [contacts, searchQuery]);
 

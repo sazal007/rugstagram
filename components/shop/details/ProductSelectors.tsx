@@ -75,9 +75,9 @@ export const ProductSelectors: React.FC<ProductSelectorsProps> = ({
         case "cm":
             return `${w} x ${l} cm`;
         case "in":
-            return `${(w / 2.54).toFixed(0)}" x ${(l / 2.54).toFixed(0)}"`;
+            return `${(w / 2.54).toFixed(0)}" x ${(l / 2.54).toFixed(0)}" in`;
         case "ft":
-            return `${(w / 30.48).toFixed(1)}' x ${(l / 30.48).toFixed(1)}'`;
+            return `${(w / 30.48).toFixed(1)}' x ${(l / 30.48).toFixed(1)}' ft`;
         default:
             return name;
     }

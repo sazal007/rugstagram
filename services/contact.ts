@@ -6,7 +6,7 @@ export const postContact = async (data: Partial<Contact>): Promise<Contact> => {
   const formData = new URLSearchParams();
   if (data.full_name) formData.append('full_name', data.full_name);
   if (data.email) formData.append('email', data.email);
-  if (data.phone_number) formData.append('phone_number', data.phone_number);
+  if (data.phone) formData.append('phone', data.phone);
   if (data.message) formData.append('message', data.message);
 
   const response = await fetch(`${siteConfig.backendUrl}/api/contact/`, {

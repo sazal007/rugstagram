@@ -24,9 +24,9 @@ const AccordionSection: React.FC<AccordionSectionProps> = ({
     >
       <span className="font-serif text-base sm:text-lg">{title}</span>
       {isOpen ? (
-        <ChevronUp className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 ml-2" />
+        <ChevronUp className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 ml-2" />
       ) : (
-        <ChevronDown className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 ml-2" />
+        <ChevronDown className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 ml-2" />
       )}
     </button>
     <AnimatePresence>

@@ -32,14 +32,14 @@ export function CartPageClient() {
   return (
     <div className="bg-[#F9F8F6] text-[#1C1917] font-sans antialiased min-h-[calc(100vh-200px)]">
 
-      <main className="max-w-[1440px] mx-auto px-8 py-16 lg:py-24">
+      <main className="max-w-7xl mx-auto px-8 py-16 lg:py-24">
         {/* Seamless 12-Column Grid Structure */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 xl:gap-24">
           
           {/* Left Side: Items List (7 Columns) */}
           <div className="lg:col-span-7 xl:col-span-8">
             <header className="mb-16">
-              <h1 className="text-5xl xl:text-6xl font-serif font-light mb-6 tracking-tight">Shopping Bag</h1>
+              <h1 className="text-5xl xl:text-6xl  font-light mb-6 tracking-tight">Shopping Bag</h1>
               <div className="h-px w-24 bg-[#A88663]"></div>
             </header>
 
@@ -57,11 +57,7 @@ export function CartPageClient() {
                           fill
                           className="object-cover transition-transform duration-1000 group-hover:scale-110"
                         />
-                        <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors"></div>
-                        <button className="absolute inset-x-4 bottom-4 bg-white/90 backdrop-blur-md py-3 text-[10px] uppercase tracking-widest font-bold flex items-center justify-center gap-2 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 shadow-sm">
-                          <Sparkles size={12} className="text-[#A88663]" />
-                          Visualizer Room Mode
-                        </button>
+
                       </div>
 
                       {/* Product Data Integration */}
@@ -71,7 +67,7 @@ export function CartPageClient() {
                             <span className="text-[10px] uppercase tracking-[0.3em] text-[#A88663] font-bold block mb-2">
                                 {item.color?.name || "Signature Collection"}
                             </span>
-                            <h3 className="text-3xl font-serif mb-2 leading-tight">{item.name}</h3>
+                            <h3 className="text-3xl  mb-2 leading-tight">{item.name}</h3>
                             <p className="text-[11px] text-stone-400 font-mono tracking-tighter uppercase mb-6">SKU: {item.code || `RS-${item.productId}-${item.sizeId}`}</p>
                             
                             <div className="grid grid-cols-2 gap-x-12 gap-y-4 text-sm max-w-sm">
@@ -131,7 +127,7 @@ export function CartPageClient() {
             ) : (
               <div className="py-32 flex flex-col items-center justify-center border border-dashed border-stone-200 rounded-sm">
                 <ShoppingBag size={48} className="text-stone-200 mb-6" strokeWidth={1} />
-                <p className="font-serif text-2xl text-stone-400 mb-8">The archive awaits your selection.</p>
+                <p className="text-2xl text-stone-400 mb-8">The archive awaits your selection.</p>
                 <Link href="/shop" className="px-10 py-4 bg-[#1C1917] text-white text-[10px] uppercase tracking-widest font-bold rounded-full hover:bg-[#A88663] transition-colors">
                   Explore Catalog
                 </Link>
@@ -142,7 +138,7 @@ export function CartPageClient() {
           {/* Right Side: Order Summary (5 Columns) */}
           <div className="lg:col-span-5 xl:col-span-4">
             <div className="sticky top-32 space-y-8">
-              <div className="bg-white border text-[#1C1917] border-stone-200 p-10 xl:p-12 relative overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.03)]">
+              <div className="bg-white border text-[#1C1917] border-stone-200 p-4 xl:p-4 rounded-2xl relative overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.03)]">
                 {/* Visual Texture Backdrop */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-[#F9F8F6] -rotate-45 translate-x-16 -translate-y-16"></div>
                 
@@ -165,7 +161,7 @@ export function CartPageClient() {
                   <div className="pt-8 mt-4 border-t border-stone-100 flex justify-between items-center">
                     <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-stone-300">Final Amount</p>
                     <div className="text-right">
-                      <span className="text-4xl font-serif tracking-tighter block leading-none text-[#1C1917]">${total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+                      <span className="text-2xl  tracking-tighter block leading-none text-[#1C1917]">${total}</span>
                     </div>
                   </div>
                 </div>
@@ -188,19 +184,6 @@ export function CartPageClient() {
                     <span className="text-[9px] uppercase tracking-widest font-semibold leading-relaxed">Artisan Authenticity</span>
                   </div>
                 </div>
-              </div>
-
-              {/* Promotion Component */}
-              <div className="bg-[#1C1917] p-8 text-white flex items-center justify-between group cursor-pointer overflow-hidden relative">
-                 <div className="relative z-10">
-                    <p className="text-[10px] uppercase tracking-[0.2em] font-bold opacity-60 mb-1">Membership</p>
-                    <p className="text-xs font-serif italic">Have an invitation code?</p>
-                 </div>
-                 <div className="w-10 h-10 border border-white/20 rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-[#1C1917] transition-all relative z-10">
-                   <Plus size={16} />
-                 </div>
-                 {/* Subtle decorative ring */}
-                 <div className="absolute -right-4 -bottom-4 w-24 h-24 border border-white/5 rounded-full group-hover:scale-150 transition-transform duration-700"></div>
               </div>
             </div>
           </div>

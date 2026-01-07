@@ -53,7 +53,7 @@ export const ContactList: React.FC<ContactListProps> = ({ data, onContactClick }
                 </div>
                 <div className="flex items-center gap-2 mt-1">
                   <Phone className="h-3 w-3 text-gray-400 shrink-0" />
-                  <p className="text-xs text-gray-500 truncate">{item.phone_number}</p>
+                  <p className="text-xs text-gray-500 truncate">{item.phone}</p>
                 </div>
               </div>
             </div>
@@ -112,7 +112,7 @@ export const ContactList: React.FC<ContactListProps> = ({ data, onContactClick }
                     </div>
                     <div className="flex items-center text-sm text-gray-500">
                       <Phone className="h-3 w-3 text-gray-400 mr-2" />
-                      {item.phone_number}
+                      {item.phone}
                     </div>
                   </div>
                 </td>
