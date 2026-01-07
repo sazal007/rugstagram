@@ -26,7 +26,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { useAdminAuth } from "@/context/AdminAuthContext";
+import { useAuth } from "@/context/AuthContext";
 
 const adminNavItems = [
   {
@@ -75,7 +75,7 @@ const adminNavItems = [
 
 export function AdminSidebar() {
   const pathname = usePathname();
-  const { adminLogout } = useAdminAuth();
+  const { logout } = useAuth();
 
   return (
     <Sidebar collapsible="icon">
@@ -111,7 +111,7 @@ export function AdminSidebar() {
                   return (
                     <SidebarMenuItem key="logout">
                       <SidebarMenuButton
-                        onClick={adminLogout}
+                        onClick={logout}
                         tooltip={item.title}
                         className="text-red-500 hover:text-red-600 hover:bg-red-50 cursor-pointer"
                       >

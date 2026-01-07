@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 
-import { ShippingMethod } from "./shipping-method";
 import { OrderSummary } from "./order-summary";
 import { CheckoutFormData, CheckoutCartItem } from "./types";
 import { useCreateOrder } from "@/hooks/use-order";
@@ -132,7 +131,7 @@ export function CheckoutPage() {
       });
 
       clearCart();
-      router.push("/order-completed");
+      router.push("/");
     } catch (error) {
       console.error("Order creation failed:", error);
       toast.error("Failed to place order", {
@@ -260,12 +259,6 @@ export function CheckoutPage() {
                 </div>
               </div>
 
-              {/* Shipping Method */}
-              <ShippingMethod
-                selectedMethod={formData.shippingMethod}
-                onChange={(method) => handleFieldChange("shippingMethod", method)}
-                subtotal={subtotal}
-              />
             </div>
 
             {/* Order Summary Sidebar */}
@@ -273,7 +266,6 @@ export function CheckoutPage() {
               <OrderSummary
                 cartItems={checkoutCartItems}
                 subtotal={subtotal}
-                shipping={shipping}
                 total={total}
                 onSubmit={handleSubmit}
                 isSubmitting={createOrderMutation.isPending}

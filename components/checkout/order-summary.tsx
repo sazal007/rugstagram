@@ -11,7 +11,6 @@ import { useCart } from "@/context/CartContext";
 interface OrderSummaryProps {
   cartItems: CheckoutCartItem[];
   subtotal: number;
-  shipping: number;
   total: number;
   onSubmit: () => void;
   isSubmitting: boolean;
@@ -20,7 +19,6 @@ interface OrderSummaryProps {
 export function OrderSummary({
   cartItems,
   subtotal,
-  shipping,
   total,
   onSubmit,
   isSubmitting,
@@ -94,10 +92,6 @@ export function OrderSummary({
           <div className="flex justify-between text-sm">
             <span className="text-gray-600 dark:text-gray-400">Subtotal</span>
             <span className="font-medium text-gray-900 dark:text-white">${subtotal.toFixed(2)}</span>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-600 dark:text-gray-400">Shipping</span>
-            <span className="font-medium text-gray-900 dark:text-white">{shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`}</span>
           </div>
         </div>
 

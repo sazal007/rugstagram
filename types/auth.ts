@@ -13,6 +13,7 @@ export interface User {
   country?: string;
   display?: string;
   has_usable_password?: boolean;
+  is_superuser?: boolean;
 }
 
 export interface AuthTokens {
@@ -66,6 +67,7 @@ export interface DecodedAccessToken {
   city: string;
   postcode: string;
   country: string;
+  is_superuser: boolean;
 }
 
 export interface LoginData {

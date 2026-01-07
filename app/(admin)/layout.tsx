@@ -4,26 +4,33 @@ import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
-import { useAdminAuth } from "@/context/AdminAuthContext";
+import { useAuth } from "@/context/AuthContext";
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { isAdminAuthenticated } = useAdminAuth();
+  const { user, isLoading } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
+  
+  const isSuperUser = user?.is_superuser;
 
   useEffect(() => {
-    // Redirect if not authenticated
-    if (!isAdminAuthenticated) {
-      router.push("/admin-login");
+    // Wait for loading to finish before redirecting
+    if (!isLoading && !isSuperUser) {
+      router.push("/login");
     }
-  }, [isAdminAuthenticated, router, pathname]);
+  }, [isLoading, isSuperUser, router, pathname]);
 
-  // Don't render admin layout if not authenticated
-  if (!isAdminAuthenticated) {
+  // Show loading state or nothing while checking auth
+  if (isLoading) {
+    return null; // or a loading spinner
+  }
+
+  // Don't render admin layout if not authenticated as superuser
+  if (!isSuperUser) {
     return null;
   }
 

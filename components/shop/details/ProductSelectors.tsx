@@ -5,12 +5,15 @@ import { Minus, Plus } from "lucide-react";
 import { Product, Size } from "@/types/product";
 import { CustomButton } from "@/components/ui/custom-button";
 import { useSizes } from "@/hooks/use-sizes";
+import { cn } from "@/lib/utils";
 
 interface ProductSelectorsProps {
   product: Product;
   onSizeChange?: (size: Size) => void;
   onQuantityChange?: (quantity: number) => void;
 }
+
+type Unit = "cm" | "ft" | "in";
 
 export const ProductSelectors: React.FC<ProductSelectorsProps> = ({
   product,
@@ -20,6 +23,7 @@ export const ProductSelectors: React.FC<ProductSelectorsProps> = ({
   const { data: allSizes, isLoading: isLoadingSizes } = useSizes();
   const [selectedSizeId, setSelectedSizeId] = useState<number | null>(product.size?.id || null);
   const [quantity, setQuantity] = useState(1);
+  const [unit, setUnit] = useState<Unit>("cm");
 
   // Notify parent of initial selection or when sizes are loaded
   useEffect(() => {
@@ -51,14 +55,59 @@ export const ProductSelectors: React.FC<ProductSelectorsProps> = ({
     onSizeChange?.(size);
   };
 
+  const formatSize = (name: string, unit: Unit): string => {
+    // Clean the name: remove "cm", trim spaces, lower case
+    const cleanName = name.toLowerCase().replace(/cm/g, "").trim();
+    
+    // Determine separator: "x", "*", or maybe just space if 2 numbers
+    const separator = cleanName.includes("*") ? "*" : "x";
+    
+    // If name doesn't contain separator, return as is (unless we want to try parsing single number?)
+    if (!cleanName.includes(separator)) return name;
+    
+    // Parse dimensions
+    const parts = cleanName.split(separator).map(p => parseFloat(p.trim()));
+    if (parts.length !== 2 || parts.some(isNaN)) return name;
+
+    const [w, l] = parts;
+
+    switch (unit) {
+        case "cm":
+            return `${w} x ${l} cm`;
+        case "in":
+            return `${(w / 2.54).toFixed(0)}" x ${(l / 2.54).toFixed(0)}"`;
+        case "ft":
+            return `${(w / 30.48).toFixed(1)}' x ${(l / 30.48).toFixed(1)}'`;
+        default:
+            return name;
+    }
+  };
+
   return (
     <div className="space-y-6 sm:space-y-8 mb-8 sm:mb-10">
       {/* Size Selector */}
       <div>
-        <div className="flex justify-between items-center mb-2 sm:mb-3">
-          <label className="text-[10px] sm:text-xs font-bold uppercase tracking-widest">
+        <div className="flex justify-start items-center gap-4 mb-2 sm:mb-3">
+          <label className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-gray-900">
             Select Size
           </label>
+           {/* Unit Toggle */}
+           <div className="flex bg-gray-100 rounded-lg p-1 gap-1">
+             {(["cm", "ft", "in"] as Unit[]).map((u) => (
+                 <button
+                    key={u}
+                    onClick={() => setUnit(u)}
+                    className={cn(
+                        "px-2 py-1 text-[10px] uppercase font-medium rounded-md transition-all",
+                        unit === u 
+                            ? "bg-white text-primary shadow-sm" 
+                            : "text-gray-500 hover:text-gray-700"
+                    )}
+                 >
+                     {u}
+                 </button>
+             ))}
+          </div>
         </div>
         <div className="flex flex-wrap gap-2 sm:gap-3">
           {isLoadingSizes ? (
@@ -80,7 +129,7 @@ export const ProductSelectors: React.FC<ProductSelectorsProps> = ({
                     : "border-gray-200 hover:border-primary text-gray-600"
                 }`}
               >
-                {size.name} cm
+                {formatSize(size.name, unit)}
               </CustomButton>
             ))
           )}
@@ -89,15 +138,15 @@ export const ProductSelectors: React.FC<ProductSelectorsProps> = ({
 
       {/* Quantity Selector */}
       <div>
-        <label className="block text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-2 sm:mb-3">
+        <label className="block text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-2 sm:mb-3 text-gray-900">
           Quantity
         </label>
-        <div className="flex items-center w-28 sm:w-36 border border-gray-200">
+        <div className="flex items-center w-28 sm:w-36 border border-gray-200 rounded-lg overflow-hidden bg-white">
           <CustomButton
             variant="ghost"
             size="icon-sm"
             onClick={() => handleQuantity("dec")}
-            className="p-2 sm:p-4 hover:bg-gray-50 text-muted transition-colors"
+            className="p-2 sm:p-4 hover:bg-gray-50 text-muted transition-colors rounded-none"
             disabled={quantity <= 1}
           >
             <Minus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -107,7 +156,7 @@ export const ProductSelectors: React.FC<ProductSelectorsProps> = ({
             variant="ghost"
             size="icon-sm"
             onClick={() => handleQuantity("inc")}
-            className="p-2 sm:p-4 hover:bg-gray-50 text-muted transition-colors"
+            className="p-2 sm:p-4 hover:bg-gray-50 text-muted transition-colors rounded-none"
           >
             <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </CustomButton>

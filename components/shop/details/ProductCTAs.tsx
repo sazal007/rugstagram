@@ -6,6 +6,7 @@ import { CustomButton } from "@/components/ui/custom-button";
 import { useCart } from "@/context/CartContext";
 import { Product, Size } from "@/types/product";
 import { toast } from "sonner";
+import Link from "next/link";
 
 const WhatsAppIcon = ({ className }: { className?: string }) => (
   <svg
@@ -117,9 +118,9 @@ export const ProductCTAs: React.FC<ProductCTAsProps> = ({
           >
             <WhatsAppIcon className="w-5 h-5 sm:w-6 sm:h-6 cursor-pointer" />
           </a>
-          <button className="text-primary hover:text-accent transition-colors" aria-label="Book a consultation">
+          <Link href="/assistance" className="text-primary hover:text-accent transition-colors" aria-label="Book a consultation">
             <Calendar className="w-4 h-4 sm:w-5 sm:h-5 cursor-pointer stroke-[1.5]" />
-          </button>
+          </Link>
         </div>
       </div>
     </div>

@@ -35,19 +35,31 @@ import { Input } from "@/components/ui/input";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  page?: number;
+  totalPages?: number;
+  onPageChange?: (page: number) => void;
 }
 
 export function ProductsDataTable<TData, TValue>({
   columns,
   data,
+  page = 1,
+  totalPages,
+  onPageChange,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
 
+  // Use manual pagination if totalPages is provided (server-side)
+  // Otherwise default to client-side pagination
+  const isServerSide = typeof totalPages === "number";
+
   const table = useReactTable({
     data,
     columns,
+    pageCount: isServerSide ? totalPages : undefined,
+    manualPagination: isServerSide,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
@@ -59,15 +71,23 @@ export function ProductsDataTable<TData, TValue>({
       sorting,
       columnFilters,
       columnVisibility,
+      pagination: isServerSide ? {
+        pageIndex: page - 1,
+        pageSize: 10, // Default page size, can be made dynamic if needed
+      } : undefined,
     },
   });
 
-  const handlePageChange = (page: number) => {
-    table.setPageIndex(page - 1);
+  const handlePageChange = (newPage: number) => {
+    if (isServerSide && onPageChange) {
+      onPageChange(newPage);
+    } else {
+      table.setPageIndex(newPage - 1);
+    }
   };
 
-  const currentPage = table.getState().pagination.pageIndex + 1;
-  const totalPages = table.getPageCount();
+  const currentPage = isServerSide ? page : table.getState().pagination.pageIndex + 1;
+  const pageCount = isServerSide ? (totalPages || 1) : table.getPageCount();
 
   return (
     <div className="w-full space-y-4">
@@ -172,11 +192,11 @@ export function ProductsDataTable<TData, TValue>({
       {/* Footer */}
       <div className="flex items-center justify-between text-sm text-gray-500">
         <div>
-          Showing {table.getRowModel().rows.length} of {data.length} results
+          Showing {table.getRowModel().rows.length} of {isServerSide ? (totalPages || 1) * 10 : data.length} results
         </div>
         <Pagination
           currentPage={currentPage}
-          totalPages={totalPages}
+          totalPages={pageCount}
           onPageChange={handlePageChange}
           showFirstLast={true}
           maxVisiblePages={5}

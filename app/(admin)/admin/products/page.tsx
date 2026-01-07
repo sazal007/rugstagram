@@ -19,13 +19,24 @@ import DownloadTemplateButton from "@/components/admin/product/download-template
 import BulkUploadComponent from "@/components/admin/product/bulk-upload";
 
 export default function AdminProductsPage() {
-  const { data: productResponse, isLoading, isError } = useProducts();
+  const [page, setPage] = useState(1);
+  const pageSize = 10; // Default page size
+
+  const { data: productResponse, isLoading, isError } = useProducts({
+    page,
+    page_size: pageSize,
+  });
+
   const [bulkUploadOpen, setBulkUploadOpen] = useState(false);
 
   const handleUploadSuccess = () => {
     setBulkUploadOpen(false);
     // Products will be refetched automatically due to query invalidation in the hook
   };
+
+  const totalPages = productResponse?.count
+    ? Math.ceil(productResponse.count / pageSize)
+    : 1;
 
   if (isLoading) {
     return (
@@ -89,6 +100,9 @@ export default function AdminProductsPage() {
         <ProductsDataTable
           columns={columns}
           data={productResponse?.results || []}
+          page={page}
+          totalPages={totalPages}
+          onPageChange={setPage}
         />
       </div>
     </div>

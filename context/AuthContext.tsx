@@ -4,7 +4,7 @@ import React, { createContext, useState, useEffect, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode"; 
 import { User, AuthTokens, DecodedAccessToken, LoginData, SignupData, UpdateProfileData, ChangePasswordData } from "@/types/auth";
-import { loginUser, signupUser, updateUserProfile, changePassword as changePasswordService } from "@/services/auth";
+import { loginUser, signupUser, updateUserProfile, changePassword as changePasswordService, getUserProfile } from "@/services/auth";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/error-utils";
 
@@ -50,6 +50,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             city: decodedAccess.city,
             postcode: decodedAccess.postcode,
             country: decodedAccess.country,
+            is_superuser: decodedAccess.is_superuser,
           });
         } else {
           // Token expired
@@ -88,6 +89,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         city: decodedAccess.city,
         postcode: decodedAccess.postcode,
         country: decodedAccess.country,
+        is_superuser: decodedAccess.is_superuser,
       };
 
       setUser(updatedUser);
@@ -121,6 +123,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         last_name: decodedAccess.last_name,
         phone: decodedAccess.phone,
         address: decodedAccess.address,
+        is_superuser: decodedAccess.is_superuser,
       };
       
       handleAuthSuccess(loggedInUser, { 
@@ -129,8 +132,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
       
       toast.success("Login Successful", { description: "Welcome back!" });
+
+      // Fetch full profile to check for superuser status since it's missing in token
+      let isSuperUser = decodedAccess.is_superuser;
+      try {
+        const fullProfile = await getUserProfile(accessToken);
+        if (fullProfile.is_superuser !== undefined) {
+          isSuperUser = fullProfile.is_superuser;
+          // Update local user state with full profile info
+          setUser(prev => ({ ...prev, ...fullProfile }));
+        }
+      } catch (profileError) {
+        console.error("Failed to fetch full profile on login:", profileError);
+      }
       
       // Handle redirect after successful login
+      if (isSuperUser) {
+        router.push("/admin");
+        return;
+      }
+
       if (typeof window !== 'undefined') {
         // Check for redirect URL in sessionStorage first
         const redirectUrl = sessionStorage.getItem('redirectAfterLogin');
@@ -148,13 +169,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           if (redirectParam) {
             router.push(decodeURIComponent(redirectParam));
           } else {
-            // Default redirect to home
-            router.push("/");
+            router.push("/profile");
           }
         }
       } else {
         // Fallback for server-side rendering
-        router.push("/");
+        router.push("/profile");
       }
     } catch (error: unknown) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
