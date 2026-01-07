@@ -7,6 +7,7 @@ import { BlogPost } from '@/types/blog';
 import { sanitizeBlogContent } from '@/utils/htmlSanitizer';
 import { BlogSidebar } from '../blog-sidebar';
 import { Facebook, Twitter, Linkedin, Link as LinkIcon } from 'lucide-react';
+import { FacebookShareButton, TwitterShareButton, LinkedinShareButton } from 'next-share';
 
 interface BlogDetailsProps {
   blog: BlogPost;
@@ -18,27 +19,6 @@ export default function BlogDetails({ blog }: BlogDetailsProps) {
   React.useEffect(() => {
     setBlogUrl(window.location.href);
   }, []);
-
-  const shareLinks = [
-    {
-      icon: Facebook,
-      href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(blogUrl)}`,
-      label: 'Share on Facebook',
-      color: 'hover:text-blue-600'
-    },
-    {
-      icon: Twitter,
-      href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(blog.title)}&url=${encodeURIComponent(blogUrl)}`,
-      label: 'Share on Twitter',
-      color: 'hover:text-sky-500'
-    },
-    {
-      icon: Linkedin,
-      href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(blogUrl)}`,
-      label: 'Share on LinkedIn',
-      color: 'hover:text-blue-700'
-    }
-  ];
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(blogUrl);
@@ -87,18 +67,30 @@ export default function BlogDetails({ blog }: BlogDetailsProps) {
              <span className="text-[10px] font-bold uppercase tracking-widest">
                   SHARE
              </span>
-            {shareLinks.map((link, i) => (
-              <a
-                key={i}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={` hover:scale-110 transition-all duration-300 ${link.color}`}
-                aria-label={link.label}
+             
+             <FacebookShareButton
+                url={blogUrl}
+                quote={blog.title}
+                className="hover:scale-110 transition-all duration-300 hover:text-blue-600"
               >
-                <link.icon size={18} strokeWidth={1.5} />
-              </a>
-            ))}
+                <Facebook size={18} strokeWidth={1.5} />
+              </FacebookShareButton>
+
+              <TwitterShareButton
+                url={blogUrl}
+                title={blog.title}
+                className="hover:scale-110 transition-all duration-300 hover:text-sky-500"
+              >
+                <Twitter size={18} strokeWidth={1.5} />
+              </TwitterShareButton>
+
+              <LinkedinShareButton
+                url={blogUrl}
+                className="hover:scale-110 transition-all duration-300 hover:text-blue-700"
+              >
+                <Linkedin size={18} strokeWidth={1.5} />
+              </LinkedinShareButton>
+
             <button
               onClick={copyToClipboard}
               className="text-gray-400 hover:text-gray-900 hover:scale-110 transition-all duration-300"

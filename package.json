@@ -52,6 +52,7 @@
     "lucide-react": "^0.562.0",
     "motion": "^12.23.26",
     "next": "16.1.0",
+    "next-share": "^0.27.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-hook-form": "^7.69.0",
