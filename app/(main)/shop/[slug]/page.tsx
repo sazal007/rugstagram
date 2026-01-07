@@ -15,14 +15,42 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   try {
     const product = await productApi.getBySlug(slug);
     
-    // Mock keywords or use available data
-    const keywords = [product.name, "handcrafted rug", "Himalayan rug"];
+    // Construct enhanced keywords
+    const keywords = [
+      product.name, 
+      "handcrafted rug", 
+      "Himalayan rug", 
+      "Nepalese rug",
+      "luxury rug"
+    ];
+    
     if (product.collection?.name) keywords.push(product.collection.name);
+    if (product.material?.name) keywords.push(product.material.name);
+    if (product.quality?.name) keywords.push(product.quality.name);
+    if (product.pile_height?.name) keywords.push(product.pile_height.name);
+    
+    // Construct images array for OpenGraph
+    const images = [];
+    if (product.thumbnail_image) {
+      images.push(product.thumbnail_image);
+    }
+    
+    // Add first variant image if available and different from thumbnail
+    const firstVariantImage = product.variants?.[0]?.product_images?.[0]?.image;
+    if (firstVariantImage && firstVariantImage !== product.thumbnail_image) {
+      images.push(firstVariantImage);
+    }
 
     return {
-      title: product.name,
-      description: `Discover ${product.name}${product.collection?.name ? ` - A handcrafted ${product.collection.name} rug` : ''}.`,
+      title: product.meta_title || product.name,
+      description: product.meta_description || `Discover ${product.name}${product.collection?.name ? ` - A handcrafted ${product.collection.name} rug` : ''}. Made with ${product.material?.name || 'premium materials'}.`,
       keywords,
+      openGraph: {
+        title: product.meta_title || product.name,
+        description: product.meta_description || `Discover ${product.name}${product.collection?.name ? ` - A handcrafted ${product.collection.name} rug` : ''}.`,
+        images: images,
+        type: 'website',
+      },
     };
   } catch {
     return {
