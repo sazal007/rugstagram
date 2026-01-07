@@ -5,6 +5,7 @@ import { BrandStory } from "./BrandStory";
 import { FeaturedProducts } from "./FeaturedProducts";
 import { ColorShowcase } from "./ColorShowcase";
 import { BespokeCTA } from "./BespokeCTA";
+// import Videos from "./videos/videos";
 
 export const Home: React.FC = () => {
   return (
@@ -14,6 +15,7 @@ export const Home: React.FC = () => {
       <BrandStory />
       <ColorShowcase />
       <FeaturedProducts />
+      {/* <Videos /> */}
       <BespokeCTA />
     </>
   );

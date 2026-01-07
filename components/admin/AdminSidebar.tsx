@@ -12,6 +12,7 @@ import {
   FileText,
   Briefcase,
   LogOut,
+  Video,
 } from "lucide-react";
 import {
   Sidebar,
@@ -63,6 +64,11 @@ const adminNavItems = [
     title: "Portfolio",
     href: "/admin/portfolio",
     icon: Briefcase,
+  },
+  {
+    title: "Videos",
+    href: "/admin/videos",
+    icon: Video,
   },
 
   {

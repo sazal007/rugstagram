@@ -33,7 +33,6 @@ export const CategoryList: React.FC<CategoryListProps> = ({
             <TableHead>Image</TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Slug</TableHead>
-            <TableHead>Description</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -55,9 +54,6 @@ export const CategoryList: React.FC<CategoryListProps> = ({
               </TableCell>
               <TableCell className="font-medium">{category.name}</TableCell>
               <TableCell>{category.slug}</TableCell>
-              <TableCell className="max-w-[300px] truncate">
-                {category.description}
-              </TableCell>
               <TableCell className="text-right">
                 <div className="flex justify-end gap-2">
                   <Button variant="ghost" size="icon" onClick={() => onEdit(category)}>

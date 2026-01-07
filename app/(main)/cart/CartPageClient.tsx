@@ -9,7 +9,6 @@ import {
   ArrowRight, 
   ShieldCheck, 
   Globe, 
-  Sparkles,
   Award
 } from 'lucide-react';
 import { useCart } from "@/context/CartContext";
@@ -50,7 +49,7 @@ export function CartPageClient() {
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
                       
                       {/* Product Image Holder */}
-                      <div className="md:col-span-4 relative aspect-[4/5] bg-[#F1EFE9] overflow-hidden">
+                      <div className="md:col-span-4 relative aspect-4/5 bg-[#F1EFE9] overflow-hidden">
                         <Image 
                           src={getImageUrl(item.image)} 
                           alt={item.name} 

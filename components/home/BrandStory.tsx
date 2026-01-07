@@ -66,7 +66,7 @@ const BentoCard: React.FC<BentoCardProps> = ({ image, className = "" }) => {
   return (
     <motion.div
       variants={imageVariants}
-      className={`group relative overflow-hidden bg-surface border border-border shadow-lg transition-all duration-700 hover:shadow-2xl cursor-pointer ${className}`}
+      className={`group relative overflow-hidden bg-surface border border-border shadow-lg transition-all duration-700 hover:shadow-2xl  ${className}`}
     >
       <div className="relative w-full h-full">
         <Image
