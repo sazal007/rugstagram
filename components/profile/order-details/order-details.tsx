@@ -5,10 +5,7 @@ import {
   Package, 
   Truck, 
   Home, 
-  MessageSquare, 
-  Info, 
   CheckCircle2, 
-  HelpCircle,
 } from 'lucide-react';
 import { MyOrder, OrderItem as OrderItemType } from "@/types/my-order";
 import { getImageUrl } from '@/utils/image';

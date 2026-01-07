@@ -5,15 +5,13 @@ import { Search } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useBlogCategories, useBlogs } from '@/hooks/use-blogs';
-import { Separator } from '@/components/ui/separator';
+import { useBlogs } from '@/hooks/use-blogs';
 
 export function BlogSidebar() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [searchValue, setSearchValue] = useState(searchParams.get('search') || '');
   
-  const { data: categories } = useBlogCategories();
   const { data: recentPosts } = useBlogs({ page_size: 4, ordering: '-created_at' });
 
   const handleSearch = (e: React.FormEvent) => {

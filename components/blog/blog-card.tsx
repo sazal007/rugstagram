@@ -2,7 +2,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { BlogPost as Blog } from '@/types/blog';
-import { User } from 'lucide-react';
 
 interface BlogCardProps {
   blog: Blog;
@@ -14,10 +13,6 @@ export function BlogCard({ blog }: BlogCardProps) {
     month: 'short',
     year: 'numeric'
   });
-
-  const authorName = blog.author 
-    ? `${blog.author.first_name || ''} ${blog.author.last_name || ''}`.trim() || blog.author.username
-    : 'Anonymous';
 
   const imageUrl = blog.thumbnail_image?.startsWith('http')
     ? blog.thumbnail_image

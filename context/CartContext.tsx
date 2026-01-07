@@ -23,6 +23,7 @@ export interface CartItem {
   image: string;
   size: string;
   sizeId: number;
+  code?: string;
   color?: {
     name: string;
     slug: string;
@@ -168,6 +169,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             image,
             size: size.name,
             sizeId: size.id,
+            code: product.code || undefined,
             color,
           };
 
