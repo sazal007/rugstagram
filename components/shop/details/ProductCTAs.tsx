@@ -33,6 +33,21 @@ export const ProductCTAs: React.FC<ProductCTAsProps> = ({
   selectedColor,
 }) => {
   const { addToCart } = useCart();
+  const [whatsAppHref, setWhatsAppHref] = React.useState("https://wa.me/9779843199444");
+
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      const baseUrl = window.location.origin;
+      const productUrl = `${baseUrl}/shop/${product.slug}`;
+      
+      const collectionName = product.collection?.name || "N/A";
+      const colorName = selectedColor?.name || "N/A";
+      
+      const message = `Hello \nI’m interested in the ${product.name} product from the ${collectionName} collection in ${colorName} color.\n\nCould you please share more details regarding price, availability, and specifications?\nLooking forward to your response. Thank you.\n\n${productUrl}`;
+      
+      setWhatsAppHref(`https://wa.me/9779843199444?text=${encodeURIComponent(message)}`);
+    }
+  }, [product, selectedColor]);
 
   const handleAddToBag = () => {
     if (!selectedSize) {
@@ -110,7 +125,7 @@ export const ProductCTAs: React.FC<ProductCTAsProps> = ({
             <Phone className="w-4 h-4 sm:w-5 sm:h-5 cursor-pointer stroke-[1.5]" />
           </a>
           <a 
-            href="https://wa.me/9779843199444" 
+            href={whatsAppHref} 
             target="_blank" 
             rel="noopener noreferrer" 
             className="text-[#25D366] hover:opacity-80 transition-opacity" 
