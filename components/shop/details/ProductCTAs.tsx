@@ -38,10 +38,14 @@ export const ProductCTAs: React.FC<ProductCTAsProps> = ({
   React.useEffect(() => {
     if (typeof window !== "undefined") {
       const baseUrl = window.location.origin;
-      const productUrl = `${baseUrl}/shop/${product.slug}`;
+      let productUrl = `${baseUrl}/shop/${product.slug}`;
       
       const collectionName = product.collection?.name || "N/A";
       const colorName = selectedColor?.name || "N/A";
+      
+      if (selectedColor?.name) {
+        productUrl += `?color=${selectedColor.name.toLowerCase()}`;
+      }
       
       const message = `Hello \nI’m interested in the ${product.name} product from the ${collectionName} collection in ${colorName} color.\n\nCould you please share more details regarding price, availability, and specifications?\nLooking forward to your response. Thank you.\n\n${productUrl}`;
       

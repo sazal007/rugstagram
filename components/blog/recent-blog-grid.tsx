@@ -13,9 +13,6 @@ function RecentBlogCard({
   blog: BlogPost; 
   isLarge?: boolean 
 }) {
-  const authorName = blog.author 
-    ? `${blog.author.first_name || ''} ${blog.author.last_name || ''}`.trim() || blog.author.username
-    : 'Anonymous';
 
   const date = new Date(blog.created_at).toLocaleDateString('en-US', {
     day: 'numeric',
@@ -47,7 +44,7 @@ function RecentBlogCard({
           <span>{date}</span>
         </div>
         
-        <h3 className={`font-serif font-bold text-white leading-tight ${
+        <h3 className={`font-bold text-white leading-tight ${
           isLarge ? 'text-2xl md:text-3xl' : 'text-lg line-clamp-2'
         }`}>
           {blog.title}
@@ -86,7 +83,7 @@ export function RecentBlogGrid() {
   const others = blogs.slice(1, 5);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto md:h-[500px] mb-20 px-1">
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto md:h-[500px] mb-40 px-1">
       {/* Featured Big Card */}
       <div className="md:col-span-6 lg:col-span-7">
         <RecentBlogCard blog={featured} isLarge />

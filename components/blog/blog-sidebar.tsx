@@ -50,27 +50,8 @@ export function BlogSidebar() {
         </form>
       </div>
 
-      <Separator className="bg-gray-100" />
 
-      {/* Categories */}
-      <div className="space-y-6">
-        <h3 className="text-xl font-serif font-bold text-primary">Categories</h3>
-        <ul className="space-y-3">
-          {categories?.map((category) => (
-            <li key={category.id} className="flex items-center gap-3 group">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent opacity-40 group-hover:opacity-100 transition-opacity" />
-              <Link 
-                href={`/blog?category=${category.slug}`}
-                className="text-sm font-medium text-black hover:text-accent transition-colors"
-              >
-                {category.title}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
 
-      <Separator className="bg-gray-100" />
 
       {/* Recent Posts */}
       <div className="space-y-6">

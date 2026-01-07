@@ -81,15 +81,6 @@ const OrderItem = ({ item }: { item: OrderItemType }) => {
           <p className="text-xs font-medium text-foreground bg-secondary px-2.5 py-0.5 rounded-full border border-border">
             Qty: {item.quantity}
           </p>
-          <div className="flex items-center gap-2 w-full sm:w-auto">
-            <button className="flex-1 sm:flex-none py-1.5 px-3 rounded-full border border-primary text-primary hover:bg-primary hover:text-primary-foreground cursor-pointer transition-colors text-xs font-semibold flex items-center justify-center gap-1.5">
-              <MessageSquare className="w-3.5 h-3.5" />
-              Review
-            </button>
-            <button className="text-muted hover:text-accent text-xs font-semibold hover:underline px-2 cursor-pointer transition-colors">
-              Return
-            </button>
-          </div>
         </div>
       </div>
     </div>
@@ -212,13 +203,6 @@ export default function OrderDetails({ isOpen, onClose, order }: OrderDetailsPro
                     <OrderItem key={index} item={item} />
                   ))}
                 </div>
-                {/* Return Policy inside items */}
-                <div className="mt-5 pt-4 border-t border-border">
-                  <p className="text-xs text-muted leading-normal flex items-center gap-1.5">
-                    <Info className="w-4 h-4" />
-                    <span>Need to return? <a href="#" className="text-accent hover:underline font-medium">Policy</a>. 30 days.</span>
-                  </p>
-                </div>
               </div>
 
             </div>
@@ -246,12 +230,6 @@ export default function OrderDetails({ isOpen, onClose, order }: OrderDetailsPro
                   </div>
                 </div>
                 
-                <div className="mt-6 space-y-3">
-                  <button className="w-full py-2.5 rounded-full bg-secondary text-foreground font-semibold hover:bg-border cursor-pointer transition-colors flex justify-center items-center gap-2 text-sm">
-                    <HelpCircle className="w-4 h-4" />
-                    Need Help?
-                  </button>
-                </div>
               </div>
 
               {/* Shipping Address */}
