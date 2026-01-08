@@ -77,14 +77,14 @@ const RevealCard: React.FC<RevealCardProps> = ({ collection, onNavigate }) => {
 
   return (
     <div
-      className="group relative w-full h-[320px] sm:h-[400px] md:h-[500px]"
+      className="group relative w-full h-[280px] sm:h-[340px] md:h-[400px]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => onNavigate(collection.slug)}
     >
       {/* 1. COLLAPSED STACK VIEW (Main Card) */}
       <div className="relative w-full h-full cursor-pointer flex items-center justify-center transition-all duration-1000 group-hover:opacity-40">
-        <div className="relative w-[240px] h-[300px] sm:w-64 sm:h-80 md:w-72 md:h-96">
+        <div className="relative w-[200px] h-[240px] sm:w-[220px] sm:h-[280px] md:w-[240px] md:h-[320px]">
           {collection.images.map((img: CollectionImage, idx: number) => {
             const stackIndex = order.indexOf(idx);
             const isTop = stackIndex === 3;
@@ -154,13 +154,13 @@ const RevealCard: React.FC<RevealCardProps> = ({ collection, onNavigate }) => {
       `}
       >
         {/* Background of the pop-up */}
-        <div className="absolute inset-[-10px] sm:inset-[-15px] h-[650px] md:inset-[-20px] bg-surface shadow-[0_40px_100px_rgba(0,0,0,0.15)] border border-border overflow-hidden cursor-pointer">
+        <div className="absolute inset-[-10px] sm:inset-[-15px] h-[500px] md:inset-[-20px] bg-surface shadow-[0_40px_100px_rgba(0,0,0,0.15)] border border-border overflow-hidden cursor-pointer">
           {/* 4 Quadrants Container */}
-          <div className="absolute h-[650px] inset-0 grid grid-cols-2 grid-rows-2 gap-0.5 sm:gap-1 p-1 sm:p-1.5 md:p-2">
+          <div className="absolute h-[500px] inset-0 grid grid-cols-2 grid-rows-2 gap-0.5 sm:gap-1 p-1 sm:p-1.5 md:p-2">
             {collection.images.map((img: CollectionImage, idx: number) => (
               <div
                 key={img.position}
-                className={`relative w-full h-[350px] overflow-hidden transition-all ease-out 
+                className={`relative w-full h-[250px] overflow-hidden transition-all ease-out 
                   ${
                     isHovered ? "scale-100 opacity-100" : "scale-85 opacity-0"
                   }`}
@@ -270,16 +270,14 @@ export const FeaturedCollections: React.FC = () => {
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
       variants={staggerContainer}
-      className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-16 pt-12 sm:pt-16 md:pt-24 pb-12 sm:pb-16 md:pb-20"
+      className="max-w-[1370px] mx-auto px-3 sm:px-4 md:px-6 lg:px-16 pt-12 sm:pt-16 md:pt-24 pb-12 sm:pb-16 md:pb-20"
     >
       <motion.div
         variants={fadeInUp}
         className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 sm:mb-16 md:mb-20 lg:mb-28 gap-3 sm:gap-4"
       >
         <div>
-          <span className="text-[7px] sm:text-[8px] md:text-[9px] uppercase tracking-[0.8em] sm:tracking-[1em] md:tracking-[1.2em] text-muted font-bold block mb-3 sm:mb-4 md:mb-6">
-            Curated // Collections
-          </span>
+ 
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-serif tracking-tighter leading-[0.9] text-foreground">
             Featured <br />
             <span className="text-muted italic">Collections</span>

@@ -62,9 +62,9 @@ const Section: React.FC<{ title: string; content: string }> = ({
   content,
 }) => (
   <div className="mb-10">
-    <h3 className="text-xl md:text-2xl font-bold font-serif mb-4 text-primary">{title}</h3>
+    <h3 className="text-3xl md:text-3xl font-bold font-serif mb-4 text-primary">{title}</h3>
     <div
-      className="text-gray-600 font-serif leading-relaxed space-y-4"
+      className="text-gray-600 text-lg font-serif leading-relaxed space-y-4"
       dangerouslySetInnerHTML={{ __html: sanitizeHtmlContent(content) }}
     />
   </div>

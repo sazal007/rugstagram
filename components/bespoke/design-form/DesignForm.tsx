@@ -123,7 +123,7 @@ export const DesignForm: React.FC = () => {
         <p className="text-sm font-bold uppercase tracking-[0.3em] text-accent">Send us your own Design</p>
       </motion.div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-8  bg-card/50 border-[0.5px] border-gray-300 p-6 md:p-8  ">
         {/* Photo Upload Section */}
         <div className="space-y-4">
           <div 
@@ -187,7 +187,7 @@ export const DesignForm: React.FC = () => {
             />
             <label
               htmlFor="description"
-              className={`absolute text-sm duration-300 transform origin-left bg-background px-2 start-1 z-10 ${
+              className={`absolute text-sm duration-300 transform origin-left bg-background px-2 start-1 z-10 pointer-events-none ${
                 isLabelFloating("description")
                   ? "-translate-y-4 scale-75 top-2 text-primary"
                   : "scale-100 -translate-y-1/2 top-1/2 text-gray-500"
@@ -224,7 +224,7 @@ export const DesignForm: React.FC = () => {
               />
               <label
                 htmlFor="fullName"
-                className={`absolute text-sm duration-300 transform origin-left bg-background px-2 start-1 z-10 ${
+                className={`absolute text-sm duration-300 transform origin-left bg-background px-2 start-1 z-10 pointer-events-none ${
                   isLabelFloating("fullName")
                     ? "-translate-y-4 scale-75 top-2 text-primary"
                     : "scale-100 -translate-y-1/2 top-1/2 text-gray-500"
@@ -259,7 +259,7 @@ export const DesignForm: React.FC = () => {
               />
               <label
                 htmlFor="email"
-                className={`absolute text-sm duration-300 transform origin-left bg-background px-2 start-1 z-10 ${
+                className={`absolute text-sm duration-300 transform origin-left bg-background px-2 start-1 z-10 pointer-events-none ${
                   isLabelFloating("email")
                     ? "-translate-y-4 scale-75 top-2 text-primary"
                     : "scale-100 -translate-y-1/2 top-1/2 text-gray-500"
@@ -324,7 +324,7 @@ export const DesignForm: React.FC = () => {
           type="submit"
           variant="sand"
           size="hero"
-          className="px-16 h-14"
+          className="px-16 h-14 w-full"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Sending..." : "SEND"}
