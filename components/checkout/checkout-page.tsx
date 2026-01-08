@@ -8,7 +8,7 @@ import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 
 import { OrderSummary } from "./order-summary";
-import { CheckoutFormData, CheckoutCartItem } from "./types";
+import { CheckoutFormData, CheckoutCartItem } from "../../types/checkout";
 import { useCreateOrder } from "@/hooks/use-order";
 import { CreateOrderPayload } from "@/types/order";
 import { toast } from "sonner";

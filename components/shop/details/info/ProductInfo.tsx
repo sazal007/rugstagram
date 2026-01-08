@@ -3,7 +3,7 @@
 import React from "react";
 import { motion } from "motion/react";
 import { Product } from "@/types/product";
-import { StarRating } from "./StarRating";
+import { StarRating } from "../reviews/StarRating";
 
 interface ProductInfoProps {
   product: Product;

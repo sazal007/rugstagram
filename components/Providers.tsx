@@ -5,6 +5,7 @@ import { ReactNode, useState } from "react";
 import { AuthProvider } from "@/context/AuthContext";
 import { CartProvider } from "@/context/CartContext";
 import { Toaster } from "sonner";
+import NextjsToploader from "nextjs-toploader";
 
 export default function Providers({ children }: { children: ReactNode }) {
   const [queryClient] = useState(() => new QueryClient({
@@ -17,6 +18,7 @@ export default function Providers({ children }: { children: ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <NextjsToploader color="#c2c2c2" />
       <AuthProvider>
         <CartProvider>
           {children}

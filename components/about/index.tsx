@@ -1,7 +1,7 @@
-export { AboutHero } from "./AboutHero";
-export { AboutNav } from "./AboutNav";
-export { CompanyCulture } from "./CompanyCulture";
-export { MeetFounder } from "./MeetFounder";
-export { ArtOfWeaving } from "./ArtOfWeaving";
-export { default as WeavingProcessAnimation } from "./WeavingProcessAnimation";
+export { AboutHero } from "./hero/AboutHero";
+export { AboutNav } from "./navigation/AboutNav";
+export { CompanyCulture } from "./culture/CompanyCulture";
+export { MeetFounder } from "./founder/MeetFounder";
+export { ArtOfWeaving } from "./weaving/ArtOfWeaving";
+export { default as WeavingProcessAnimation } from "./weaving/WeavingProcessAnimation";
 

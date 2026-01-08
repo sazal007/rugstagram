@@ -2,14 +2,14 @@
 
 import React, { useState, useEffect } from "react";
 import { Product, ProductListItem, Size } from "@/types/product";
-import { Breadcrumb } from "./Breadcrumb";
-import { ProductImageGallery } from "./ProductImageGallery";
-import { ProductInfo } from "./ProductInfo";
-import { ProductSelectors } from "./ProductSelectors";
-import { ProductCTAs } from "./ProductCTAs";
-import { ProductAccordion } from "./ProductAccordion";
-import { ReviewsSection } from "./ReviewsSection";
-import { SimilarProducts } from "./SimilarProducts";
+import { Breadcrumb } from "./breadcrumb/Breadcrumb";
+import { ProductImageGallery } from "./gallery/ProductImageGallery";
+import { ProductInfo } from "./info/ProductInfo";
+import { ProductSelectors } from "./info/ProductSelectors";
+import { ProductCTAs } from "./actions/ProductCTAs";
+import { ProductAccordion } from "./content/ProductAccordion";
+import { ReviewsSection } from "./reviews/ReviewsSection";
+import { SimilarProducts } from "./related/SimilarProducts";
 
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useColors } from "@/hooks/use-colors";

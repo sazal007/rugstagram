@@ -1,6 +1,6 @@
-import { ContactHeader } from "@/components/assistance/ContactHeader";
-import { ContactGrid } from "@/components/assistance/ContactGrid";
-import { FAQSection } from "@/components/assistance/FAQSection";
+import { ContactHeader } from "@/components/assistance/contact/ContactHeader";
+import { ContactGrid } from "@/components/assistance/contact/ContactGrid";
+import { FAQSection } from "@/components/assistance/faq/FAQSection";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

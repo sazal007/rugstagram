@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { CheckoutCartItem } from "./types";
+import { CheckoutCartItem } from "../../types/checkout";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";

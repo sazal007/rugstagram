@@ -1,6 +1,6 @@
-export { ContactHeader } from "./ContactHeader";
-export { ContactCard } from "./ContactCard";
-export { ContactGrid } from "./ContactGrid";
-export { FAQItem } from "./FAQItem";
-export { FAQSection } from "./FAQSection";
+export { ContactHeader } from "./contact/ContactHeader";
+export { ContactCard } from "./contact/ContactCard";
+export { ContactGrid } from "./contact/ContactGrid";
+export { FAQItem } from "./faq/FAQItem";
+export { FAQSection } from "./faq/FAQSection";
 

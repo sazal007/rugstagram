@@ -2,11 +2,11 @@
 
 import React, { useState, useMemo } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { ShopHeader } from "./ShopHeader";
-import { FilterToggle } from "./FilterToggle";
-import { FilterSidebar } from "./FilterSidebar";
-import { ProductGrid } from "./ProductGrid";
-import { EmptyState } from "./EmptyState";
+import { ShopHeader } from "./layout/ShopHeader";
+import { FilterToggle } from "./filters/FilterToggle";
+import { FilterSidebar } from "./filters/FilterSidebar";
+import { ProductGrid } from "./layout/ProductGrid";
+import { EmptyState } from "./layout/EmptyState";
 import { useProducts } from "@/hooks/use-product";
 import { ProductFilters } from "@/services/product";
 import Pagination from "@/components/ui/pagination";

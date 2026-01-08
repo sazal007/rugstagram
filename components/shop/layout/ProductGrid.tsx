@@ -4,7 +4,7 @@ import React, { useMemo } from "react";
 import { motion, Variants } from "motion/react";
 import { ChevronDown } from "lucide-react";
 import { Product, ProductListItem } from "@/types/product";
-import { ProductCard } from "../ProductCard";
+import { ProductCard } from "../../ProductCard";
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
