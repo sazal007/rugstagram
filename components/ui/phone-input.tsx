@@ -66,7 +66,7 @@ const InputComponent = React.forwardRef<
   <input
     ref={ref}
     className={cn(
-      "block rounded-r-base rounded-l-none border-l-0 px-2.5 pb-2.5 pt-4 h-[52px] text-sm text-foreground bg-transparent border border-border appearance-none focus:outline-none focus:ring-0 focus:border-primary shadow-none w-full min-w-0",
+      "block rounded-r-base rounded-l-none border-l-0 px-2.5 pb-2.5 pt-4 h-[48px] text-sm text-foreground bg-transparent border border-border appearance-none focus:outline-none focus:ring-0 focus:border-primary shadow-none w-full min-w-0",
       className
     )}
     onFocus={onFocus}
@@ -109,7 +109,7 @@ const CountrySelect = ({
       <PopoverTrigger asChild>
         <button
           type="button"
-          className="flex gap-1 items-center justify-center rounded-l-base rounded-r-none border-r-0 px-2.5 pb-2.5 pt-4 h-[52px] focus:z-10 bg-transparent border border-border focus:border-primary focus:ring-0 focus-visible:ring-0 shadow-none hover:bg-transparent disabled:pointer-events-none disabled:opacity-50 outline-none"
+          className="flex gap-1 items-center justify-center rounded-l-base rounded-r-none border-r-0 px-2.5 pb-2.5 pt-4 h-[48px] focus:z-10 bg-transparent border border-border focus:border-primary focus:ring-0 focus-visible:ring-0 shadow-none hover:bg-transparent disabled:pointer-events-none disabled:opacity-50 outline-none"
           disabled={disabled}
         >
           <FlagComponent

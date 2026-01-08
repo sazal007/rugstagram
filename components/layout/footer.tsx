@@ -164,9 +164,9 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-6 border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between text-xs text-gray-600 gap-4">
         <p>©️ {new Date().getFullYear()} Rugstagram. All rights reserved.</p>
         <div className="flex gap-6">
-          <span>Privacy Policy</span>
-          <span>Terms of Service</span>
-          <span>Shipping Policy</span>
+          <Link href="/privacy-policy" className="hover:text-white">Privacy Policy</Link>
+          <Link href="/terms-of-service" className="hover:text-white">Terms of Service</Link>
+          <Link href="/shipping-policy" className="hover:text-white">Shipping Policy</Link>
         </div>
       </div>
     </footer>

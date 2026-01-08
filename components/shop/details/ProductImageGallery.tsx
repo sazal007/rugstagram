@@ -67,7 +67,7 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="flex flex-col-reverse lg:flex-row gap-4 lg:gap-6 lg:top-24 lg:self-start lg:sticky"
+      className="flex flex-col-reverse lg:flex-row gap-4 lg:gap-6 lg:top-32 lg:self-start lg:sticky"
     >
       {/* Thumbnails */}
       <div className="flex lg:flex-col overflow-x-auto lg:overflow-visible gap-2 sm:gap-3 lg:gap-4 scrollbar-hide lg:w-24 shrink-0">

@@ -4,13 +4,6 @@ import { useForm, Controller, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { CustomButton } from "@/components/ui/custom-button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { PhoneInput } from "@/components/ui/phone-input";
 import type * as RPNInput from "react-phone-number-input";
 import { parsePhoneNumber } from "react-phone-number-input";
@@ -24,7 +17,6 @@ const partnershipSchema = z.object({
   city: z.string().min(1, "City is required"),
   stateRegion: z.string().min(1, "State/Region is required"),
   postalCode: z.string().min(1, "Postal code is required"),
-  country: z.string().min(1, "Country is required"),
   phone: z.string().min(1, "Phone number is required"),
   email: z.string().email("Invalid email address"),
   comments: z.string().optional(),
@@ -51,7 +43,6 @@ export const PartnershipForm: React.FC = () => {
       city: "",
       stateRegion: "",
       postalCode: "",
-      country: "United States",
       phone: "",
       email: "",
       comments: "",
@@ -77,10 +68,22 @@ export const PartnershipForm: React.FC = () => {
     try {
       // Format phone number: +9779813671117 -> +977-9813671117
       let formattedPhone = data.phone;
+      let countryName = "Nepal"; // Default fallback
+
       if (data.phone) {
         const parsedNode = parsePhoneNumber(data.phone);
         if (parsedNode) {
           formattedPhone = `+${parsedNode.countryCallingCode}-${parsedNode.nationalNumber}`;
+          
+          if (parsedNode.country) {
+            try {
+              const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
+              const name = regionNames.of(parsedNode.country);
+              if (name) countryName = name;
+            } catch (e) {
+              console.error("Error getting country name:", e);
+            }
+          }
         }
       }
 
@@ -91,7 +94,7 @@ export const PartnershipForm: React.FC = () => {
         city: data.city,
         state: data.stateRegion,
         code: data.postalCode,
-        country: data.country,
+        country: countryName,
         phone_number: formattedPhone,
         email: data.email,
         comments: data.comments,
@@ -165,6 +168,76 @@ export const PartnershipForm: React.FC = () => {
             </label>
           </div>
           {errors.fullName && <p className="text-xs text-red-500 mt-1 ml-1">{errors.fullName.message}</p>}
+        </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Phone */}
+          <div>
+            <div
+              className="relative"
+              onFocus={() => handleFocus("phone")}
+              onBlur={(e) => {
+                // Only blur if focus is not moving to a child element
+                if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+                  handleBlur("phone");
+                }
+              }}
+            >
+              <Controller
+                name="phone"
+                control={control}
+                render={({ field }) => (
+                  <PhoneInput
+                    id="phone"
+                    value={field.value as RPNInput.Value}
+                    onChange={(value) => field.onChange(value || "")}
+                    defaultCountry="NP"
+                    className={`w-full ${errors.phone ? "border-red-500" : ""}`}
+                    placeholder=" "
+                  />
+                )}
+              />
+              <label
+                htmlFor="phone"
+                className={`absolute text-sm duration-300 transform origin-left bg-background px-2 left-[60px] z-10 pointer-events-none ${
+                  isLabelFloating("phone")
+                    ? "-translate-y-4 scale-75 top-2 text-primary"
+                    : "scale-100 -translate-y-1/2 top-1/2 text-gray-500"
+                }`}
+              >
+                Phone
+              </label>
+              {errors.phone && <p className="text-xs text-red-500 mt-1 ml-1">{errors.phone.message}</p>}
+            </div>
+          </div>
+
+          {/* Email */}
+          <div>
+            <div className="relative">
+              <input
+                type="email"
+                id="email"
+                {...register("email")}
+                onFocus={() => handleFocus("email")}
+                onBlur={(e) => {
+                  register("email").onBlur(e);
+                  handleBlur("email");
+                }}
+                className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border ${errors.email ? "border-red-500" : "border-border"} appearance-none focus:outline-none focus:ring-0 focus:border-primary`}
+                placeholder=" "
+              />
+              <label
+                htmlFor="email"
+                className={`absolute text-sm duration-300 transform origin-left bg-background px-2 start-1 z-10 ${
+                  isLabelFloating("email")
+                    ? "-translate-y-4 scale-75 top-2 text-primary"
+                    : "scale-100 -translate-y-1/2 top-1/2 text-gray-500"
+                }`}
+              >
+                Email
+              </label>
+              {errors.email && <p className="text-xs text-red-500 mt-1 ml-1">{errors.email.message}</p>}
+            </div>
+          </div>
         </div>
 
         {/* Address */}
@@ -301,125 +374,12 @@ export const PartnershipForm: React.FC = () => {
                 </label>
                 {errors.postalCode && <p className="text-xs text-red-500 mt-1 ml-1">{errors.postalCode.message}</p>}
               </div>
-
-              <div className="relative">
-                <Controller
-                  name="country"
-                  control={control}
-                  render={({ field }) => (
-                    <Select
-                      value={field.value}
-                      onValueChange={field.onChange}
-                      onOpenChange={(open) => {
-                        if (open) {
-                          handleFocus("country");
-                        } else {
-                          handleBlur("country");
-                        }
-                      }}
-                    >
-                      <SelectTrigger className={`block! w-full! px-2.5! pb-2.5! pt-4! h-[52px]! text-sm! text-foreground! bg-transparent! border! ${errors.country ? "border-red-500!" : "border-border!"} rounded-base! appearance-none! outline-none! focus-visible:ring-0! focus-visible:border-primary! shadow-none! data-[size=default]:h-[52px]!`}>
-                        <SelectValue placeholder="Select country" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="United States">United States</SelectItem>
-                        <SelectItem value="Canada">Canada</SelectItem>
-                        <SelectItem value="United Kingdom">
-                          United Kingdom
-                        </SelectItem>
-                        <SelectItem value="Australia">Australia</SelectItem>
-                        <SelectItem value="Nepal">Nepal</SelectItem>
-                        <SelectItem value="India">India</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
-                <label
-                  className={`absolute text-sm duration-300 transform origin-left bg-background px-2 start-1 z-10 ${
-                    (watchedValues.country !== "" && watchedValues.country !== undefined) || focusedFields.has("country")
-                      ? "-translate-y-4 scale-75 top-2 text-primary"
-                      : "scale-100 -translate-y-1/2 top-1/2 text-gray-500"
-                  }`}
-                >
-                  Country
-                </label>
-                {errors.country && <p className="text-xs text-red-500 mt-1 ml-1">{errors.country.message}</p>}
-              </div>
             </div>
           </div>
         </div>
 
         {/* Phone and Email in one div */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Phone */}
-          <div>
-            <div
-              className="relative"
-              onFocus={() => handleFocus("phone")}
-              onBlur={(e) => {
-                // Only blur if focus is not moving to a child element
-                if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-                  handleBlur("phone");
-                }
-              }}
-            >
-              <Controller
-                name="phone"
-                control={control}
-                render={({ field }) => (
-                  <PhoneInput
-                    id="phone"
-                    value={field.value as RPNInput.Value}
-                    onChange={(value) => field.onChange(value || "")}
-                    defaultCountry="NP"
-                    className={`w-full ${errors.phone ? "border-red-500" : ""}`}
-                    placeholder=" "
-                  />
-                )}
-              />
-              <label
-                htmlFor="phone"
-                className={`absolute text-sm duration-300 transform origin-left bg-background px-2 left-[104px] z-10 pointer-events-none ${
-                  isLabelFloating("phone")
-                    ? "-translate-y-4 scale-75 top-2 text-primary"
-                    : "scale-100 -translate-y-1/2 top-1/2 text-gray-500"
-                }`}
-              >
-                Phone
-              </label>
-              {errors.phone && <p className="text-xs text-red-500 mt-1 ml-1">{errors.phone.message}</p>}
-            </div>
-          </div>
 
-          {/* Email */}
-          <div>
-            <div className="relative">
-              <input
-                type="email"
-                id="email"
-                {...register("email")}
-                onFocus={() => handleFocus("email")}
-                onBlur={(e) => {
-                  register("email").onBlur(e);
-                  handleBlur("email");
-                }}
-                className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-foreground bg-transparent rounded-base border ${errors.email ? "border-red-500" : "border-border"} appearance-none focus:outline-none focus:ring-0 focus:border-primary`}
-                placeholder=" "
-              />
-              <label
-                htmlFor="email"
-                className={`absolute text-sm duration-300 transform origin-left bg-background px-2 start-1 z-10 ${
-                  isLabelFloating("email")
-                    ? "-translate-y-4 scale-75 top-2 text-primary"
-                    : "scale-100 -translate-y-1/2 top-1/2 text-gray-500"
-                }`}
-              >
-                Email
-              </label>
-              {errors.email && <p className="text-xs text-red-500 mt-1 ml-1">{errors.email.message}</p>}
-            </div>
-          </div>
-        </div>
 
         {/* Comments */}
         <div>

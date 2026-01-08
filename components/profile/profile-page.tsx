@@ -10,6 +10,7 @@ import { getUserProfile } from "@/services/auth";
 import { Package,  Eye } from "lucide-react";
 import { Wishlist } from "./wishlist";
 import { MyOrdersList } from "./my-orders-list";
+import { PhoneInput } from "@/components/ui/phone-input";
 
 
 export function ProfilePage() {
@@ -195,7 +196,14 @@ export function ProfilePage() {
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="phone" className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Phone number</Label>
-                      <Input id="phone" value={profileData.phone} onChange={handleProfileInputChange} className="bg-slate-50/50 border-none h-12 focus-visible:ring-1 focus-visible:ring-slate-200" />
+                      <PhoneInput
+                        id="phone"
+                        value={profileData.phone}
+                        onChange={(value) => setProfileData(prev => ({ ...prev, phone: value || "" }))}
+                        defaultCountry="NP"
+                        international={false}
+                        className="w-full"
+                      />
                     </div>
               
                     

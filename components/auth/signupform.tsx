@@ -12,6 +12,8 @@ import Image from "next/image";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle, ChevronLeft } from "lucide-react";
 import Link from "next/link";
+import { PhoneInput } from "@/components/ui/phone-input";
+import { Label } from "@/components/ui/label";
 
 export function SignupForm({
   className,
@@ -151,7 +153,23 @@ export function SignupForm({
             {/* Username & Phone */}
             <div className="grid grid-cols-2 gap-4">
                {renderField("username", "Username")}
-               {renderField("phone", "Phone", "tel")}
+               <div className="space-y-1">
+                 
+                 <PhoneInput
+                   id="phone"
+                   value={formData.phone}
+                   onChange={(value) => handleInputChange("phone", value || "")}
+                   defaultCountry="NP"
+                   international={false}
+                   className={cn(
+                     "w-full",
+                     fieldErrors.phone ? "border-destructive focus-within:border-destructive" : ""
+                   )}
+                 />
+                 {fieldErrors.phone && (
+                   <p className="text-xs text-destructive mt-1 ml-1">{fieldErrors.phone}</p>
+                 )}
+               </div>
             </div>
 
             {/* Email Field */}

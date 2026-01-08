@@ -212,6 +212,7 @@ export function CheckoutPage() {
                         value={formData.phone}
                         onChange={(value) => handleFieldChange("phone", value || "")}
                         defaultCountry="NP"
+                        international={false}
                         className="w-full"
                       />
                     </div>

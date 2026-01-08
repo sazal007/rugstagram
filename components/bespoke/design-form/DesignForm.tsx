@@ -303,7 +303,7 @@ export const DesignForm: React.FC = () => {
             />
             <label
               htmlFor="phone"
-              className={`absolute text-sm duration-300 transform origin-left bg-background px-2 left-[104px] z-10 pointer-events-none ${
+              className={`absolute text-sm duration-300 transform origin-left bg-background px-2 left-[60px] z-10 pointer-events-none ${
                 isLabelFloating("phone")
                   ? "-translate-y-4 scale-75 top-2 text-primary"
                   : "scale-100 -translate-y-1/2 top-1/2 text-gray-500"

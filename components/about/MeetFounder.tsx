@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, Variants } from "motion/react";
+import Image from "next/image";
 // import { Twitter, Linkedin, Mail } from "lucide-react";
 
 const fadeInUp: Variants = {
@@ -26,9 +27,11 @@ export const MeetFounder: React.FC = () => {
           <div className="lg:col-span-5 relative">
             <div className="aspect-4/5 bg-gray-200 rounded-sm overflow-hidden relative shadow-2xl">
               {/* Using a placeholder that looks like a business portrait */}
-              <img
+              <Image
                 src="/images/DAD-1.avif"
                 alt="Shambhu Bikram Thapa"
+                width={500}
+                height={500}
                 className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
               />
               <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/80 to-transparent p-6 text-white">
