@@ -20,7 +20,7 @@ export default function Providers({ children }: { children: ReactNode }) {
       <AuthProvider>
         <CartProvider>
           {children}
-          <Toaster richColors position="top-right" />
+          <Toaster richColors position="bottom-right" />
         </CartProvider>
       </AuthProvider>
     </QueryClientProvider>
