@@ -5,7 +5,7 @@ import { CheckoutCartItem } from "./types";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
-import { Trash2, Plus, Minus } from "lucide-react";
+import { Trash2, Plus, Minus, ChevronRight } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 
 interface OrderSummaryProps {
@@ -103,13 +103,20 @@ export function OrderSummary({
         </div>
       </CardContent>
       <CardFooter>
-        <Button
-          className="w-full text-lg py-6"
-          onClick={onSubmit}
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? "Processing..." : "Continue to Payment"}
-        </Button>
+                  <button 
+                    disabled={cartItems.length === 0 || isSubmitting} 
+                    onClick={onSubmit}
+                    className="w-full bg-[#1C1917] disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed text-white py-6 flex items-center justify-center gap-4 group hover:bg-[#A88663] transition-all duration-500 shadow-2xl shadow-stone-300/50"
+                  >
+                    {isSubmitting ? (
+                      <span className="text-[11px] uppercase tracking-[0.3em] font-bold">Placing Order...</span>
+                    ) : (
+                      <>
+                        <span className="text-[11px] uppercase tracking-[0.3em] font-bold">Place Order</span>
+                        <ChevronRight size={16} className="group-hover:translate-x-2 transition-transform duration-500" />
+                      </>
+                    )}
+                  </button>
       </CardFooter>
     </Card>
   );
