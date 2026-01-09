@@ -11,7 +11,7 @@ import {
   ErrorAlert,
   EmptyState,
   LoadingSpinner
-} from './components';
+} from '../../../../components/admin/orders';
 import Pagination from '@/components/ui/pagination';
 type SortDirection = 'asc' | 'desc';
 
