@@ -26,7 +26,7 @@ const BespokeDetailView: React.FC<BespokeDetailViewProps> = ({ bespoke }) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
           
           {/* Left Side: Information (7/12 width) */}
-          <div className="lg:col-span-7 p-8 sm:p-12 space-y-10 border-r border-gray-50">
+          <div className="lg:col-span-7 p-8 sm:p-12 space-y-10 border-gray-50">
             
             {/* Top Badge & Title Group */}
             <div className="space-y-4">
@@ -128,7 +128,7 @@ const BespokeDetailView: React.FC<BespokeDetailViewProps> = ({ bespoke }) => {
                       src={bespoke.image}
                       alt={bespoke.full_name}
                       fill
-                      className="object-contain p-10 group-hover:scale-105 transition-transform duration-700"
+                      className="object-cover p-10 group-hover:scale-105 transition-transform duration-700"
                     />
                     <div className="absolute inset-0 bg-linear-to-t from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   </>

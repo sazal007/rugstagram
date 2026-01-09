@@ -115,7 +115,7 @@ export const BespokeList: React.FC<BespokeListProps> = ({ data, onBespokeClick }
               >
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
-                    <div className="relative h-10 w-10 overflow-hidden rounded-md border shrink-0  transition-colors">
+                    <div className="relative h-10 w-10 overflow-hidden  border shrink-0  transition-colors">
                       {item.image && typeof item.image === "string" ? (
                         <Image
                           src={item.image}

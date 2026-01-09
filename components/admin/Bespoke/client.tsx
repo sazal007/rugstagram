@@ -77,7 +77,7 @@ export const BespokeClient = () => {
       )}
 
       <Dialog open={isDialogOpen} onOpenChange={handleDialogClose}>
-        <DialogContent className="max-w-5xl! p-0 overflow-hidden rounded-2xl border-none">
+        <DialogContent className="max-w-5xl! p-0 overflow-hidden border-none">
           <DialogHeader className="sr-only">
              <DialogTitle>Bespoke Request Details</DialogTitle>
              <DialogDescription>

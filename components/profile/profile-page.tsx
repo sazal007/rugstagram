@@ -147,7 +147,7 @@ export function ProfilePage() {
   };
 
   return (
-    <div className="bg-[#fafafa] min-h-screen  pb-16 px-4">
+    <div className="bg-[#fafafa] min-h-screen mt-10 pb-16 px-4">
       <div className="container mx-auto max-w-6xl">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_2.5fr] gap-8 items-start">
           
