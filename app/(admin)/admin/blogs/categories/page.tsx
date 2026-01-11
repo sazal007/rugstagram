@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { BlogCategory } from "@/types/blog";
 import Link from "next/link";
+import { TableSkeleton } from "@/components/admin/shared/table-skeleton";
 
 const CategoryManagementPage = () => {
   const { toast } = useToast();
@@ -180,8 +181,8 @@ const CategoryManagementPage = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               {isLoading ? (
                 <tr>
-                  <td colSpan={3} className="px-6 py-12 text-center">
-                    <Loader2 className="w-8 h-8 animate-spin mx-auto text-blue-600" />
+                  <td colSpan={3} className="px-6 py-4">
+                    <TableSkeleton rowCount={3} />
                   </td>
                 </tr>
               ) : filteredCategories.length === 0 ? (

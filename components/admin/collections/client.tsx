@@ -9,6 +9,7 @@ import { CategoryForm } from "@/components/admin/collections/category-form";
 import { Collection } from "@/types/product";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/error-utils";
+import { TableSkeleton } from "@/components/admin/shared/table-skeleton";
 
 export const CategoryClient = () => {
   const { data: categories = [], isLoading } = useCollections();
@@ -124,7 +125,11 @@ export const CategoryClient = () => {
   };
 
   if (isLoading) {
-    return <div className="flex h-full items-center justify-center">Loading...</div>;
+    return (
+      <div className="container mx-auto py-10">
+        <TableSkeleton />
+      </div>
+    );
   }
 
   return (

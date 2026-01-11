@@ -6,6 +6,7 @@ import { Contact } from "@/types/contact";
 import { ContactList } from "@/components/admin/contacts/contact-list";
 import SearchFilters from "@/components/admin/shared/search-filters";
 import LoadingSpinner from "@/components/admin/shared/loading-spinner";
+import { TableSkeleton } from "@/components/admin/shared/table-skeleton";
 import ErrorAlert from "@/components/admin/shared/error-alert";
 import EmptyState from "@/components/admin/shared/empty-state";
 import DetailView from "@/components/admin/contacts/contact-details/contact-details";
@@ -63,7 +64,7 @@ export const ContactClient = () => {
       {error ? (
         <ErrorAlert error={new Error(error)} />
       ) : isLoading ? (
-        <LoadingSpinner />
+        <TableSkeleton />
       ) : filteredContacts.length === 0 ? (
         <EmptyState 
            title="No Messages Found"

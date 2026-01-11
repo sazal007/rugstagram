@@ -6,6 +6,7 @@ import { Bespoke } from "@/types/bespoke";
 import { BespokeList } from "@/components/admin/Bespoke/bespoke-list";
 import SearchFilters from "@/components/admin/shared/search-filters";
 import LoadingSpinner from "@/components/admin/shared/loading-spinner";
+import { TableSkeleton } from "@/components/admin/shared/table-skeleton";
 import ErrorAlert from "@/components/admin/shared/error-alert";
 import EmptyState from "@/components/admin/shared/empty-state";
 import BespokeDetailView from "@/components/admin/Bespoke/bespoke-details/bespoke-details";
@@ -62,7 +63,7 @@ export const BespokeClient = () => {
       {error ? (
         <ErrorAlert error={new Error(error)} />
       ) : isLoading ? (
-        <LoadingSpinner />
+        <TableSkeleton />
       ) : filteredBespokes.length === 0 ? (
         <EmptyState 
            title="No Requests Found"

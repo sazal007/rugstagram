@@ -10,6 +10,7 @@ import {
   useUpdateBlog,
 } from "@/hooks/use-blogs";
 import { BlogsTable, BlogsSearch } from "@/components/admin/blogs";
+import { TableSkeleton } from "@/components/admin/shared/table-skeleton";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -160,13 +161,17 @@ const BlogsManagement = () => {
           onManageCategories={() => router.push("/admin/blogs/categories")}
           categories={categories || []}
         />
-        <BlogsTable
-          blogs={blogs}
-          onEdit={handleEditBlog}
-          onDelete={handleDeleteBlog}
-          onTogglePublish={handleTogglePublish}
-          isLoading={isLoadingBlogs || isLoadingCategories}
-        />
+        {isLoadingBlogs || isLoadingCategories ? (
+          <TableSkeleton />
+        ) : (
+          <BlogsTable
+            blogs={blogs}
+            onEdit={handleEditBlog}
+            onDelete={handleDeleteBlog}
+            onTogglePublish={handleTogglePublish}
+            isLoading={false}
+          />
+        )}
         
         {/* Advanced Pagination Component */}
         {totalPages > 1 && (

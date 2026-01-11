@@ -6,6 +6,7 @@ import { VideoHeader, VideoTable } from "@/components/admin/videos";
 import { useVideos, useDeleteVideo } from "@/hooks/use-videos";
 import { Video } from "@/types/video";
 import { useToast } from "@/hooks/use-toast";
+import { TableSkeleton } from "@/components/admin/shared/table-skeleton";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -55,12 +56,16 @@ export default function VideosPage() {
   return (
     <div className="container mx-auto py-8 px-4">
       <VideoHeader title="Videos" />
-      <VideoTable
-        videos={videos}
-        isLoading={isLoading}
-        onEdit={handleEdit}
-        onDelete={setVideoToDelete}
-      />
+      {isLoading ? (
+        <TableSkeleton />
+      ) : (
+        <VideoTable
+          videos={videos}
+          isLoading={false}
+          onEdit={handleEdit}
+          onDelete={setVideoToDelete}
+        />
+      )}
       
       <AlertDialog
         open={!!videoToDelete}

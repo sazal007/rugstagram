@@ -5,7 +5,7 @@ import { useNewsletterSubscriptions } from '@/hooks/use-newsletter';
 import { Subscriber } from '@/types/newsletter';
 import { NewsletterTable } from './components';
 import SearchFilters from "@/components/admin/shared/search-filters";
-import LoadingSpinner from "@/components/admin/shared/loading-spinner";
+import { TableSkeleton } from "@/components/admin/shared/table-skeleton";
 import ErrorAlert from "@/components/admin/shared/error-alert";
 import EmptyState from "@/components/admin/shared/empty-state";
 import { Users, Mail } from 'lucide-react';
@@ -49,7 +49,7 @@ export const AdminNewsletterComponent = () => {
       {error ? (
         <ErrorAlert error={error as Error} />
       ) : isLoading ? (
-        <LoadingSpinner />
+        <TableSkeleton />
       ) : filteredSubscriptions.length === 0 ? (
         <EmptyState 
           title="No Subscribers Found"

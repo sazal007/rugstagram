@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useProducts } from "@/hooks/use-product";
 import { columns } from "@/components/admin/product/products-table-columns";
 import { ProductsDataTable } from "@/components/admin/product/products-data-table";
-import { Skeleton } from "@/components/ui/skeleton";
+import { TableSkeleton } from "@/components/admin/shared/table-skeleton";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -41,11 +41,7 @@ export default function AdminProductsPage() {
   if (isLoading) {
     return (
       <div className="container mx-auto py-10">
-        <div className="flex justify-between items-center mb-6">
-          <Skeleton className="h-10 w-1/4" />
-          <Skeleton className="h-10 w-36" />
-        </div>
-        <Skeleton className="h-[500px] w-full" />
+        <TableSkeleton />
       </div>
     );
   }

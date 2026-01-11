@@ -7,6 +7,7 @@ import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
 import { Portfolio } from "@/types/portfolio";
 import { useRouter } from "next/navigation";
+import { TableSkeleton } from "@/components/admin/shared/table-skeleton";
 
 const PortfolioAdminPage: React.FC = () => {
   const { tokens } = useAuth();
@@ -36,12 +37,16 @@ const PortfolioAdminPage: React.FC = () => {
   return (
     <div className="container mx-auto py-8 px-4">
       <PortfolioHeader title="Portfolio Management" />
-      <PortfolioTable
-        portfolios={data?.results || []}
-        isLoading={isLoading}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      />
+      {isLoading ? (
+        <TableSkeleton />
+      ) : (
+        <PortfolioTable
+          portfolios={data?.results || []}
+          isLoading={false}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
+      )}
     </div>
   );
 };

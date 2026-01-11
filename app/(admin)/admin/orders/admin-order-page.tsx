@@ -10,8 +10,8 @@ import {
   OrdersTable,
   ErrorAlert,
   EmptyState,
-  LoadingSpinner
 } from '../../../../components/admin/orders';
+import { TableSkeleton } from '@/components/admin/shared/table-skeleton';
 import Pagination from '@/components/ui/pagination';
 type SortDirection = 'asc' | 'desc';
 
@@ -96,7 +96,7 @@ export default function AdminOrdersPage() {
       {error && <ErrorAlert error={error} />}
 
       {isLoading ? (
-        <LoadingSpinner />
+        <TableSkeleton />
       ) : orders.length === 0 ? (
         <EmptyState searchQuery={searchQuery} filterStatus={filterStatus} />
       ) : (
