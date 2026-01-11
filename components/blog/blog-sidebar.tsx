@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useBlogs } from '@/hooks/use-blogs';
+import { Input } from '../ui/input';
 
 export function BlogSidebar() {
   const router = useRouter();
@@ -24,12 +25,11 @@ export function BlogSidebar() {
   };
 
   return (
-    <aside className="space-y-10">
-      {/* Search Bar */}
+    <aside className="space-y-6 md:space-y-10">
       <div className="relative">
         <form onSubmit={handleSearch}>
           <div className="relative">
-            <input
+            <Input
               type="text"
               id="blog-search"
               value={searchValue}
@@ -39,7 +39,7 @@ export function BlogSidebar() {
             />
             <label
               htmlFor="blog-search"
-              className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-left  px-2 peer-focus:px-2 peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 start-1 pointer-events-none"
+              className="absolute bg-background text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-left  px-2 peer-focus:px-2 peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 start-1 pointer-events-none"
             >
               Search articles...
             </label>
@@ -48,11 +48,8 @@ export function BlogSidebar() {
         </form>
       </div>
 
-
-
-
-      {/* Recent Posts */}
-      <div className="space-y-6">
+      {/* Recent Posts - Hidden on mobile, visible on desktop */}
+      <div className="hidden md:block space-y-6">
         <h3 className="text-xl font-serif font-bold text-primary">Recent posts</h3>
         <div className="space-y-6">
           {recentPosts?.results.map((post) => {

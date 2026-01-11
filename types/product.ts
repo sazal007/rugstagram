@@ -92,6 +92,7 @@ export interface Product {
     affordable_edition: AffordableEdition | null;
     material: Material | null;
     wishlist_id: number | null;
+    weaving: string | null;
 }
 
 export interface ProductListItem {
@@ -119,6 +120,7 @@ export interface ProductListItem {
   is_active: boolean;
   is_wishlist: boolean;
   wishlist_id: number | null;
+  weaving: string | null;
 }
 
 export interface ProductListResponse {

@@ -131,7 +131,7 @@ export const CategoryClient = () => {
     <>
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight">Collections ({categories.length})</h2>
+          <h2 className="text-3xl font-bold tracking-tight">Collections</h2>
           <p className="text-sm text-muted-foreground">Manage collections (categories) for your store</p>
         </div>
         <Button onClick={() => onOpen(null)} className="cursor-pointer">

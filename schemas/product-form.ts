@@ -50,6 +50,7 @@ export const productFormSchema = z.object({
   is_active: z.boolean().default(true),
   meta_title: z.string().optional().nullable(),
   meta_description: z.string().optional().nullable(),
+  weaving: z.string().optional().nullable(),
   variants: z.array(ProductVariantSchema).optional().default([]),
 });
 
@@ -76,6 +77,7 @@ export const productApiSchema = z.object({
   is_active: z.boolean(),
   meta_title: z.string().optional().nullable(),
   meta_description: z.string().optional().nullable(),
+  weaving: z.string().optional().nullable(),
   variants: z.array(
     z.object({
       id: z.number().optional(),

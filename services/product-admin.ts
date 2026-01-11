@@ -9,7 +9,7 @@ function appendField(
   key: string,
   value: string | number | boolean | File | FileList | null | undefined
 ) {
-  if (value !== null && value !== undefined && value !== "") {
+  if (value !== null && value !== undefined) {
     if (value instanceof File) {
       formData.append(key, value);
     } else if (value instanceof FileList && value.length > 0) {
@@ -44,6 +44,7 @@ function buildProductFormData(data: ProductFormValues): FormData {
   appendField(formData, "is_active", data.is_active);
   appendField(formData, "meta_title", data.meta_title);
   appendField(formData, "meta_description", data.meta_description);
+  appendField(formData, "weaving", data.weaving);
 
   // Variant handling
   if (data.variants && data.variants.length > 0) {

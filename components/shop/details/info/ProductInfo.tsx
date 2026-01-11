@@ -80,7 +80,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({
             Weaving
           </span>
           <span className="text-xs sm:text-sm font-medium">
-            Hand-knotted
+            {product.weaving || "Hand-knotted"}
           </span>
         </div>
         <div>

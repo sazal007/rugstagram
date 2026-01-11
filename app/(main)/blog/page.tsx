@@ -73,13 +73,13 @@ function BlogList() {
 
 export default function BlogPage() {
   return (
-    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       {/* Recent Blogs Grid - Full Width */}
       <Suspense fallback={<div className="h-[500px] bg-gray-50 rounded-2xl animate-pulse mb-12" />}>
         <RecentBlogGrid />
       </Suspense>
 
-      <div className="flex flex-col lg:flex-row gap-16">
+      <div className="flex flex-col-reverse lg:flex-row gap-16">
         {/* Left Content: Blog List */}
         <div className="flex-1">
           <Suspense fallback={<div>Loading articles...</div>}>

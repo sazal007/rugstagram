@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "curious-quick-food-yen.trycloudflare.com",
+        hostname: "oakland-corners-chronicles-century.trycloudflare.com",
       },
       {
         protocol: "https",

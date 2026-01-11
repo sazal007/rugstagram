@@ -3,12 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
-
-/**
- * WeavingProcessAnimation
- * Visualizes the 12-step manufacturing process with synchronized ball movement,
- * path filling, and interactive HTML tooltips with images.
- */
+import Image from "next/image";
 
 const steps = [
   {
@@ -195,7 +190,7 @@ const WeavingProcessAnimation = ({ className }: { className?: string }) => {
 
   return (
     <div
-      className={cn("relative w-full flex flex-col items-center", className)}
+      className={cn("relative w-full hidden md:flex flex-col items-center", className)}
     >
       <div className="relative w-full aspect-1000/600 max-w-5xl">
         {/* Subtle Background Pattern */}
@@ -323,9 +318,10 @@ const WeavingProcessAnimation = ({ className }: { className?: string }) => {
                     className="pointer-events-none"
                   >
                     <div className="w-full h-full rounded-full overflow-hidden flex items-center justify-center bg-muted/20">
-                      <img
+                      <Image
                         src={step.image}
                         alt={step.title}
+                        fill
                         className={cn(
                           "w-full h-full object-cover transition-all duration-700",
                           isActive ? "saturate-100" : "saturate-0 opacity-60"

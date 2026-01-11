@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useBlogs } from '@/hooks/use-blogs';
@@ -83,7 +82,7 @@ export function RecentBlogGrid() {
   const others = blogs.slice(1, 5);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto md:h-[500px] mb-40 px-1">
+    <div className="hidden md:grid grid-cols-1 md:grid-cols-12 gap-6 h-auto md:h-[500px] mb-40 px-1">
       {/* Featured Big Card */}
       <div className="md:col-span-6 lg:col-span-7">
         <RecentBlogCard blog={featured} isLarge />

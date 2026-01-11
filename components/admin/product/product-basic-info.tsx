@@ -249,6 +249,20 @@ export const ProductBasicInfo: React.FC<ProductBasicInfoProps> = ({
             </FormItem>
           )}
         />
+
+        <FormField
+          name="weaving"
+          control={control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Weaving</FormLabel>
+              <FormControl>
+                <Input {...field} value={field.value || ""} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         
         <FormField
            name="description"

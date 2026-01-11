@@ -50,6 +50,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
         is_best_seller: initialData.is_best_seller ?? false,
         meta_title: initialData.meta_title,
         meta_description: initialData.meta_description,
+        weaving: initialData.weaving || "",
         variants: initialData.variants?.map((v) => ({
           id: v.id,
           color_id: v.color_id ? String(v.color_id) : null,
@@ -86,6 +87,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
         is_best_seller: false,
         meta_title: "",
         meta_description: "",
+        weaving: "",
         variants: [],
       };
     }
